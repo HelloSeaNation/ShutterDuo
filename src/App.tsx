@@ -1,5 +1,7 @@
 import React from "react";
 import { Box, Image, Flex, Button, Text } from "@chakra-ui/react";
+import Login from "./components/Login";
+
 
 function App() {
   return (
@@ -59,6 +61,7 @@ function App() {
           <Text>send image fast and simple</Text>
         </Box>
       </Box>
+      <Login />
     </Box>
   );
 }
