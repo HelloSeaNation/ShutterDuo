@@ -2,12 +2,11 @@ import React from "react";
 import { Box, Image, Flex, Button, Text } from "@chakra-ui/react";
 import Login from "./components/Login";
 
-
 function App() {
   return (
     <Box height={"100vh"} bg={"#4267CF"} margin={"auto"}>
       <Box bg="#4267CF" p={4} color="orange">
-        <Flex justifyContent={"space-between"}>
+        <Flex justifyContent={"space-between"} w={"95%"} margin={"auto"}>
           <Image
             src="./shutterduologo.png"
             alt="shutterduologo"
@@ -53,15 +52,24 @@ function App() {
         <Box
           textAlign="left"
           position="absolute"
-          left="70px"
-          top="13%"
+          left="120px"
+          top="10%"
           fontSize={"70px"}
         >
           <Text>Where photographer</Text>
           <Text>send image fast and simple</Text>
         </Box>
       </Box>
-      <Login />
+
+      <Box
+        textAlign="left"
+        position="absolute"
+        right="8vh"
+        top="17%"
+        fontSize={"70px"}
+      >
+        <Login />
+      </Box>
     </Box>
   );
 }
