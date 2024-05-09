@@ -80,7 +80,7 @@ const LandingPage = () => {
         textAlign="left"
         position="absolute"
         right="8vh"
-        top="15%"
+        top="20%"
         fontSize={"70px"}
       >
         {showLogin && <Login />}

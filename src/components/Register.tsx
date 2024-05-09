@@ -9,12 +9,11 @@ import {
   Button,
   Link,
 } from "@chakra-ui/react";
-import Login from "../components/Login"; 
 
 const Register = () => {
-    const handleLoginLinkClick = () => {
-        window.location.reload();
-    };
+  const handleLoginLinkClick = () => {
+    window.location.reload();
+  };
   return (
     <Box>
       <Flex direction={"column"}>
@@ -22,12 +21,18 @@ const Register = () => {
           <FormLabel fontSize={"30px"} color={"white"}>
             Join Now!
           </FormLabel>
-          <Text fontSize={"18px"} color={"white"}>
+        <Text fontSize={"18px"} color={"white"} marginBottom={"20px"} marginTop={"-10px"}>
             Already have an account?
-            <Link href="#" color={"#008F20"} marginLeft={"10px"}  onClick={handleLoginLinkClick}>
-              Login here
+            <Link
+                href="#"
+                color={"white"}
+                marginLeft={"5px"}
+                onClick={handleLoginLinkClick}
+                _hover={{ color: "green", fontWeight: "bold" }}
+            >
+                Login here
             </Link>
-          </Text>
+        </Text>
           <Flex direction={"row"} marginTop={"10px"}>
             <Input
               fontSize="20px"
@@ -76,7 +81,7 @@ const Register = () => {
           w={"40vh"}
         >
           By clicking Sign Up, you agree to our Terms, Data Policy and Cookies
-          Policy. You may receive email from us and can opu out at any time.
+          Policy. You may receive email from us and can opt out at any time.
         </Text>
         <Button
           w={"18vh"}
