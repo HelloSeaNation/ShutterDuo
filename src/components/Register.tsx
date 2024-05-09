@@ -7,17 +7,28 @@ import {
   Input,
   Text,
   Button,
+  Link,
 } from "@chakra-ui/react";
+import Login from "../components/Login"; 
 
 const Register = () => {
+    const handleLoginLinkClick = () => {
+        window.location.reload();
+    };
   return (
     <Box>
       <Flex direction={"column"}>
         <FormControl>
           <FormLabel fontSize={"30px"} color={"white"}>
-            Join with us
+            Join Now!
           </FormLabel>
-          <Flex direction={"row"}>
+          <Text fontSize={"18px"} color={"white"}>
+            Already have an account?
+            <Link href="#" color={"#008F20"} marginLeft={"10px"}  onClick={handleLoginLinkClick}>
+              Login here
+            </Link>
+          </Text>
+          <Flex direction={"row"} marginTop={"10px"}>
             <Input
               fontSize="20px"
               type="text"
@@ -25,7 +36,6 @@ const Register = () => {
               w={"19vh"}
               h={"4vh"}
               backgroundColor={"white"}
-              marginTop={"20px"}
               marginRight={"15px"}
             />
             <Input
@@ -35,7 +45,6 @@ const Register = () => {
               w={"19vh"}
               h={"4vh"}
               backgroundColor={"white"}
-              marginTop={"20px"}
             />
           </Flex>
           <Flex direction={"column"}>
@@ -60,9 +69,14 @@ const Register = () => {
             />
           </Flex>
         </FormControl>
-        <Text  fontSize={"12px"} marginBottom={"20px"} color={"white"} w={"40vh"}>
-          By clicking Sign Up, you agree to our Terms, Data Policy and Cookies Policy.
-          You may receive email from us and can opu out at any time.
+        <Text
+          fontSize={"12px"}
+          marginBottom={"20px"}
+          color={"white"}
+          w={"40vh"}
+        >
+          By clicking Sign Up, you agree to our Terms, Data Policy and Cookies
+          Policy. You may receive email from us and can opu out at any time.
         </Text>
         <Button
           w={"18vh"}
