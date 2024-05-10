@@ -1,32 +1,34 @@
 import React from "react";
-import { Box, Flex } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 
 const DashboardContent = () => {
+  const boxStyles = {
+    border: "2px solid #D4D4D4",
+    borderRadius: "30",
+    fontWeight: "bold",
+    color: "#6B6B6B",
+    paddingTop: "15px",
+    paddingLeft: "30px",
+  };
+
+  const renderBox = (text: string) => (
+    <Flex {...boxStyles} w="40%" height="50vh">
+      {text}
+    </Flex>
+  );
+
   return (
     <Flex
-      direction={"row"}
-      justifyContent={"space-between"}
-      w={"88%"}
-      m={"auto"}
-      marginTop={"50px"}
+      direction="row"
+      justifyContent="space-between"
+      w="88%"
+      m="auto"
+      marginTop="15vh"
     >
-      <Flex
-        border={"2px solid #D4D4D4"}
-        borderRadius={"30"}
-        w={"40%"}
-        height={"50vh"}
-      >
-        Box1
-      </Flex>
-      <Flex
-        border={"2px solid #D4D4D4"}
-        borderRadius={"30"}
-        w={"40%"}
-        height={"50vh"}
-      >
-        Box2
-      </Flex>
+      {renderBox("LATEST GALLERIES")}
+      {renderBox("SHORTCUT")}
     </Flex>
   );
 };
+
 export default DashboardContent;
