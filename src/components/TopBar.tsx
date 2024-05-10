@@ -4,7 +4,7 @@ import { Box, Flex, Text, Button, Image } from "@chakra-ui/react";
 const TopBar = () => {
   return (
     <Box>
-      <Box bgColor={"#F5F3F3"} h={"50px"}>
+      <Box bgColor={"#F5F3F3"} h={"60px"}>
         <Flex
           direction={"row"}
           justifyContent={"space-between"}
@@ -12,11 +12,11 @@ const TopBar = () => {
           margin={"auto"}
         >
           <Box>
-            <Image src="./title.png" alt="shuttleduo" w={"26vh"} />
+            <Image src="./title.png" alt="shuttleduo" w={"26vh"} marginTop={"10px"} />
           </Box>
           <Box>
             {/* insert alert icon and profile image */}
-            <Text fontSize={"30px"} color={"green"}>
+            <Text fontSize={"30px"} color={"green"}marginTop={"5px"}>
               test
             </Text>
           </Box>
