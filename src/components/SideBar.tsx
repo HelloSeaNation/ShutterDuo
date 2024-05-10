@@ -1,11 +1,11 @@
 import React from "react";
-import { Box, Flex, Text, Button, Image } from "@chakra-ui/react";
+import { Box, Flex, Text, Button} from "@chakra-ui/react";
 
 const SideBar = () => { 
     return (
         <Box>
-        <Box bgColor={"#FAFAFA"} h={"100vh"} w={"20%"} position={"fixed"}>
-            <Flex direction={"column"} w={"100%"}>
+        <Box bgColor={"#FAFAFA"} h={"100vh"}>
+            <Flex direction={"column"} w={"25vh"}>
             <Box marginTop={"30px"}>
                 <Button
                 variant="ghost"

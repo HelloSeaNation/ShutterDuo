@@ -8,7 +8,12 @@ const Dashboard = () => {
     <Box>
       <Flex direction={"column"}>
         <TopBar />
-        <SideBar />
+        <Flex direction={"row"} justifyContent={"none"}>
+          <SideBar />
+          <Box w={"90%"} h={"100vh"} bgColor={"#FFFFFF"}>
+            <Text>Dashboard test</Text>
+          </Box>
+        </Flex>
       </Flex>
     </Box>
   );

@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Flex, Text, Button, Image } from "@chakra-ui/react";
+import { Box, Flex, Text, Image } from "@chakra-ui/react";
 
 const TopBar = () => {
   return (
