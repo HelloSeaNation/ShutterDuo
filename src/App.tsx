@@ -1,12 +1,19 @@
 import React from "react";
 import LandingPage from "./pages/LandingPage";
 import Dashboard from "./pages/Dashboard";
+import ProfileSetting from "./pages/ProfileSetting";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
   return (
     <>
-      <Dashboard />
-      {/* <LandingPage /> */}
+    <Router>
+      <Routes>
+        {/* <Route path="/" element={<LandingPage />} /> */}
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/profile_setting " element={<ProfileSetting />} />
+      </Routes>
+    </Router>
     </>
   );
 }
