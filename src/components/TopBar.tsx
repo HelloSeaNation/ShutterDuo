@@ -1,5 +1,14 @@
 import React from "react";
-import { Box, Flex, Text, Image } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Image,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuDivider,
+} from "@chakra-ui/react";
 
 const TopBar = () => {
   return (
@@ -30,16 +39,32 @@ const TopBar = () => {
                 marginTop={"12px"}
                 marginRight={"20px"}
               />
-              <Image
-                src="../photography.png"
-                alt="profile"
-                w={"40px"}
-                h={"40px"}
-                borderRadius={"50%"}
-                marginTop={"10px"}
-                marginRight={"50px"}
-                border={"solid 2px green"}
-              />
+              <Menu>
+                <MenuButton>
+                  <Image
+                    src="../photography.png"
+                    alt="dropdown"
+                    w={"40px"}
+                    h={"40px"}
+                    borderRadius={"50%"}
+                    marginTop={"10px"}
+                    marginRight={"50px"}
+                    border={"solid 2px green"}
+                  />
+                </MenuButton>
+                <MenuList marginRight={"40px"} borderRadius={"0"}>
+                  {/* Need to change to profile image and Full Name */}
+                  <MenuItem>
+                    <Flex direction={"column"}>
+                      Profile name
+                    </Flex>
+                  </MenuItem>
+                  <MenuDivider />
+                  <MenuItem>Profile</MenuItem>
+                  <MenuItem>Account</MenuItem>
+                  <MenuItem>Logout</MenuItem>
+                </MenuList>
+              </Menu>
             </Flex>
           </Box>
         </Flex>
