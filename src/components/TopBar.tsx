@@ -55,7 +55,16 @@ const TopBar = () => {
                 <MenuList marginRight={"40px"} borderRadius={"0"}>
                   {/* Need to change to profile image and Full Name */}
                   <MenuItem>
-                    <Flex direction={"column"}>
+                    <Flex direction={"row"} align={"center"}>
+                      <Image
+                        src="../photography.png"
+                        alt="dropdown"
+                        w={"35px"}
+                        h={"35px"}
+                        borderRadius={"50%"}
+                        marginRight={"10px"}
+                        border={"solid 2px green"}
+                      />
                       Profile name
                     </Flex>
                   </MenuItem>
