@@ -9,6 +9,7 @@ import {
   MenuItem,
   MenuDivider,
 } from "@chakra-ui/react";
+import { Link } from "react-router-dom";  
 
 const TopBar = () => {
   return (
@@ -54,7 +55,7 @@ const TopBar = () => {
                 </MenuButton>
                 <MenuList marginRight={"40px"} borderRadius={"0"}>
                   {/* Need to change to profile image and Full Name */}
-                  <MenuItem>
+                  <MenuItem as={Link} to="/profile_setting">
                     <Flex direction={"row"} align={"center"}>
                       <Image
                         src="../photography.png"
