@@ -1,13 +1,22 @@
-import { Box } from "@chakra-ui/react";
+import React from "react";
+import { Box, Flex } from "@chakra-ui/react";
+import DashboardTitleBar from "../components/DashboardTitleBar";
 
-const ProfileSetting = () => {
+import TopBar from "../components/TopBar";
+import SideBar from "../components/SideBarSetting";
+
+const Dashboard = () => {
   return (
     <Box>
-      <Box>
-        <h1>Profile setting page testing</h1>
-      </Box>
+      <Flex direction={"column"}>
+        <TopBar />
+        <Flex direction={"row"} justifyContent={"none"}>
+          <SideBar />
+          <DashboardTitleBar />
+        </Flex>
+      </Flex>
     </Box>
   );
 };
 
-export default ProfileSetting;
+export default Dashboard;

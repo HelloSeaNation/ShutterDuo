@@ -9,7 +9,7 @@ import {
   MenuItem,
   MenuDivider,
 } from "@chakra-ui/react";
-import { Link } from "react-router-dom";  
+import { Link } from "react-router-dom";
 
 const TopBar = () => {
   return (
