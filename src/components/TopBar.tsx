@@ -22,12 +22,14 @@ const TopBar = () => {
           margin={"auto"}
         >
           <Box>
-            <Image
-              src="./title.png"
-              alt="shuttleduo"
-              w={"26vh"}
-              marginTop={"10px"}
-            />
+            <Link to="/">
+              <Image
+                src="./title.png"
+                alt="shuttleduo"
+                w={"26vh"}
+                marginTop={"10px"}
+              />
+            </Link>
           </Box>
           <Box>
             {/* insert alert icon and profile image */}
