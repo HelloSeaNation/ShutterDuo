@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Flex, Button} from "@chakra-ui/react";
 
-const SideBar = () => { 
+const SideBarDashboard = () => { 
     return (
         <Box>
         <Box bgColor={"#FAFAFA"} h={"100vh"}>
@@ -51,4 +51,4 @@ const SideBar = () => {
     );
     };
 
-export default SideBar;
+export default SideBarDashboard;

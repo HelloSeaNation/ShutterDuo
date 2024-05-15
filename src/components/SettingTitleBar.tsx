@@ -1,7 +1,6 @@
 import React from "react";
-import { Box, Flex, Text, Button, Divider } from "@chakra-ui/react";
-import { AddIcon } from "@chakra-ui/icons";
-import ProfileContent from "./ProfileContent";
+import { Box, Flex, Text, Divider } from "@chakra-ui/react";
+import ProfileSettingContent from "./ProfileSettingContent";
 
 const SettingTitleBar = () => {
   return (
@@ -18,7 +17,7 @@ const SettingTitleBar = () => {
         </Text>
       </Flex>
       <Divider w={"92%"} m={"auto"} />
-      <ProfileContent />
+      <ProfileSettingContent />
     </Box>
   );
 };
