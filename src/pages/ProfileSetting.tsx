@@ -1,7 +1,6 @@
 import React from "react";
 import { Box, Flex } from "@chakra-ui/react";
-import DashboardTitleBar from "../components/DashboardTitleBar";
-
+import DashboardTitleBar from "../components/SettingTitleBar";
 import TopBar from "../components/TopBar";
 import SideBar from "../components/SideBarSetting";
 
