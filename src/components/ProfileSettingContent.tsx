@@ -6,6 +6,7 @@ import {
   Input,
   Textarea,
   Text,
+  Image,
 } from "@chakra-ui/react";
 
 const TextStyle = {
@@ -38,10 +39,24 @@ const ProfileSettingContent = () => {
         <Textarea h={"20vh"} />
       </FormControl>
       <FormControl>
-        <Text fontSize={"18px"} color={"#5F5F5F"} fontWeight={"bold"} marginTop={"50px"}>
+        <Text
+          fontSize={"18px"}
+          color={"#5F5F5F"}
+          fontWeight={"bold"}
+          marginTop={"50px"}
+        >
           Social Media Links
         </Text>
-        <FormLabel style={TextStyle}>Facebook</FormLabel>
+        <Flex alignItems={"center"}>
+          <Image
+            src="../facebook.png"
+            alt="facebook"
+            boxSize={"30px"}
+            marginTop={"15px"}
+            marginRight={"10px"}
+          />
+          <FormLabel style={TextStyle}>Facebook</FormLabel>
+        </Flex>
         <Input />
         <FormLabel style={TextStyle}>Instagram</FormLabel>
         <Input />
