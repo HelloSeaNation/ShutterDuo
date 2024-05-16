@@ -8,6 +8,8 @@ import {
   Text,
   Image,
 } from "@chakra-ui/react";
+// import StyledFormLabel from './StyledFormLabel'; // Adjust the import path as needed
+import LabeledInputWithIcon from "./LabeledInputWithIcon"; // Adjust the import path as needed
 
 const TextStyle = {
   fontSize: "20px",
@@ -47,29 +49,69 @@ const ProfileSettingContent = () => {
         >
           Social Media Links
         </Text>
-        <Flex alignItems={"center"}>
-          <Image
-            src="../facebook.png"
-            alt="facebook"
-            boxSize={"30px"}
-            marginTop={"15px"}
-            marginRight={"10px"}
+        <FormControl>
+          <LabeledInputWithIcon
+            iconSrc="../facebook.png"
+            iconAlt="Facebook"
+            label="Facebook"
+            inputProps={{}}
+            textStyle={TextStyle}
           />
-          <FormLabel style={TextStyle}>Facebook</FormLabel>
-        </Flex>
-        <Input />
-        <FormLabel style={TextStyle}>Instagram</FormLabel>
-        <Input />
-        <FormLabel style={TextStyle}>Pinterest</FormLabel>
-        <Input />
-        <FormLabel style={TextStyle}>X</FormLabel>
-        <Input />
-        <FormLabel style={TextStyle}>Youtube</FormLabel>
-        <Input />
-        <FormLabel style={TextStyle}>LinkedIn</FormLabel>
-        <Input />
-        <FormLabel style={TextStyle}>TikTok</FormLabel>
-        <Input />
+        </FormControl>
+        <FormControl>
+          <LabeledInputWithIcon
+            iconSrc="../instagram.png"
+            iconAlt="Instagram"
+            label="Instagram"
+            inputProps={{}}
+            textStyle={TextStyle}
+          />
+        </FormControl>
+        <FormControl>
+          <LabeledInputWithIcon
+            iconSrc="../pinterest.png"
+            iconAlt="Pinterest"
+            label="Pinterest"
+            inputProps={{}}
+            textStyle={TextStyle}
+          />
+        </FormControl>
+        <FormControl>
+          <LabeledInputWithIcon
+            iconSrc="../twitter.png"
+            iconAlt="X"
+            label="X"
+            inputProps={{}}
+            textStyle={TextStyle}
+          />
+        </FormControl>
+        <FormControl>
+          <LabeledInputWithIcon
+            iconSrc="../youtube.png"
+            iconAlt="Youtube"
+            label="Youtube"
+            inputProps={{}}
+            textStyle={TextStyle}
+          />
+        </FormControl>
+        <FormControl>
+          <LabeledInputWithIcon
+            iconSrc="../linkedin.png"
+            iconAlt="LinkedIn"
+            label="LinkedIn"
+            inputProps={{}}
+            textStyle={TextStyle}
+          />
+        </FormControl>
+        <FormControl>
+          <LabeledInputWithIcon
+            iconSrc="../tik-tok.png"
+            iconAlt="TikTok"
+            label="TikTok"
+            inputProps={{}}
+            textStyle={TextStyle}
+          />
+        </FormControl>
       </FormControl>
     </Flex>
   );
