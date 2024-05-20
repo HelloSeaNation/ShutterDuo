@@ -1,5 +1,6 @@
 import React from "react";
 import { Box, Image, Flex, Button, Text } from "@chakra-ui/react";
+import { Link } from 'react-router-dom'
 import Login from "../components/Login";
 import Register from "../components/Register";
 
@@ -85,7 +86,25 @@ const LandingPage = () => {
       >
         {showLogin && <Login />}
         {showRegister && <Register />}
+
+        <Link to="/search_photographer">
+          <Button
+          w="350px"
+          h="50px"
+          mt="50px"
+          ml="18px"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          backgroundColor="#008F20"
+          color="white"
+          _hover={{ bg: "#d6d6d6", color: "black" }}>
+            Browse Photographers
+          </Button>
+        </Link>
+      
       </Box>
+  
     </Box>
   );
 };
