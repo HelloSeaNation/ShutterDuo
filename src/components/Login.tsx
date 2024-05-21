@@ -5,9 +5,10 @@ import {
   FormControl,
   FormLabel,
   Input,
-  Link,
+  Link as ChakraLink,
   Button,
 } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
 
 const Login = () => {
   return (
@@ -39,9 +40,14 @@ const Login = () => {
             />
           </Flex>
         </FormControl>
-        <Link href="#" fontSize={"20px"} marginBottom={"20px"} color={"white"}>
+        <ChakraLink
+          href="#"
+          fontSize={"20px"}
+          marginBottom={"20px"}
+          color={"white"}
+        >
           Forgot your Password?
-        </Link>
+        </ChakraLink>
         <Button
           w={"18vh"}
           h={"5.5vh"}
@@ -49,6 +55,8 @@ const Login = () => {
           backgroundColor={"#008F20"}
           color={"White"}
           _hover={{ bg: "#d6d6d6", color: "black" }}
+          as={Link}
+          to="/dashboard"
         >
           Login
         </Button>

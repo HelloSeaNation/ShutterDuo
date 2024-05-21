@@ -11,8 +11,8 @@ function App() {
     <>
       <Router>
         <Routes>
-          {/* <Route path="/" element={<LandingPage />} /> */}
-          <Route path="/" element={<Dashboard />} />
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/profile_setting" element={<ProfileSetting />} />
           <Route path="/account_setting" element={<AccountSetting />} />
           <Route path="/search_photographer" element={<SearchBar />} />
