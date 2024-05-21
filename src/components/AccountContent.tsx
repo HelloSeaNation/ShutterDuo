@@ -42,7 +42,7 @@ const AccountContent = () => {
           Email Notification
         </Text>
         <Divider />
-        <
+        
       </FormControl>
       <Flex justifyContent={"flex-end"} marginTop={"5rem"} paddingBottom={"5rem"}>
         <Button
