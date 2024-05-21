@@ -73,7 +73,7 @@ const TopBar = () => {
                   </MenuItem>
                   <MenuDivider />
                   <MenuItem>Profile</MenuItem>
-                  <MenuItem>Account</MenuItem>
+                  <MenuItem as={Link} to="/account_setting">Account</MenuItem>
                   <MenuItem>Logout</MenuItem>
                 </MenuList>
               </Menu>

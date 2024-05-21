@@ -1,8 +1,8 @@
 import React from "react";
 import { Box, Flex, Text, Divider } from "@chakra-ui/react";
-import ProfileSettingContent from "./ProfileSettingContent";
+import AccountContent from "./AccountContent";
 
-const SettingTitleBar = () => {
+const AccountTitleBar = () => {
   return (
     <Box w={"90%"} h={"100vh"} bgColor={"#FFFFFF"}>
       <Flex
@@ -13,12 +13,12 @@ const SettingTitleBar = () => {
         marginBottom={"20px"}
       >
         <Text fontSize={"35px"} color={"#626262"}>
-          Profile
+          Account
         </Text>
       </Flex>
       <Divider w={"70%"} m={"auto"} />
-      <ProfileSettingContent />
+      <AccountContent />
     </Box>
   );
 };
-export default SettingTitleBar;
+export default AccountTitleBar;

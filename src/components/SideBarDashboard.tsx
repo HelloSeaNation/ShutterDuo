@@ -5,7 +5,7 @@ const SideBarDashboard = () => {
     return (
         <Box>
         <Box bgColor={"#FAFAFA"} h={"100vh"}>
-            <Flex direction={"column"} w={"25vh"}>
+            <Flex direction={"column"} w={"20rem"}>
             <Box marginTop={"30px"}>
                 <Button
                 variant="ghost"
