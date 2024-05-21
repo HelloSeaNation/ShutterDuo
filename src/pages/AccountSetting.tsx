@@ -1,21 +1,21 @@
 import React from "react";
 import { Box, Flex } from "@chakra-ui/react";
-import SettingTitleBar from "../components/SettingTitleBar";
+import AccountTitleBar from "../components/AccountTitleBar";
 import TopBar from "../components/TopBar";
 import SideBar from "../components/SideBarSetting";
 
-const Dashboard = () => {
+const AccountSetting = () => {
   return (
     <Box>
       <Flex direction={"column"}>
         <TopBar />
         <Flex direction={"row"} justifyContent={"none"}>
           <SideBar />
-          <SettingTitleBar />
+          <AccountTitleBar />
         </Flex>
       </Flex>
     </Box>
   );
 };
 
-export default Dashboard;
+export default AccountSetting;
