@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Flex,
   FormControl,
@@ -8,10 +8,10 @@ import {
   Text,
   Button,
   Divider,
+  Icon,
 } from "@chakra-ui/react";
-// import StyledFormLabel from './StyledFormLabel'; // Adjust the import path as needed
-import LabeledInputWithIcon from "./LabeledInputWithIcon"; // Adjust the import path as needed
-import { color } from "framer-motion";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faToggleOff, faToggleOn } from "@fortawesome/free-solid-svg-icons";
 
 const TextStyle = {
   fontSize: "20px",
@@ -21,6 +21,17 @@ const TextStyle = {
 };
 
 const AccountContent = () => {
+  const [isToggledOnFirst, setIsToggledOnFirst] = useState(false);
+  const [isToggledOnSecond, setIsToggledOnSecond] = useState(false);
+
+  const handleToggleFirst = () => {
+    setIsToggledOnFirst((prevState) => !prevState);
+  };
+
+  const handleToggleSecond = () => {
+    setIsToggledOnSecond((prevState) => !prevState);
+  };
+
   return (
     <Flex w={"60%"} margin={"auto"} h={"100vh"} direction={"column"}>
       <FormControl>
@@ -38,13 +49,44 @@ const AccountContent = () => {
           color={"black"}
           fontWeight={"bold"}
           marginTop={"50px"}
+          marginBottom={"20px"}
         >
           Email Notification
         </Text>
-        <Divider />
-        
+        <Divider marginBottom={"20px"} />
+        <Text marginBottom={"20px"} color={"#939393"}>
+          Send me an email when
+        </Text>
+        <Flex direction={"column"}>
+          <Flex direction={"row"} justifyContent={"space-between"}>
+            <Text fontSize={"20px"} color={"black"} marginBottom={"20px"}>
+              Someone download a Gallery
+            </Text>
+            <FontAwesomeIcon
+              icon={isToggledOnFirst ? faToggleOn : faToggleOff}
+              fontSize={"25px"}
+              onClick={handleToggleFirst}
+              style={{ cursor: "pointer" }}
+            />
+          </Flex>
+          <Flex direction={"row"} justifyContent={"space-between"}>
+            <Text fontSize={"20px"} color={"black"} marginBottom={"20px"}>
+              Someone open a Gallery
+            </Text>
+            <FontAwesomeIcon
+              icon={isToggledOnSecond ? faToggleOn : faToggleOff}
+              fontSize={"25px"}
+              onClick={handleToggleSecond}
+              style={{ cursor: "pointer" }}
+            />
+          </Flex>
+        </Flex>
       </FormControl>
-      <Flex justifyContent={"flex-end"} marginTop={"5rem"} paddingBottom={"5rem"}>
+      <Flex
+        justifyContent={"flex-end"}
+        marginTop={"5rem"}
+        paddingBottom={"5rem"}
+      >
         <Button
           w={"165px"}
           h={"50px"}
@@ -60,7 +102,7 @@ const AccountContent = () => {
           w={"165px"}
           h={"50px"}
           fontSize={"18px"}
-          _hover={{ color: "#4267cf", bgColor: "#F5F3F3"}}
+          _hover={{ color: "#4267cf", bgColor: "#F5F3F3" }}
         >
           Save Account
         </Button>
