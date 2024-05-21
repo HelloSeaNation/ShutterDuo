@@ -4,14 +4,18 @@ import TopBar from '../components/TopBar';
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 
+//defining props interface for the rotating placeholder component
 interface RotatingPlaceholderInputProps {
     placeholders: string[];
     interval: number;
   }
   
+  //Rotating placeholder component
   const RotatingPlaceholderInput: React.FC<RotatingPlaceholderInputProps> = ({ placeholders, interval }) => {
+    //state to track the current placeholder index
     const [currentPlaceholderIndex, setCurrentPlaceholderIndex] = useState(0);
   
+    //handle the rotation logic
     useEffect(() => {
       const placeholderRotation = setInterval(() => {
         setCurrentPlaceholderIndex((prevIndex) => (prevIndex + 1) % placeholders.length);
@@ -39,6 +43,7 @@ interface RotatingPlaceholderInputProps {
 
 const SearchBar = () => {
 
+    //List of search suggestions to rotate through the search bar
     const placeholders = [
         "Wedding",
         "Birthday",
