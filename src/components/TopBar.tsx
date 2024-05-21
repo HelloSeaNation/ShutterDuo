@@ -22,7 +22,7 @@ const TopBar = () => {
           margin={"auto"}
         >
           <Box>
-            <Link to="/">
+            <Link to="/dashboard">
               <Image
                 src="./title.png"
                 alt="shuttleduo"
