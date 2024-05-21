@@ -7,10 +7,10 @@ const SearchBar = () => {
         <Box>
             <TopBar />
 
-            
+
         </Box>
     )
 }
 
-export default SearchBar();
+export default SearchBar;
 
