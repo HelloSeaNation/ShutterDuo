@@ -6,10 +6,11 @@ import {
   Input,
   Textarea,
   Text,
-  Image,
+  Button,
 } from "@chakra-ui/react";
 // import StyledFormLabel from './StyledFormLabel'; // Adjust the import path as needed
 import LabeledInputWithIcon from "./LabeledInputWithIcon"; // Adjust the import path as needed
+import { color } from "framer-motion";
 
 const TextStyle = {
   fontSize: "20px",
@@ -20,7 +21,7 @@ const TextStyle = {
 
 const ProfileSettingContent = () => {
   return (
-    <Flex w={"50%"} margin={"auto"} h={"100vh"} direction={"column"}>
+    <Flex w={"60%"} margin={"auto"} h={"100vh"} direction={"column"}>
       <FormControl>
         <FormLabel style={TextStyle}>Profile Image</FormLabel>
         <FormLabel style={TextStyle}>Business Name</FormLabel>
@@ -113,6 +114,27 @@ const ProfileSettingContent = () => {
           />
         </FormControl>
       </FormControl>
+      <Flex justifyContent={"flex-end"} marginTop={"5rem"} paddingBottom={"5rem"}>
+        <Button
+          w={"165px"}
+          h={"50px"}
+          bgColor={"transparent"}
+          fontSize={"18px"}
+          marginRight={"10px"}
+        >
+          Cancel
+        </Button>
+        <Button
+          bgColor={"#4267cf"}
+          color={"white"}
+          w={"165px"}
+          h={"50px"}
+          fontSize={"18px"}
+          _hover={{ color: "#4267cf", bgColor: "#F5F3F3"}}
+        >
+          Save Profile
+        </Button>
+      </Flex>
     </Flex>
   );
 };
