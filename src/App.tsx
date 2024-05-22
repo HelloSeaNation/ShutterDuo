@@ -5,6 +5,7 @@ import Dashboard from "./pages/Dashboard";
 import SearchBar from "./pages/SearchBar";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import AccountSetting from "./pages/AccountSetting";
+import HighlightSetting from "./pages/HighlightSetting";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/profile_setting" element={<ProfileSetting />} />
           <Route path="/account_setting" element={<AccountSetting />} />
+          <Route path="/highlight_setting" element={<HighlightSetting />} />
           <Route path="/search_photographer" element={<SearchBar />} />
         </Routes>
       </Router>
