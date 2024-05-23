@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react'
-import {Box, Text, Input} from '@chakra-ui/react'
+import {Box, Text, Input, InputGroup, InputLeftElement} from '@chakra-ui/react'
 import TopBar from '../components/TopBar';
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { Search2Icon } from '@chakra-ui/icons'
 
 //defining props interface for the rotating placeholder component
 interface RotatingPlaceholderInputProps {
@@ -25,21 +24,22 @@ interface RotatingPlaceholderInputProps {
     }, [placeholders, interval]);
   
     return (
-        <>
-        {/* <FontAwesomeIcon icon={faMagnifyingGlass} style={{ color: "#3170dd" }} /> */}
-      <Input
-        borderRadius={15}
-        borderColor="#D4D4D4"
-        height="45px"
-        placeholder={placeholders[currentPlaceholderIndex]}
-        transition="placeholder 3s ease-in-out"
-      />
-
-      </>
+<InputGroup>
+            <InputLeftElement
+                pointerEvents="none"
+                children={<Search2Icon color="#4267CF" w={6} h={6} mt="2px"/>}
+            />
+            <Input
+                borderRadius={15}
+                borderColor="#D4D4D4"
+                height="45px"
+                placeholder={placeholders[currentPlaceholderIndex]}
+                transition="placeholder 3s ease-in-out"
+            />
+        </InputGroup>
       
     );
   };
-
 
 const SearchBar = () => {
 
@@ -67,13 +67,15 @@ const SearchBar = () => {
                     <Text
                     display='flex' 
                     justifyContent='center'
-                    fontSize={"30px"}
+                    fontSize={"35px"}
+                    fontWeight="bold"
+                    color="#4267CF"
                     >Search for a photographer</Text>
 
                     <Box
                     w="650px"
                     mt="15px">
-                        <RotatingPlaceholderInput placeholders={placeholders} interval={10000} />
+                        <RotatingPlaceholderInput placeholders={placeholders} interval={5000} />
                     </Box>
                 </Box>
 
