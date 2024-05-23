@@ -15,7 +15,7 @@ const DashboardContent = () => {
         marginTop={"2rem"}
       >
         <Flex alignItems={"center"} padding={"1rem"}>
-          <FontAwesomeIcon icon={faImage} size="4x" width={"30%"} />
+          <FontAwesomeIcon icon={faImage} size="4x" width={"30%"} color={"#4267cf"}/>
           <Flex direction={"column"}>
             <Text fontSize={"18px"}>
               {"{client full name} "} is access the {" {gallery name} "}
