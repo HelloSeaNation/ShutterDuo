@@ -46,6 +46,8 @@ const SideBar = () => {
               fontSize={"20px"}
               justifyContent={"flex-start"}
               paddingLeft={"10%"}
+              as={Link}
+              to="/highlight_setting"
             >
               Highlight
             </Button>
