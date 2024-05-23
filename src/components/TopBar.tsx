@@ -34,14 +34,17 @@ const TopBar = () => {
           <Box>
             {/* insert alert icon and profile image */}
             <Flex direction={"row"}>
-              <Image
-                src="../notification.png"
-                alt="alert"
-                w={"35px"}
-                h={"35px"}
-                marginTop={"12px"}
-                marginRight={"20px"}
-              />
+              <Box as={Link} to="/notification_page">
+                <Image
+                  src="../notification.png"
+                  alt="alert"
+                  w={"35px"}
+                  h={"35px"}
+                  marginTop={"12px"}
+                  marginRight={"20px"}
+                />
+              </Box>
+
               <Menu>
                 <MenuButton>
                   <Image
@@ -73,7 +76,9 @@ const TopBar = () => {
                   </MenuItem>
                   <MenuDivider />
                   <MenuItem>Profile</MenuItem>
-                  <MenuItem as={Link} to="/account_setting">Account</MenuItem>
+                  <MenuItem as={Link} to="/account_setting">
+                    Account
+                  </MenuItem>
                   <MenuItem>Logout</MenuItem>
                 </MenuList>
               </Menu>

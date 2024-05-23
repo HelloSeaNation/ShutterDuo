@@ -16,20 +16,22 @@ const DashboardTitleBar = () => {
         <Text fontSize={"35px"} color={"#626262"}>
           Dashboard
         </Text>
-        <Button
-          bgColor={"#4267CF"}
-          h={"50px"}
-          w={"200px"}
-          justifyContent={"space-around"}
-        >
-          <AddIcon color={"white"} />
-          <Text fontSize={"18px"} color={"white"}>
-            Upload Gallery
-          </Text>
-        </Button>
+        <Box>
+          <Button
+            bgColor={"#4267CF"}
+            h={"50px"}
+            w={"200px"}
+            justifyContent={"space-around"}
+          >
+            <AddIcon color={"white"} />
+            <Text fontSize={"18px"} color={"white"}>
+              Upload Gallery
+            </Text>
+          </Button>
+        </Box>
       </Flex>
       <Divider w={"92%"} m={"auto"} />
-      <DashboardContent/>
+      <DashboardContent />
     </Box>
   );
 };
