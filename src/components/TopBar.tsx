@@ -9,9 +9,10 @@ import {
   MenuItem,
   MenuDivider,
 } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const TopBar = () => {
+  const location = useLocation();
   return (
     <Box>
       <Box bgColor={"#F5F3F3"} h={"60px"}>
