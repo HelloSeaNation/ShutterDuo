@@ -8,26 +8,25 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
 app.use(cors())
 
-app.get("/", cors(), ( req, res ) =>{
+app.get("/", (req, res) => {
+  res.send("API is running");
+});
 
-})
+app.post("/checkEmail", async (req, res) => {
+  const { email } = req.body;
 
-app.post("/", async( req, res ) =>{
-  const{email, password}=req.body
-
-  try{
-    const check = await collection.findOne({email:email})
-    if(check){
-      res.json("Email already exists")
+  try {
+    const check = await collection.findOne({ email: email });
+    if (check) {
+      res.json("Email already exists");
+    } else {
+      res.json("Email okay");
     }
-    else{
-      res.json("Email okay")
-    }
-
-  }catch(e){
-    res.json("Email okay")
+  } catch (e) {
+    res.status(500).json("An error occurred while checking the email");
   }
-})
+});
+
 
 app.post("/", async( req, res ) =>{ //signup
   const{firstName, surname, email, password}=req.body
@@ -39,26 +38,19 @@ app.post("/", async( req, res ) =>{ //signup
     password:password
   }
 
-  try{
-    const check = await collection.findOne({email:email})
-    if(check){
-      res.json("Email already exists")
+  try {
+    const check = await collection.findOne({ email: email });
+    if (check) {
+      res.json("Email already exists");
+    } else {
+      await collection.insertMany([data]);
+      res.json("Signup successful");
     }
-    else{
-      res.json("Email okay")
-      await collection.insertMany([data])
-    }
-
-  }catch(e){
-    res.json("Email okay")
+  } catch (e) {
+    res.status(500).json("An error occurred while signing up");
   }
-})
-
-
-// app.get('/', (req, res) =>{
-//   res.send("API is running")
-// })
+});
 
 app.listen(5000, () => {
-    console.log("Server is running on port 5000");
-  });
+  console.log("Server is running on port 5000");
+});
