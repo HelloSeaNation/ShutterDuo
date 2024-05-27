@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import {
   Box,
   Flex,
@@ -8,9 +8,37 @@ import {
   Link as ChakraLink,
   Button,
 } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from 'axios'
 
 const Login = () => {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const history = useNavigate();
+  // const history = useHistory()
+
+  async function submit(e: React.FormEvent<HTMLFormElement>){
+    e.preventDefault();
+
+    try{
+      await axios.post("http://localhost:8000/", { //exporting email and password to use in backend
+        email, password
+      }).then(res =>{
+        if(res.data="Email already exists"){
+        }
+        else if(res.data="Email okay"){
+          alert("User has not signed up")
+        }
+      }).catch(e => {
+        alert("Wrong details entered")
+        console.log(e)
+      })
+
+    }catch(e){
+      console.log(e)
+    }
+  }
+
   return (
     <Box>
       <Flex direction={"column"}>
@@ -29,6 +57,7 @@ const Login = () => {
               marginBottom={"20px"}
               marginTop={"20px"}
               onChange={(e) => {setEmail(e.target.value)}}
+              value={email}
             />
             <Input
               fontSize="20px"
@@ -39,6 +68,7 @@ const Login = () => {
               backgroundColor={"white"}
               marginBottom={"20px"}
               onChange={(e) => {setPassword(e.target.value)}}
+              value={password}
             />
           </Flex>
         </FormControl>
@@ -57,8 +87,9 @@ const Login = () => {
           backgroundColor={"#008F20"}
           color={"White"}
           _hover={{ bg: "#d6d6d6", color: "black" }}
-          as={Link}
-          to="/dashboard"
+          // as={Link}
+          // to="/dashboard"
+          type="submit"
         >
           Login
         </Button>
