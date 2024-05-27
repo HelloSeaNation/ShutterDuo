@@ -28,6 +28,7 @@ const Login = () => {
               backgroundColor={"white"}
               marginBottom={"20px"}
               marginTop={"20px"}
+              onChange={(e) => {setEmail(e.target.value)}}
             />
             <Input
               fontSize="20px"
@@ -37,6 +38,7 @@ const Login = () => {
               h={"4vh"}
               backgroundColor={"white"}
               marginBottom={"20px"}
+              onChange={(e) => {setPassword(e.target.value)}}
             />
           </Flex>
         </FormControl>
