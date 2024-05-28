@@ -10,6 +10,7 @@ import {
   Link,
 } from "@chakra-ui/react";
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 
 const Register = () => {
   const handleLoginLinkClick = () => {
@@ -20,6 +21,7 @@ const Register = () => {
   const [password, setPassword] = useState('')
   const [firstName, setFirstName] = useState('')
   const [surname, setSurname] = useState('')
+  const navigate = useNavigate()
   // const history = useHistory()
 
   async function submit(e: React.FormEvent<HTMLFormElement>) {
@@ -35,7 +37,9 @@ const Register = () => {
 
       if (response.data === "Email already exists") {
         alert("User already exists");
+        //Handle user already registered
       } else if (response.data === "Signup successful") {
+        navigate('/dashboard');
         // Handle successful registration
       }
     } catch (error) {
