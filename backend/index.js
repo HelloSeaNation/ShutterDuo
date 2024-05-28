@@ -29,7 +29,8 @@ app.post("/checkEmail", async (req, res) => {
 
 
 app.post("/", async( req, res ) =>{ //signup
-  const{firstName, surname, email, password}=req.body
+  const{firstName, surname, email, password}=req.body;
+  console.log(`Received data: ${firstName}, ${surname}, ${email}`);
 
   const data = {
     firstName: firstName,
