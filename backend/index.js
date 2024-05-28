@@ -52,6 +52,23 @@ app.post("/", async( req, res ) =>{ //signup
   }
 });
 
+//login endpoint
+app.post("/", async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const check = await collection.findOne({ email:email, password:password })
+    if (check){
+      res.json("Login Successful");
+    } else {
+      res.json("Invalid Email and Password");
+    }
+  }catch (e){
+    console.error("An error occurred during login:", e);
+    res.status(500).json("An error occured during a login");
+  }
+})
+
 app.listen(5000, () => {
   console.log("Server is running on port 5000");
 });
