@@ -21,7 +21,7 @@ const Login = () => {
     e.preventDefault();
 
     try{
-      await axios.post("http://localhost:8000/", { //exporting email and password to use in backend
+      await axios.post("http://localhost:5000/", { //exporting email and password to use in backend
         email, password
       }).then(res =>{
         if(res.data="Email already exists"){
