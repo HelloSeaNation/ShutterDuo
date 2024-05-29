@@ -1,9 +1,34 @@
-import React from "react";
-import { Box, Flex, Text, Button, Divider } from "@chakra-ui/react";
+import React, { useState } from "react";
+import { Box, Flex, Text, Button, Divider, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Input } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 import DashboardContent from "./DashboardContent";
 
 const DashboardTitleBar = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+
+  const handleOpen = () => setIsOpen(true);
+  const handleClose = () => setIsOpen(false);
+
+  const handleSubmit = async () => {
+    const response = await fetch("http://localhost:5000/createGallery", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ title, description }),
+    });
+  
+    const result = await response.json();
+    if (response.ok) {
+      alert(result.message);
+      handleClose();
+    } else {
+      alert(result.message);
+    }
+  };
+
   return (
     <Box w={"90%"} h={"100vh"} bgColor={"#FFFFFF"}>
       <Flex
@@ -22,6 +47,7 @@ const DashboardTitleBar = () => {
             h={"50px"}
             w={"200px"}
             justifyContent={"space-around"}
+            onClick={handleOpen}
           >
             <AddIcon color={"white"} />
             <Text fontSize={"18px"} color={"white"}>
@@ -32,7 +58,37 @@ const DashboardTitleBar = () => {
       </Flex>
       <Divider w={"92%"} m={"auto"} />
       <DashboardContent />
+
+      <Modal isOpen={isOpen} onClose={handleClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Create New Gallery</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Input
+              placeholder="Title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              mb={4}
+            />
+            <Input
+              placeholder="Description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="blue" mr={3} onClick={handleSubmit}>
+              Submit
+            </Button>
+            <Button variant="ghost" onClick={handleClose}>
+              Cancel
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Box>
   );
 };
+
 export default DashboardTitleBar;
