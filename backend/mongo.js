@@ -28,9 +28,21 @@ const newSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true
-  }
+  },
+  bio: {
+    type: String,
+  },
+  location: {
+    type: String,
+  },
+  job: {
+    type: String,
+  },
+  phone: {
+    type: String,
+  },
 });
 
-const collection = mongoose.model("collection", newSchema);
+const collection = mongoose.model("Users", newSchema);
 
 module.exports = collection;
