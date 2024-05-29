@@ -22,7 +22,6 @@ const Register = () => {
   const [firstName, setFirstName] = useState('')
   const [surname, setSurname] = useState('')
   const navigate = useNavigate()
-  // const history = useHistory()
 
   async function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
