@@ -1,15 +1,22 @@
 import React, { useState } from "react";
-import { Box, Flex, Text, Button, Divider, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Input } from "@chakra-ui/react";
+import {
+  Box, Flex, Text, Button, Divider, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Input,
+} from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 import DashboardContent from "./DashboardContent";
 
-const DashboardTitleBar = () => {
+const DashboardTitleBar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [fetchFlag, setFetchFlag] = useState(false);
 
   const handleOpen = () => setIsOpen(true);
   const handleClose = () => setIsOpen(false);
+
+  const fetchGalleries = async () => {
+    setFetchFlag(prev => !prev);
+  };
 
   const handleSubmit = async () => {
     const response = await fetch("http://localhost:5000/createGallery", {
@@ -19,11 +26,12 @@ const DashboardTitleBar = () => {
       },
       body: JSON.stringify({ title, description }),
     });
-  
+
     const result = await response.json();
     if (response.ok) {
       alert(result.message);
       handleClose();
+      fetchGalleries(); // Refresh the gallery list after creating a new gallery
     } else {
       alert(result.message);
     }
@@ -57,7 +65,7 @@ const DashboardTitleBar = () => {
         </Box>
       </Flex>
       <Divider w={"92%"} m={"auto"} />
-      <DashboardContent />
+      <DashboardContent fetchGalleries={fetchGalleries} />
 
       <Modal isOpen={isOpen} onClose={handleClose}>
         <ModalOverlay />

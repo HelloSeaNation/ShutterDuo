@@ -92,6 +92,16 @@ app.post("/createGallery", async (req, res) => {
   }
 });
 
+app.get("/galleries", async (req, res) => {
+  try {
+    const galleries = await Gallery.find();
+    res.json(galleries);
+  } catch (e) {
+    console.error("An error occurred while fetching the galleries:", e);
+    res.status(500).json({ message: "An error occurred while fetching the galleries" });
+  }
+});
+
 app.listen(5000, () => {
   console.log("Server is running on port 5000");
 });
