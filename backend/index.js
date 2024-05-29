@@ -1,12 +1,12 @@
-const express = require('express');
-const collection = require('./mongo');
-const cors = require('cors');
-
+const express = require("express");
+const collection = require("./mongo");
+const cors = require("cors");
+const Gallery = require("./models/gallery"); //Gallery model
 const app = express();
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }))
-app.use(cors())
+app.use(express.urlencoded({ extended: true }));
+app.use(cors());
 
 app.get("/", (req, res) => {
   res.send("API is running");
@@ -27,17 +27,17 @@ app.post("/checkEmail", async (req, res) => {
   }
 });
 
-
-app.post("/", async( req, res ) =>{ //signup
-  const{firstName, surname, email, password}=req.body;
+app.post("/", async (req, res) => {
+  //signup
+  const { firstName, surname, email, password } = req.body;
   console.log(`Received data: ${firstName}, ${surname}, ${email}`);
 
   const data = {
     firstName: firstName,
     surname: surname,
-    email:email,
-    password:password
-  }
+    email: email,
+    password: password,
+  };
 
   try {
     const check = await collection.findOne({ email: email });
@@ -57,17 +57,40 @@ app.post("/", async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const check = await collection.findOne({ email:email, password:password })
-    if (check){
+    const check = await collection.findOne({
+      email: email,
+      password: password,
+    });
+    if (check) {
       res.json("Login Successful");
     } else {
       res.json("Invalid Email and Password");
     }
-  }catch (e){
+  } catch (e) {
     console.error("An error occurred during login:", e);
     res.status(500).json("An error occured during a login");
   }
-})
+});
+
+//Create Gallery endpoint
+app.post("/createGallery", async (req, res) => {
+  const { title, description } = req.body;
+
+  const galleryData = {
+    title,
+    description,
+  };
+
+  try {
+    await Gallery.insertMany([galleryData]);
+    res.json({ message: "Gallery created successfully" });
+  } catch (e) {
+    console.error("An error occurred while creating the gallery:", e);
+    res
+      .status(500)
+      .json({ message: "An error occurred while creating the gallery" });
+  }
+});
 
 app.listen(5000, () => {
   console.log("Server is running on port 5000");
