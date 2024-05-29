@@ -1,15 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box, Flex, Text, Button, Divider, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Input,
 } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 import DashboardContent from "./DashboardContent";
+import axios from 'axios'
+
+interface User { //user props to define the user data on the dashboard
+  firstName: string;
+  email: string;
+
+}
 
 const DashboardTitleBar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [fetchFlag, setFetchFlag] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
 
   const handleOpen = () => setIsOpen(true);
   const handleClose = () => setIsOpen(false);
@@ -37,6 +45,25 @@ const DashboardTitleBar: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const storedUser = localStorage.getItem('user');
+      if (storedUser) {
+        const parsedUser = JSON.parse(storedUser);
+        if (parsedUser && parsedUser.email) {
+          try {
+            const response = await axios.get(`http://localhost:5000/user/${parsedUser.email}`);
+            setUser(response.data);
+          } catch (error) {
+            console.error("Error fetching user data:", error);
+          }
+        }
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
   return (
     <Box w={"90%"} h={"100vh"} bgColor={"#FFFFFF"}>
       <Flex
@@ -47,7 +74,7 @@ const DashboardTitleBar: React.FC = () => {
         marginBottom={"20px"}
       >
         <Text fontSize={"35px"} color={"#626262"}>
-          Dashboard
+        {user ? `${user.firstName}'s Dashboard` : 'Users'}
         </Text>
         <Box>
           <Button

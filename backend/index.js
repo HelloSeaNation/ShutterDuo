@@ -27,8 +27,8 @@ app.post("/checkEmail", async (req, res) => {
   }
 });
 
-app.post("/", async (req, res) => {
-  //signup
+ //register
+app.post("/register", async (req, res) => {
   const { firstName, surname, email, password } = req.body;
   console.log(`Received data: ${firstName}, ${surname}, ${email}`);
 
@@ -40,8 +40,8 @@ app.post("/", async (req, res) => {
   };
 
   try {
-    const check = await collection.findOne({ email: email });
-    if (check) {
+    const user = await collection.findOne({ email: email });
+    if (user) {
       res.json("Email already exists");
     } else {
       await collection.insertMany([data]);
@@ -53,22 +53,37 @@ app.post("/", async (req, res) => {
 });
 
 //login endpoint
-app.post("/", async (req, res) => {
+app.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const check = await collection.findOne({
+    const user = await collection.findOne({
       email: email,
       password: password,
     });
-    if (check) {
-      res.json("Login Successful");
+    if (user) {
+      res.json({ message: "Login Successful", user: user });
     } else {
       res.json("Invalid Email and Password");
     }
   } catch (e) {
     console.error("An error occurred during login:", e);
     res.status(500).json("An error occured during a login");
+  }
+});
+
+app.get("/user/:email", async (req, res) => {
+  const { email } = req.params;
+
+  try {
+    const user = await collection.findOne({ email });
+    if (user) {
+      res.json(user);
+    } else {
+      res.status(404).json("User not found");
+    }
+  } catch (e) {
+    res.status(500).json("An error occurred while fetching user data");
   }
 });
 

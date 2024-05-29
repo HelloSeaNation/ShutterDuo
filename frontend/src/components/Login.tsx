@@ -15,33 +15,33 @@ const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const navigate = useNavigate();
-  // const history = useHistory()
 
-  async function submit(e: React.FormEvent<HTMLFormElement>){
+  async function handleLogin(e: React.FormEvent<HTMLFormElement>){
     e.preventDefault();
 
     try {
-      const res = await axios.post("http://localhost:5000", {
+      const response = await axios.post("http://localhost:5000/login", {
         email,
         password
       });
 
-      if (res.data === "Invalid email or password") {
-        alert("Invalid email or password");
+      if (response.data.message === "Login Successful") {
+        const user = response.data.user;
+        localStorage.setItem('user', JSON.stringify(user));
+        navigate('/dashboard');
       } else {
-        alert("Login Successful");
-        navigate('/dashboard'); // Navigate to dashboard after successful login
+        alert("Invalid Email or Password");
       }
-    } catch (e) {
-      alert("An error occurred during login");
-      console.log(e);
+    } catch (error) {
+      alert("Error during login");
+      console.error(error);
     }
   }
 
   return (
     <Box>
       <Flex direction={"column"}>
-        <form onSubmit={submit}>
+        <form onSubmit={handleLogin}>
           <FormControl>
             <FormLabel fontSize={"30px"} color={"white"}>
               Welcome
