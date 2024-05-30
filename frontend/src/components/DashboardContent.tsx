@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Flex, Box, Text } from "@chakra-ui/react";
+import { Flex, Box, Text, Card, CardBody } from "@chakra-ui/react";
 
 interface Gallery {
   _id: string;
@@ -11,7 +11,9 @@ interface DashboardContentProps {
   fetchGalleries: () => Promise<void>;
 }
 
-const DashboardContent: React.FC<DashboardContentProps> = ({ fetchGalleries }) => {
+const DashboardContent: React.FC<DashboardContentProps> = ({
+  fetchGalleries,
+}) => {
   const [galleries, setGalleries] = useState<Gallery[]>([]);
 
   const fetchGalleriesData = async () => {
@@ -56,12 +58,23 @@ const DashboardContent: React.FC<DashboardContentProps> = ({ fetchGalleries }) =
         "LATEST GALLERIES",
         <Box overflowY="auto">
           {galleries.map((gallery) => (
-            <Box key={gallery._id} mb={4}>
-              <Text fontSize="lg" fontWeight="bold">
-                {gallery.title}
-              </Text>
-              <Text>{gallery.description}</Text>
-            </Box>
+            <Card>
+              <CardBody
+                key={gallery._id}
+                mb={4}
+                border={"1px solid #D4D4D4"}
+                w={"95%"}
+                boxShadow={"md"}
+                borderRadius={"10"}
+                bgColor={"#F8F8F8"}
+                // color={"#F8F8F8"}
+              >
+                <Text fontSize="lg" fontWeight="bold">
+                  {gallery.title}
+                </Text>
+                <Text>{gallery.description}</Text>
+              </CardBody>
+            </Card>
           ))}
         </Box>
       )}
