@@ -27,7 +27,7 @@ const Register = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post("http://localhost:5000", {
+      const response = await axios.post("http://localhost:5000/register", {
         email,
         password,
         firstName,
@@ -38,6 +38,8 @@ const Register = () => {
         alert("User already exists");
         //Handle user already registered
       } else if (response.data === "Signup successful") {
+        const user = { email, firstName }; // Create user object
+        localStorage.setItem('user', JSON.stringify(user));
         navigate('/dashboard');
         // Handle successful registration
       }
