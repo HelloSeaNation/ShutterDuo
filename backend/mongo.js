@@ -29,6 +29,9 @@ const newSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  business: {
+    type: String,
+  },
   bio: {
     type: String,
   },
@@ -39,6 +42,27 @@ const newSchema = new mongoose.Schema({
     type: String,
   },
   phone: {
+    type: String,
+  },
+  facebook: {
+    type: String,
+  },
+  insta: {
+    type: String,
+  },
+  pinterest: {
+    type: String,
+  },
+  twitter: {
+    type: String,
+  },
+  youtube: {
+    type: String,
+  },
+  linkedin: {
+    type: String,
+  },
+  tiktok: {
     type: String,
   },
 });

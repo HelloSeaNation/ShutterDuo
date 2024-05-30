@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Flex,
   FormControl,
@@ -20,27 +20,93 @@ const TextStyle = {
   marginTop: "20px",
 };
 
+interface User { //props for profile setup and editing
+  firstName: string;
+  surname: string;
+  email: string;
+  business: string;
+  bio?: string;
+  location?: string;
+  job?: string;
+  phone?: string;
+  // facebook?: string;
+  // insta?: string;
+  // pinterest?: string;
+  // twitter?: string;
+  // youtube?: string;
+  // linkedin?: string;
+  // tiktok?: string;
+}
+
 const ProfileSettingContent = () => {
+
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const storedUser = localStorage.getItem('user');
+      if (storedUser) {
+        const parsedUser = JSON.parse(storedUser);
+        if (parsedUser && parsedUser.email) {
+          try {
+            const response = await axios.get(`http://localhost:5000/user/${parsedUser.email}`);
+            setUser(response.data);
+          } catch (error) {
+            console.error("Error fetching user data:", error);
+          }
+        }
+      }
+    };
+  
+    fetchUserData();
+  }, []);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setUser(prevState => prevState ? { ...prevState, [name]: value } : null);
+  };
+
+  const handleSaveProfile = async () => {
+    if (user) {
+      try {
+        await axios.put(`http://localhost:5000/user/${user.email}`, user);
+        alert("Profile updated successfully");
+      } catch (error) {
+        console.error("Error updating profile:", error);
+        alert("An error occurred while updating the profile");
+      }
+    }
+  };
+
   return (
     <Flex w={"60%"} margin={"auto"} h={"100vh"} direction={"column"}>
       <FormControl>
         <FormLabel style={TextStyle}>Profile Image</FormLabel>
+
         <FormLabel style={TextStyle}>Business Name</FormLabel>
-        <Input />
+        <Input name="business" value={user?.business || ''} onChange={handleInputChange}/>
+
         <FormLabel style={TextStyle}>Type of Job</FormLabel>
-        <Input placeholder="Wedding, Food, Family" />
+        <Input name="job" value={user?.job || 'Wedding, Food, Family'} onChange={handleInputChange}/>
+
         <FormLabel style={TextStyle}>First Name</FormLabel>
-        <Input />
+        <Input name="firstName" value={user ? `${user.firstName}` : 'First Name'} onChange={handleInputChange}/>
+
         <FormLabel style={TextStyle}>Last Name</FormLabel>
-        <Input />
+        <Input name="surname"value={user ? `${user.surname}` : 'Last Name'} onChange={handleInputChange}/>
+
         <FormLabel style={TextStyle}>Email</FormLabel>
-        <Input type="Email" />
+        <Input name="email" type="Email" value={user ? `${user.email}` : 'email'}/>
+
         <FormLabel style={TextStyle}>Contact Number</FormLabel>
-        <Input type="Phone" />
+        <Input name="phone" type="Phone" value={user?.phone || ''} onChange={handleInputChange}/>
+
         <FormLabel style={TextStyle}>Location</FormLabel>
-        <Input placeholder={"Location of shooting"} />
+        <Input name="location" value={user?.location || ''} onChange={handleInputChange} />
+
         <FormLabel style={TextStyle}>Biography</FormLabel>
-        <Textarea h={"20vh"} />
+        <Textarea name="bio" h={"20vh"} onChange={handleInputChange}/>
+
       </FormControl>
       <FormControl>
         <Text
@@ -132,6 +198,7 @@ const ProfileSettingContent = () => {
           h={"50px"}
           fontSize={"18px"}
           _hover={{ color: "#4267cf", bgColor: "#F5F3F3"}}
+          onClick={handleSaveProfile}
         >
           Save Profile
         </Button>
