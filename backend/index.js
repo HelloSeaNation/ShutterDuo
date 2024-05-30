@@ -87,6 +87,23 @@ app.get("/user/:email", async (req, res) => {
   }
 });
 
+//update stored user data
+app.put("/user/:email", async (req, res) => {
+  const { email } = req.params;
+  const updateData = req.body;
+
+  try {
+    const user = await collection.findOneAndUpdate({ email }, updateData, { new: true });
+    if (user) {
+      res.json(user);
+    } else {
+      res.status(404).json("User not found");
+    }
+  } catch (e) {
+    res.status(500).json("An error occurred while updating user data");
+  }
+});
+
 //Create Gallery endpoint
 app.post("/createGallery", async (req, res) => {
   const { title, description } = req.body;
