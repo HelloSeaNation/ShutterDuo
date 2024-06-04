@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Flex, Button} from "@chakra-ui/react";
 
-const SideBarDashboard = () => { 
+const SideBarGallery = () => { 
     return (
         <Box>
         <Box bgColor={"#FAFAFA"} h={"100vh"}>
@@ -15,6 +15,9 @@ const SideBarDashboard = () => {
                 fontSize={"20px"}
                 justifyContent={"flex-start"}
                 paddingLeft={"10%"}
+                onClick={() => {
+                  window.location.href = "/dashboard";
+              }}
                 >
                 Dashboard
                 </Button>
@@ -54,4 +57,4 @@ const SideBarDashboard = () => {
     );
     };
 
-export default SideBarDashboard;
+export default SideBarGallery;

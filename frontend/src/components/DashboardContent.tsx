@@ -48,7 +48,8 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
 
   const getRandomImageUrl = () => {
     const randomId = Math.floor(Math.random() * 1000) + 1;
-    return `https://source.unsplash.com/random/300x200?sig=${randomId}`;
+    // return `https://source.unsplash.com/random/300x200?sig=${randomId}`;
+    return `https://picsum.photos/200/300?random=${randomId}`;
   };
 
   const handleCardClick = (galleryId: string) => {
