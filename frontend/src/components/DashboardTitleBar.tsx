@@ -100,7 +100,7 @@ const DashboardTitleBar: React.FC = () => {
           <ModalHeader>Create New Gallery</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Text>Gallery name</Text>
+            <Text fontWeight={"bold"}>Gallery name</Text>
             <Input
               placeholder="Title"
               value={title}

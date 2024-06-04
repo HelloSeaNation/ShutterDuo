@@ -51,6 +51,10 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
     return `https://source.unsplash.com/random/300x200?sig=${randomId}`;
   };
 
+  const handleCardClick = (galleryId: string) => {
+    window.open(`/gallery/${galleryId}`, "_blank");
+  };
+
   return (
     <Flex
       direction="row"
@@ -63,9 +67,8 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
         "LATEST GALLERIES",
         <Box overflowY="auto">
           {galleries.map((gallery) => (
-            <Card>
+            <Card key={gallery._id} onClick={() => handleCardClick(gallery._id)}>
               <CardBody
-                key={gallery._id}
                 mb={4}
                 border={"1px solid #D4D4D4"}
                 w={"95%"}
@@ -81,7 +84,7 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
                       width: "60px",
                       height: "50px",
                       marginRight: "10px",
-                    }} 
+                    }}
                   />
                   <Flex direction={"column"}>
                     <Text fontSize="15px" fontWeight="bold">
