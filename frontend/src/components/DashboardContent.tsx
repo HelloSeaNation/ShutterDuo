@@ -46,6 +46,11 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
     </Flex>
   );
 
+  const getRandomImageUrl = () => {
+    const randomId = Math.floor(Math.random() * 1000) + 1;
+    return `https://source.unsplash.com/random/300x200?sig=${randomId}`;
+  };
+
   return (
     <Flex
       direction="row"
@@ -69,20 +74,24 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
                 bgColor={"#F8F8F8"}
               >
                 <Flex direction={"row"} alignItems={"center"}>
-                <Image
-                  src={`https://via.placeholder.com/50`} // Placeholder image URL
-                  alt="Placeholder"
-                  style={{ width: "60px", marginRight:"10px" }} // Optional: Add styles
-                />
-                <Flex direction={"column"}>
-                <Text fontSize="15px" fontWeight="bold">
-                  {gallery.title}
-                </Text>
-                <Text fontSize="10px">{gallery.description}</Text>
+                  <Image
+                    src={getRandomImageUrl()}
+                    alt="Placeholder"
+                    style={{
+                      width: "60px",
+                      height: "50px",
+                      marginRight: "10px",
+                    }} 
+                  />
+                  <Flex direction={"column"}>
+                    <Text fontSize="15px" fontWeight="bold">
+                      {gallery.title}
+                    </Text>
+                    <Text fontSize="10px" color={"#9E9E9E"}>
+                      {gallery.description}
+                    </Text>
+                  </Flex>
                 </Flex>
-                </Flex>
-               
-               
               </CardBody>
             </Card>
           ))}
