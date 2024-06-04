@@ -52,7 +52,7 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
   };
 
   const handleCardClick = (galleryId: string) => {
-    window.open(`/gallery/${galleryId}`, "_blank");
+    window.location.href = `/gallery/${galleryId}`;
   };
 
   return (
