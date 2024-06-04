@@ -9,7 +9,6 @@ import axios from 'axios'
 interface User { //user props to define the user data on the dashboard
   firstName: string;
   email: string;
-
 }
 
 const DashboardTitleBar: React.FC = () => {
