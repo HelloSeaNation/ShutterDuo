@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Flex, Box, Text, Card, CardBody } from "@chakra-ui/react";
+import { Flex, Box, Text, Card, CardBody, Image } from "@chakra-ui/react";
 
 interface Gallery {
   _id: string;
@@ -46,6 +46,16 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
     </Flex>
   );
 
+  const getRandomImageUrl = () => {
+    const randomId = Math.floor(Math.random() * 1000) + 1;
+    // return `https://source.unsplash.com/random/300x200?sig=${randomId}`;
+    return `https://picsum.photos/200/300?random=${randomId}`;
+  };
+
+  const handleCardClick = (galleryId: string) => {
+    window.location.href = `/gallery/${galleryId}`;
+  };
+
   return (
     <Flex
       direction="row"
@@ -58,21 +68,34 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
         "LATEST GALLERIES",
         <Box overflowY="auto">
           {galleries.map((gallery) => (
-            <Card>
+            <Card key={gallery._id} onClick={() => handleCardClick(gallery._id)}>
               <CardBody
-                key={gallery._id}
                 mb={4}
                 border={"1px solid #D4D4D4"}
                 w={"95%"}
                 boxShadow={"md"}
                 borderRadius={"10"}
                 bgColor={"#F8F8F8"}
-                // color={"#F8F8F8"}
               >
-                <Text fontSize="lg" fontWeight="bold">
-                  {gallery.title}
-                </Text>
-                <Text>{gallery.description}</Text>
+                <Flex direction={"row"} alignItems={"center"}>
+                  <Image
+                    src={getRandomImageUrl()}
+                    alt="Placeholder"
+                    style={{
+                      width: "60px",
+                      height: "50px",
+                      marginRight: "10px",
+                    }}
+                  />
+                  <Flex direction={"column"}>
+                    <Text fontSize="15px" fontWeight="bold">
+                      {gallery.title}
+                    </Text>
+                    <Text fontSize="10px" color={"#9E9E9E"}>
+                      {gallery.description}
+                    </Text>
+                  </Flex>
+                </Flex>
               </CardBody>
             </Card>
           ))}
