@@ -100,16 +100,18 @@ const DashboardTitleBar: React.FC = () => {
           <ModalHeader>Create New Gallery</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
+            <Text>Gallery name</Text>
             <Input
               placeholder="Title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               mb={4}
             />
+            <Text fontWeight={"bold"} marginBottom={"5px"}>What is the date of the event?</Text>
             <Input
-              placeholder="Description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
+              type="date"
             />
           </ModalBody>
           <ModalFooter>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Flex, Box, Text, Card, CardBody } from "@chakra-ui/react";
+import { Flex, Box, Text, Card, CardBody, Image } from "@chakra-ui/react";
 
 interface Gallery {
   _id: string;
@@ -67,12 +67,22 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
                 boxShadow={"md"}
                 borderRadius={"10"}
                 bgColor={"#F8F8F8"}
-                // color={"#F8F8F8"}
               >
-                <Text fontSize="lg" fontWeight="bold">
+                <Flex direction={"row"} alignItems={"center"}>
+                <Image
+                  src={`https://via.placeholder.com/50`} // Placeholder image URL
+                  alt="Placeholder"
+                  style={{ width: "60px", marginRight:"10px" }} // Optional: Add styles
+                />
+                <Flex direction={"column"}>
+                <Text fontSize="15px" fontWeight="bold">
                   {gallery.title}
                 </Text>
-                <Text>{gallery.description}</Text>
+                <Text fontSize="10px">{gallery.description}</Text>
+                </Flex>
+                </Flex>
+               
+               
               </CardBody>
             </Card>
           ))}
