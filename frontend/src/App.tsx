@@ -9,6 +9,7 @@ import HighlightSetting from "./pages/HighlightSetting";
 import NotificationPage from "./pages/NotificationPage";
 import GalleryPage from "./pages/GalleryPage";
 import GallerySettings from "./pages/GallerySettings"
+import ProfilePage from "./pages/ProfileDisplay"
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Route path="/notification_page" element={<NotificationPage />} />
           <Route path="/gallery_page" element={<GalleryPage />} />
           <Route path="/gallery/:id" element={<GallerySettings />} />
+          <Route path="/user_profile" element={<ProfilePage />} />
         </Routes>
       </Router>
     </>
