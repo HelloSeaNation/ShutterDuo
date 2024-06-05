@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Box, Flex, Text, Card, CardBody, Image } from "@chakra-ui/react";
+import { Box, Flex, Text, Card, CardBody, Image, Menu, MenuButton, MenuList, MenuItem, IconButton } from "@chakra-ui/react";
 import { fetchGalleriesData, Gallery } from "./api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 
-const GalleryContent = () => {
+const GalleryContent: React.FC = () => {
   const [galleries, setGalleries] = useState<Gallery[]>([]);
 
   const handleCardClick = (galleryId: string) => {
@@ -20,6 +20,24 @@ const GalleryContent = () => {
     }
   };
 
+  const handleDeleteGallery = async (galleryId: string) => {
+    try {
+      const response = await fetch(`http://localhost:5000/deleteGallery/${galleryId}`, {
+        method: "DELETE",
+      });
+
+      if (response.ok) {
+        alert("Gallery deleted successfully");
+        loadGalleries();
+      } else {
+        alert("Failed to delete gallery");
+      }
+    } catch (error) {
+      console.error("Error deleting gallery:", error);
+      alert("An error occurred while deleting the gallery. Please try again.");
+    }
+  };
+
   useEffect(() => {
     loadGalleries();
   }, []);
@@ -30,71 +48,50 @@ const GalleryContent = () => {
   };
 
   return (
-    <>
-      <Box w={"90%"} margin={"auto"} marginTop={"2rem"}>
-        <Flex
-          direction={"row"}
-          margin={"auto"}
-          marginTop={"2rem"}
-          justifyContent={"space-evenly"}
-        >
-          <Flex
-            overflowY="auto"
-            direction={"row"}
-            flexWrap={"wrap"}
-            justifyContent={"space-between"}
-          >
-            {galleries.map((gallery) => (
-              <Card
-                key={gallery._id}
-                onClick={() => handleCardClick(gallery._id)}
-                shadow={"none"}
-              >
-                <CardBody mb={10}>
-                  <Flex
-                    direction={"column"}
-                    alignItems={"flex-start"}
-                    justifyContent={"space-evenly"}
-                  >
-                    <Image
-                      src={getRandomImageUrl()}
-                      alt="Placeholder"
-                      style={{
-                        width: "20rem",
-                        height: "13rem",
-                        marginRight: "2rem",
-                      }}
-                    />
-                    <Flex direction={"column"} width={"90%"}>
-                      <Flex
-                        direction={"row"}
-                        marginTop="10px"
-                        marginBottom="10px"
-                        alignItems={"center"}
-                        justifyContent={"space-between"}
-                      >
-                        <Text fontSize="2opx" fontWeight="bold">
-                          {gallery.title}
-                        </Text>
-                        <FontAwesomeIcon
-                          icon={faEllipsis}
-                          color="#4267CF"
-                          size="xl"
-                        />
-                      </Flex>
-
-                      <Text fontSize="15px" color={"#9E9E9E"}>
-                        {gallery.description}
+    <Box w={"90%"} margin={"auto"} marginTop={"2rem"}>
+      <Flex direction={"row"} margin={"auto"} marginTop={"2rem"} justifyContent={"space-evenly"}>
+        <Flex overflowY="auto" direction={"row"} flexWrap={"wrap"} justifyContent={"space-between"}>
+          {galleries.map((gallery) => (
+            <Card key={gallery._id} shadow={"none"}>
+              <CardBody mb={10}>
+                <Flex direction={"column"} alignItems={"flex-start"} justifyContent={"space-evenly"}>
+                  <Image
+                    src={getRandomImageUrl()}
+                    alt="Placeholder"
+                    style={{
+                      width: "20rem",
+                      height: "13rem",
+                      marginRight: "2rem",
+                    }}
+                    onClick={() => handleCardClick(gallery._id)}
+                  />
+                  <Flex direction={"column"} width={"90%"}>
+                    <Flex direction={"row"} marginTop="10px" marginBottom="10px" alignItems={"center"} justifyContent={"space-between"}>
+                      <Text fontSize="2opx" fontWeight="bold">
+                        {gallery.title}
                       </Text>
+                      <Menu>
+                        <MenuButton
+                          as={IconButton}
+                          icon={<FontAwesomeIcon icon={faEllipsis} />}
+                          variant="ghost"
+                        />
+                        <MenuList>
+                          <MenuItem onClick={() => handleDeleteGallery(gallery._id)}>Delete</MenuItem>
+                        </MenuList>
+                      </Menu>
                     </Flex>
+                    <Text fontSize="15px" color={"#9E9E9E"}>
+                      {gallery.description}
+                    </Text>
                   </Flex>
-                </CardBody>
-              </Card>
-            ))}
-          </Flex>
+                </Flex>
+              </CardBody>
+            </Card>
+          ))}
         </Flex>
-      </Box>
-    </>
+      </Flex>
+    </Box>
   );
 };
 

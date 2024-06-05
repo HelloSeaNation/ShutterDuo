@@ -3,6 +3,7 @@ const collection = require("./mongo");
 const cors = require("cors");
 const Gallery = require("./models/gallery"); //Gallery model
 const app = express();
+const galleries = [];
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -87,7 +88,6 @@ app.get("/user/:email", async (req, res) => {
   }
 });
 
-//update stored user data
 app.put("/user/:email", async (req, res) => {
   const { email } = req.params;
   const updateData = req.body;
@@ -104,7 +104,6 @@ app.put("/user/:email", async (req, res) => {
   }
 });
 
-//Create Gallery endpoint
 app.post("/createGallery", async (req, res) => {
   const { title, description } = req.body;
 
@@ -134,6 +133,24 @@ app.get("/galleries", async (req, res) => {
   }
 });
 
+// Delete gallery endpoint
+app.delete('/deleteGallery/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const gallery = await Gallery.findByIdAndDelete(id);
+    if (gallery) {
+      res.status(200).json({ message: "Gallery deleted successfully" });
+    } else {
+      res.status(404).json({ message: "Gallery not found" });
+    }
+  } catch (error) {
+    console.error("Error deleting gallery:", error);
+    res.status(500).json({ message: "An error occurred while deleting the gallery" });
+  }
+});
+
 app.listen(5000, () => {
   console.log("Server is running on port 5000");
 });
+
