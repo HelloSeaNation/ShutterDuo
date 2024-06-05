@@ -1,20 +1,23 @@
 import React, { useState, useEffect } from "react";
 import {
-  Box, Flex, Text, Button, Divider, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Input,
+  Box,
+  Flex,
+  Text,
+  Button,
+  Divider,
 } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 import DashboardContent from "./DashboardContent";
+import CreateGalleryModal from "./CreateGalleryModal";
 import axios from 'axios'
 
-interface User { //user props to define the user data on the dashboard
+interface User {
   firstName: string;
   email: string;
 }
 
 const DashboardTitleBar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
   const [fetchFlag, setFetchFlag] = useState(false);
   const [user, setUser] = useState<User | null>(null);
 
@@ -25,7 +28,7 @@ const DashboardTitleBar: React.FC = () => {
     setFetchFlag(prev => !prev);
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (title: string, description: string) => {
     const response = await fetch("http://localhost:5000/createGallery", {
       method: "POST",
       headers: {
@@ -38,7 +41,7 @@ const DashboardTitleBar: React.FC = () => {
     if (response.ok) {
       alert(result.message);
       handleClose();
-      fetchGalleries(); // Refresh the gallery list after creating a new gallery
+      fetchGalleries();
     } else {
       alert(result.message);
     }
@@ -73,7 +76,7 @@ const DashboardTitleBar: React.FC = () => {
         marginBottom={"20px"}
       >
         <Text fontSize={"35px"} color={"#626262"}>
-        {user ? `${user.firstName}'s Dashboard` : 'Users'}
+          {user ? `${user.firstName}'s Dashboard` : 'Users'}
         </Text>
         <Box>
           <Button
@@ -93,36 +96,7 @@ const DashboardTitleBar: React.FC = () => {
       <Divider w={"92%"} m={"auto"} />
       <DashboardContent fetchGalleries={fetchGalleries} />
 
-      <Modal isOpen={isOpen} onClose={handleClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Create New Gallery</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <Text fontWeight={"bold"}>Gallery name</Text>
-            <Input
-              placeholder="Title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              mb={4}
-            />
-            <Text fontWeight={"bold"} marginBottom={"5px"}>What is the date of the event?</Text>
-            <Input
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              type="date"
-            />
-          </ModalBody>
-          <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={handleSubmit}>
-              Submit
-            </Button>
-            <Button variant="ghost" onClick={handleClose}>
-              Cancel
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+      <CreateGalleryModal isOpen={isOpen} onClose={handleClose} onSubmit={handleSubmit} />
     </Box>
   );
 };
