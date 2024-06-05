@@ -4,6 +4,7 @@ import { AddIcon } from "@chakra-ui/icons";
 import CreateGalleryModal from "./CreateGalleryModal";
 import axios from 'axios';
 import { createGallery } from './api';
+import GalleryContent from "./GalleryContent";
 
 interface User {
   firstName: string;
@@ -84,6 +85,7 @@ const GalleryTitleBar: React.FC = () => {
         onClose={handleClose}
         onSubmit={handleSubmit}
       />
+      <GalleryContent />
     </Box>
   );
 };
