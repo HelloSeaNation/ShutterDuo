@@ -133,6 +133,23 @@ app.get("/galleries", async (req, res) => {
   }
 });
 
+// Get a gallery by ID
+app.get("/gallery/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const gallery = await Gallery.findById(id);
+    if (gallery) {
+      res.json(gallery);
+    } else {
+      res.status(404).json({ message: "Gallery not found" });
+    }
+  } catch (e) {
+    console.error("An error occurred while fetching the gallery:", e);
+    res.status(500).json({ message: "An error occurred while fetching the gallery" });
+  }
+});
+
 // Delete gallery endpoint
 app.delete('/deleteGallery/:id', async (req, res) => {
   const { id } = req.params;

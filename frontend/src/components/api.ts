@@ -52,3 +52,18 @@ export interface Gallery {
     }
   };
   
+  export const fetchGalleryById = async (id: string): Promise<Gallery> => {
+    try {
+      console.log(`Fetching gallery with ID: ${id}`);
+      const response = await fetch(`http://localhost:5000/gallery/${id}`);
+      if (!response.ok) {
+        throw new Error("Failed to fetch gallery");
+      }
+      const data: Gallery = await response.json();
+      console.log("Fetched gallery data:", data);
+      return data;
+    } catch (error) {
+      console.error("Error fetching gallery:", error);
+      throw error;
+    }
+  };

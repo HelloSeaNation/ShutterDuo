@@ -8,6 +8,7 @@ import AccountSetting from "./pages/AccountSetting";
 import HighlightSetting from "./pages/HighlightSetting";
 import NotificationPage from "./pages/NotificationPage";
 import GalleryPage from "./pages/GalleryPage";
+import GallerySettings from "./pages/GallerySettings"
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="/search_photographer" element={<SearchBar />} />
           <Route path="/notification_page" element={<NotificationPage />} />
           <Route path="/gallery_page" element={<GalleryPage />} />
+          <Route path="/gallery/:id" element={<GallerySettings />} />
         </Routes>
       </Router>
     </>

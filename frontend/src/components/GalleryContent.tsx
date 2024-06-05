@@ -22,15 +22,17 @@ import {
 import { fetchGalleriesData, Gallery, deleteGallery, createGallery } from "./api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
 
 const GalleryContent: React.FC = () => {
   const [galleries, setGalleries] = useState<Gallery[]>([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedGallery, setSelectedGallery] = useState<Gallery | null>(null);
   const cancelRef = useRef<HTMLButtonElement>(null);
+  const navigate = useNavigate();
 
   const handleCardClick = (galleryId: string) => {
-    window.location.href = `/gallery/${galleryId}`;
+    navigate(`/gallery/${galleryId}`);
   };
 
   const loadGalleries = async () => {
@@ -69,7 +71,6 @@ const GalleryContent: React.FC = () => {
     const success = await createGallery(title, description);
     if (success) {
       alert("Gallery created successfully");
-      // window.location.reload();
       loadGalleries();
     } else {
       alert("Failed to create gallery");
