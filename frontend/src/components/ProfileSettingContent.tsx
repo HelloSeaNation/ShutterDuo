@@ -105,7 +105,7 @@ const ProfileSettingContent = () => {
         <Input name="location" value={user?.location || ''} onChange={handleInputChange} />
 
         <FormLabel style={TextStyle}>Biography</FormLabel>
-        <Textarea name="bio" h={"20vh"} onChange={handleInputChange}/>
+        <Textarea name="bio" h={"20vh"} value={user?.bio || ''}onChange={handleInputChange}/>
 
       </FormControl>
       <FormControl>
