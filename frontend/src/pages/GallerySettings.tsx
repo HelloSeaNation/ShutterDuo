@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Box, Text, Button } from "@chakra-ui/react";
+import { Box, Text, Button, Flex, Divider, Stack } from "@chakra-ui/react";
 import { fetchGalleryById } from "../components/api";
 import { Gallery } from "../components/api";
 import TopBar from "../components/TopBar";
+import InsideGallery from "../components/InsideGallery";
 
 const GallerySettings: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -36,15 +37,23 @@ const GallerySettings: React.FC = () => {
   return (
     <Box>
       <TopBar />
-      <Text fontSize="2xl" fontWeight="bold">
-        {gallery.title}
-      </Text>
-      <Text fontSize="md" color="gray.500">
-        {gallery.description}
-      </Text>
-      <Button colorScheme="blue" mt={4}>
-        Edit Gallery
-      </Button>
+      <Flex direction={"row"}>
+        <Flex direction={"column"} w={"20rem"}>
+          <Text fontSize="2xl" fontWeight="bold">
+            {gallery.title}
+          </Text>
+          <Text fontSize="md" color="gray.500">
+            {gallery.description}
+          </Text>
+          <Button colorScheme="blue" mt={4}>
+            Edit Gallery
+          </Button>
+        </Flex>
+        <Stack height="100vh" p={4}>
+          <Divider orientation="vertical" />
+        </Stack>
+        <InsideGallery gallery={gallery} />
+      </Flex>
     </Box>
   );
 };

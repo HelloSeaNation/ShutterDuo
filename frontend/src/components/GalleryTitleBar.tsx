@@ -64,7 +64,7 @@ const GalleryTitleBar: React.FC = () => {
         marginBottom={"20px"}
       >
         <Text fontSize={"35px"} color={"#626262"}>
-          Gallery
+          Galleries
         </Text>
         <Button
           bgColor={"#4267CF"}
