@@ -39,4 +39,16 @@ export interface Gallery {
       throw error;
     }
   };
+
+  export const deleteGallery = async (galleryId: string): Promise<boolean> => {
+    try {
+      const response = await fetch(`http://localhost:5000/deleteGallery/${galleryId}`, {
+        method: "DELETE",
+      });
+      return response.ok;
+    } catch (error) {
+      console.error("Error deleting gallery:", error);
+      return false;
+    }
+  };
   

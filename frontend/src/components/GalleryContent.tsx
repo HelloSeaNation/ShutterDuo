@@ -1,11 +1,33 @@
-import React, { useEffect, useState } from "react";
-import { Box, Flex, Text, Card, CardBody, Image, Menu, MenuButton, MenuList, MenuItem, IconButton } from "@chakra-ui/react";
-import { fetchGalleriesData, Gallery } from "./api";
+import React, { useEffect, useState, useRef } from "react";
+import { 
+  Box, 
+  Flex, 
+  Text, 
+  Card, 
+  CardBody, 
+  Image, 
+  Menu, 
+  MenuButton, 
+  MenuList, 
+  MenuItem, 
+  IconButton, 
+  Button, 
+  AlertDialog, 
+  AlertDialogBody, 
+  AlertDialogFooter, 
+  AlertDialogHeader, 
+  AlertDialogContent, 
+  AlertDialogOverlay 
+} from "@chakra-ui/react";
+import { fetchGalleriesData, Gallery, deleteGallery, createGallery } from "./api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 
 const GalleryContent: React.FC = () => {
   const [galleries, setGalleries] = useState<Gallery[]>([]);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [selectedGallery, setSelectedGallery] = useState<Gallery | null>(null);
+  const cancelRef = useRef<HTMLButtonElement>(null);
 
   const handleCardClick = (galleryId: string) => {
     window.location.href = `/gallery/${galleryId}`;
@@ -20,21 +42,37 @@ const GalleryContent: React.FC = () => {
     }
   };
 
-  const handleDeleteGallery = async (galleryId: string) => {
-    try {
-      const response = await fetch(`http://localhost:5000/deleteGallery/${galleryId}`, {
-        method: "DELETE",
-      });
+  const openDialog = (gallery: Gallery) => {
+    setSelectedGallery(gallery);
+    setIsDialogOpen(true);
+  };
 
-      if (response.ok) {
+  const closeDialog = () => {
+    setIsDialogOpen(false);
+    setSelectedGallery(null);
+  };
+
+  const confirmDelete = async () => {
+    if (selectedGallery) {
+      const success = await deleteGallery(selectedGallery._id);
+      if (success) {
         alert("Gallery deleted successfully");
         loadGalleries();
       } else {
         alert("Failed to delete gallery");
       }
-    } catch (error) {
-      console.error("Error deleting gallery:", error);
-      alert("An error occurred while deleting the gallery. Please try again.");
+      closeDialog();
+    }
+  };
+
+  const handleCreateGallery = async (title: string, description: string) => {
+    const success = await createGallery(title, description);
+    if (success) {
+      alert("Gallery created successfully");
+      // window.location.reload();
+      loadGalleries();
+    } else {
+      alert("Failed to create gallery");
     }
   };
 
@@ -65,7 +103,7 @@ const GalleryContent: React.FC = () => {
                     }}
                     onClick={() => handleCardClick(gallery._id)}
                   />
-                  <Flex direction={"column"} width={"90%"}>
+                  <Flex direction={"column"} width={"93%"}>
                     <Flex direction={"row"} marginTop="10px" marginBottom="10px" alignItems={"center"} justifyContent={"space-between"}>
                       <Text fontSize="2opx" fontWeight="bold">
                         {gallery.title}
@@ -73,11 +111,11 @@ const GalleryContent: React.FC = () => {
                       <Menu>
                         <MenuButton
                           as={IconButton}
-                          icon={<FontAwesomeIcon icon={faEllipsis} />}
+                          icon={<FontAwesomeIcon icon={faEllipsis} color="#4267CF"/>}
                           variant="ghost"
                         />
                         <MenuList>
-                          <MenuItem onClick={() => handleDeleteGallery(gallery._id)}>Delete</MenuItem>
+                          <MenuItem onClick={() => openDialog(gallery)}>Delete</MenuItem>
                         </MenuList>
                       </Menu>
                     </Flex>
@@ -91,6 +129,31 @@ const GalleryContent: React.FC = () => {
           ))}
         </Flex>
       </Flex>
+
+      <AlertDialog
+        isOpen={isDialogOpen}
+        leastDestructiveRef={cancelRef}
+        onClose={closeDialog}
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Delete Gallery
+            </AlertDialogHeader>
+            <AlertDialogBody>
+              Are you sure? All photos for <Text as="span" fontWeight="bold">{selectedGallery?.title}</Text> will be removed. This action cannot be undone.
+            </AlertDialogBody>
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={closeDialog}>
+                Cancel
+              </Button>
+              <Button colorScheme="red" onClick={confirmDelete} ml={3}>
+                Delete
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
     </Box>
   );
 };
