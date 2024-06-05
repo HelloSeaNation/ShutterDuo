@@ -3,6 +3,7 @@ import { Box, Flex, Text, Divider, Button } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 import CreateGalleryModal from "./CreateGalleryModal";
 import axios from 'axios';
+import { createGallery } from './api';
 
 interface User {
   firstName: string;
@@ -17,27 +18,14 @@ const GalleryTitleBar: React.FC = () => {
   const handleClose = () => setIsOpen(false);
 
   const fetchGalleries = async () => {
-    // Logic to refresh the gallery list (if any)
   };
 
   const handleSubmit = async (title: string, description: string) => {
     try {
-      const response = await fetch("http://localhost:5000/createGallery", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ title, description }),
-      });
-
-      const result = await response.json();
-      if (response.ok) {
-        alert(result.message);
-        handleClose();
-        fetchGalleries(); // Refresh the gallery list after creating a new gallery
-      } else {
-        alert(result.message);
-      }
+      const result = await createGallery(title, description);
+      alert(result.message);
+      handleClose();
+      fetchGalleries();
     } catch (error) {
       console.error("Error creating gallery:", error);
       alert("An error occurred while creating the gallery. Please try again.");

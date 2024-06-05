@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Flex, Box, Text, Card, CardBody, Image } from "@chakra-ui/react";
-
-interface Gallery {
-  _id: string;
-  title: string;
-  description: string;
-}
+import { fetchGalleriesData, Gallery } from "./api";
 
 interface DashboardContentProps {
   fetchGalleries: () => Promise<void>;
@@ -16,18 +11,17 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
 }) => {
   const [galleries, setGalleries] = useState<Gallery[]>([]);
 
-  const fetchGalleriesData = async () => {
+  const loadGalleries = async () => {
     try {
-      const response = await fetch("http://localhost:5000/galleries");
-      const data: Gallery[] = await response.json();
+      const data = await fetchGalleriesData();
       setGalleries(data);
     } catch (error) {
-      console.error("Error fetching galleries:", error);
+      console.error("Error loading galleries:", error);
     }
   };
 
   useEffect(() => {
-    fetchGalleriesData();
+    loadGalleries();
   }, [fetchGalleries]);
 
   const boxStyles = {
@@ -48,7 +42,6 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
 
   const getRandomImageUrl = () => {
     const randomId = Math.floor(Math.random() * 1000) + 1;
-    // return `https://source.unsplash.com/random/300x200?sig=${randomId}`;
     return `https://picsum.photos/200/300?random=${randomId}`;
   };
 

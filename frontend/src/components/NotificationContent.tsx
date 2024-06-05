@@ -1,10 +1,9 @@
 import React from "react";
-import { Box, Flex, Image, Text } from "@chakra-ui/react";
-import { AddIcon } from "@chakra-ui/icons";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import { faImage } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const DashboardContent = () => {
+const NotificationContent = () => {
   return (
     <>
       <Box
@@ -30,4 +29,4 @@ const DashboardContent = () => {
   );
 };
 
-export default DashboardContent;
+export default NotificationContent;
