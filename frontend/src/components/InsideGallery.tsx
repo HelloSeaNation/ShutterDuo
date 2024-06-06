@@ -1,5 +1,6 @@
 import React from "react";
 import { Box, Flex, Text, Divider, Button } from "@chakra-ui/react";
+import { AddIcon } from "@chakra-ui/icons";
 
 interface Gallery {
   title: string;
@@ -22,7 +23,17 @@ const InsideGallery: React.FC<InsideGalleryProps> = ({ gallery }) => {
         <Text fontSize={"35px"} color={"#626262"}>
           {gallery.title}'s gallery
         </Text>
-        <Button>Add Photo</Button>
+        <Button
+          bgColor={"#4267CF"}
+          h={"50px"}
+          w={"200px"}
+          justifyContent={"space-around"}
+        >
+          <AddIcon color={"white"} />
+          <Text fontSize={"18px"} color={"white"}>
+            Add Photo
+          </Text>
+        </Button>
       </Flex>
       <Divider w={"90%"} m={"auto"} />
     </Box>
