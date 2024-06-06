@@ -1,4 +1,5 @@
-// api.ts
+import axios from "axios";
+
 export interface Gallery {
     _id: string;
     title: string;
@@ -64,6 +65,17 @@ export interface Gallery {
       return data;
     } catch (error) {
       console.error("Error fetching gallery:", error);
+      throw error;
+    }
+  };
+  const BASE_URL = "http://localhost:5000";
+
+
+  export const updateGalleryTitle = async (id: string, title: string): Promise<void> => {
+    try {
+      await axios.put(`${BASE_URL}/editGallery/${id}`, { title });
+    } catch (error) {
+      console.error("Error updating gallery title:", error);
       throw error;
     }
   };
