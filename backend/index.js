@@ -167,6 +167,29 @@ app.delete('/deleteGallery/:id', async (req, res) => {
   }
 });
 
+// Edit gallery endpoint
+app.put("/editGallery/:id", async (req, res) => {
+  const { id } = req.params;
+  const { title, description } = req.body;
+
+  try {
+    const gallery = await Gallery.findByIdAndUpdate(
+      id,
+      { title, description },
+      { new: true }
+    );
+
+    if (gallery) {
+      res.json({ message: "Gallery updated successfully", gallery });
+    } else {
+      res.status(404).json({ message: "Gallery not found" });
+    }
+  } catch (error) {
+    console.error("Error updating gallery:", error);
+    res.status(500).json({ message: "An error occurred while updating the gallery" });
+  }
+});
+
 app.listen(5000, () => {
   console.log("Server is running on port 5000");
 });

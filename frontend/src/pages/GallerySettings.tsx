@@ -1,14 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Box, Text, Button, Flex, Divider, Stack } from "@chakra-ui/react";
-import { fetchGalleryById } from "../components/api";
+import {
+  Box,
+  Text,
+  Button,
+  Flex,
+  Divider,
+  Stack,
+  Icon,
+  Input,
+} from "@chakra-ui/react";
+import { fetchGalleryById, updateGalleryTitle } from "../components/api"; // Import updateGalleryTitle function
 import { Gallery } from "../components/api";
 import TopBar from "../components/TopBar";
 import InsideGallery from "../components/InsideGallery";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPen } from "@fortawesome/free-solid-svg-icons";
 
 const GallerySettings: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [gallery, setGallery] = useState<Gallery | null>(null);
+  const [isEditingTitle, setIsEditingTitle] = useState(false);
+  const [editedTitle, setEditedTitle] = useState("");
 
   useEffect(() => {
     const loadGallery = async () => {
@@ -34,17 +47,61 @@ const GallerySettings: React.FC = () => {
 
   console.log("Gallery is not null, rendering data", gallery);
 
+  const handleEditTitle = () => {
+    setIsEditingTitle(true);
+    setEditedTitle(gallery.title);
+  };
+
+const handleSaveTitle = async () => {
+    try {
+        await updateGalleryTitle(id!, editedTitle); 
+        setIsEditingTitle(false);
+        setGallery((prevGallery) => ({
+            ...prevGallery!,
+            title: editedTitle,
+        }));
+    } catch (error) {
+        console.error("Error saving title:", error);
+    }
+};
+
   return (
     <Box>
       <TopBar />
-      <Flex direction={"row"}>
-        <Flex direction={"column"} w={"20rem"}>
-          <Text fontSize="2xl" fontWeight="bold">
-            {gallery.title}
-          </Text>
-          <Text fontSize="md" color="gray.500">
-            {gallery.description}
-          </Text>
+      <Flex direction={"row"} margin="20px">
+        <Flex direction={"column"}>
+          {isEditingTitle ? (
+            <Flex direction={"row"} w={"20rem"} alignItems={"baseline"}>
+              <Input
+                value={editedTitle}
+                onChange={(e) => setEditedTitle(e.target.value)}
+              />
+              <Button onClick={handleSaveTitle} colorScheme="blue" ml={2}>
+                Save
+              </Button>
+            </Flex>
+          ) : (
+            <Flex
+              direction={"row"}
+              w={"20rem"}
+              justifyContent={"flex-start"}
+              alignItems={"baseline"}
+            >
+              <Flex direction={"column"} marginRight={"20px"}>
+                <Text fontSize="30px" fontWeight="bold">
+                  {gallery.title}
+                </Text>
+                <Text fontSize="20px" color="gray.500">
+                  {gallery.description}
+                </Text>
+              </Flex>
+              <FontAwesomeIcon
+                icon={faPen}
+                color="#4267CF"
+                onClick={handleEditTitle}
+              />
+            </Flex>
+          )}
           <Button colorScheme="blue" mt={4}>
             Edit Gallery
           </Button>
