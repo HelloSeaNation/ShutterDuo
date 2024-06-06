@@ -25,6 +25,7 @@ interface User { //props for profile setup and editing
   surname: string;
   email: string;
   business: string;
+  profilePicture: string;
   bio?: string;
   location?: string;
   job?: string;
@@ -41,6 +42,7 @@ interface User { //props for profile setup and editing
 const ProfileSettingContent = () => {
 
   const [user, setUser] = useState<User | null>(null);
+  const [profilePicture, setProfilePicture] = useState<File | null>(null);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -66,9 +68,27 @@ const ProfileSettingContent = () => {
     setUser(prevState => prevState ? { ...prevState, [name]: value } : null);
   };
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setProfilePicture(e.target.files[0]);
+    }
+  };
+
   const handleSaveProfile = async () => {
     if (user) {
       try {
+        const formData = new FormData();
+        formData.append('email', user.email);
+        if (profilePicture) {
+          formData.append('profilePicture', profilePicture);
+        }
+
+        await axios.post('http://localhost:5000/uploadProfilePicture', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+
         await axios.put(`http://localhost:5000/user/${user.email}`, user);
         alert("Profile updated successfully");
       } catch (error) {
@@ -81,7 +101,8 @@ const ProfileSettingContent = () => {
   return (
     <Flex w={"60%"} margin={"auto"} h={"100vh"} direction={"column"}>
       <FormControl>
-        <FormLabel style={TextStyle}>Profile Image</FormLabel>
+      <FormLabel style={TextStyle}>Profile Image</FormLabel>
+        <Input type="file" onChange={handleFileChange} />
 
         <FormLabel style={TextStyle}>Business Name</FormLabel>
         <Input name="business" value={user?.business || ''} onChange={handleInputChange}/>
