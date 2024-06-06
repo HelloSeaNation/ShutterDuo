@@ -53,7 +53,7 @@ return (
         <Box>
           <Link to="/dashboard">
             <Image
-              src="./title.png"
+              src="../title.png"
               alt="shuttleduo"
               w={"26vh"}
               marginTop={"10px"}
