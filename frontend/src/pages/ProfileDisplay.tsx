@@ -3,7 +3,7 @@ import {Flex, Text, Box} from '@chakra-ui/react'
 import TopBar from "../components/TopBar";
 import axios from 'axios'
 import { CalendarIcon, StarIcon} from '@chakra-ui/icons'
-
+import SocialMedia from '../components/SocialMediaLinks';
 
 interface User { //props for profile setup and editing
   firstName: string;
@@ -14,14 +14,37 @@ interface User { //props for profile setup and editing
   location?: string;
   job?: string;
   phone?: string;
-  // facebook?: string;
-  // insta?: string;
-  // pinterest?: string;
-  // twitter?: string;
-  // youtube?: string;
-  // linkedin?: string;
-  // tiktok?: string;
+  facebook?: string;
+  insta?: string;
+  pinterest?: string;
+  twitter?: string;
+  youtube?: string;
+  linkedin?: string;
+  tiktok?: string;
 }
+
+//social media links
+const socialMediaPlatforms = [
+  "facebook",
+  "insta",
+  "pinterest",
+  "twitter",
+  "youtube",
+  "linkedin",
+  "tiktok",
+] as const;
+
+type SocialMediaPlatform = (typeof socialMediaPlatforms)[number];
+
+const socialMediaIcons: Record<SocialMediaPlatform, string> = {
+  facebook: '../facebook.png',
+  insta: '../instagram.png',
+  pinterest: '../pinterest.png',
+  twitter: '../twitter.png',
+  youtube: './youtube.png',
+  linkedin: '/linkedin.png',
+  tiktok: '../tiktok.png'
+};
 
 const ProfilePage = () => {
 
@@ -97,13 +120,26 @@ const ProfilePage = () => {
                 Email: {user ? `${user.email}` : 'Users'}
             </Text>
           </Box>
+
+          {/* Social media links */}
+          <Box marginTop={20}>
+          <Flex>
+            {user && socialMediaPlatforms.map((platform) => (
+              user[platform] && (
+                <SocialMedia
+                  key={platform}
+                  iconSrc={socialMediaIcons[platform]}
+                  iconAlt={`${platform} icon`}
+                  url={user[platform] as string}
+                />
+              )
+            ))}
+          </Flex>
+          </Box>
           </Box>
         
       </>
   )
 }
-
-
-
 
 export default ProfilePage;
