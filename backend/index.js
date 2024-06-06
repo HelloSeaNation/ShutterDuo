@@ -1,5 +1,7 @@
 const express = require("express");
 const collection = require("./mongo");
+const multer = require("multer");
+const path = require("path");
 const cors = require("cors");
 const Gallery = require("./models/gallery"); //Gallery model
 const app = express();
@@ -167,6 +169,19 @@ app.delete('/deleteGallery/:id', async (req, res) => {
   }
 });
 
+
+//upload profile picture
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const uploadPath = path.join(__dirname, 'uploads');
+    cb(null, uploadPath); // Set the destination folder
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    const ext = path.extname(file.originalname);
+    cb(null, uniqueSuffix + ext); // Set the file name
+  })
+
 // Edit gallery endpoint
 app.put("/editGallery/:id", async (req, res) => {
   const { id } = req.params;
@@ -192,5 +207,33 @@ app.put("/editGallery/:id", async (req, res) => {
 
 app.listen(5000, () => {
   console.log("Server is running on port 5000");
+
 });
 
+const upload = multer({ storage: storage });
+
+app.post('/uploadProfilePicture', upload.single('profilePicture'), async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const user = await collection.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    user.profilePicture = req.file.path;
+    await user.save();
+
+    res.json({ message: 'Profile picture uploaded successfully', user });
+  } catch (error) {
+    console.error('Error uploading profile picture:', error);
+    res.status(500).json({ message: 'An error occurred while uploading the profile picture' });
+  }
+});
+
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+app.listen(5000, () => {
+  console.log("Server is running on port 5000");
+});

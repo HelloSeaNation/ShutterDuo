@@ -29,6 +29,9 @@ const newSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  profilePicture: {
+    type: String,
+  },
   business: {
     type: String,
   },

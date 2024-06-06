@@ -13,18 +13,20 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 interface User {
+  //user props
   firstName: string;
   surname: string;
+  profilePicture: string;
 }
 
 const TopBar = () => {
   const location = useLocation();
-
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     const fetchUserData = async () => {
       const storedUser = localStorage.getItem("user");
+
       if (storedUser) {
         const parsedUser = JSON.parse(storedUser);
         if (parsedUser && parsedUser.email) {
@@ -32,6 +34,7 @@ const TopBar = () => {
             const response = await axios.get(
               `http://localhost:5000/user/${parsedUser.email}`
             );
+
             setUser(response.data);
           } catch (error) {
             console.error("Error fetching user data:", error);
@@ -65,16 +68,29 @@ const TopBar = () => {
             <Flex direction={"row"}>
               <Box as={Link} to="/notification_page">
                 <Image
-                  src="../notification.png"
-                  alt="alert"
-                  w={"35px"}
-                  h={"35px"}
-                  marginTop={"12px"}
-                  marginRight={"20px"}
+                  src="./title.png"
+                  alt="shuttleduo"
+                  w={"26vh"}
+                  marginTop={"10px"}
                 />
               </Box>
-
               <Menu>
+                <MenuButton>
+                  <Image
+                    src={
+                      user?.profilePicture
+                        ? `http://localhost:5000/${user.profilePicture}`
+                        : "../photography.png"
+                    }
+                    alt="dropdown"
+                    w={"40px"}
+                    h={"40px"}
+                    borderRadius={"50%"}
+                    marginTop={"10px"}
+                    marginRight={"50px"}
+                    border={"solid 2px green"}
+                  />
+                </MenuButton>
                 <MenuButton>
                   <Image
                     src="../photography.png"
