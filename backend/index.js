@@ -180,7 +180,7 @@ const storage = multer.diskStorage({
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
     const ext = path.extname(file.originalname);
     cb(null, uniqueSuffix + ext); // Set the file name
-  })
+  }})
 
 // Edit gallery endpoint
 app.put("/editGallery/:id", async (req, res) => {
@@ -203,11 +203,6 @@ app.put("/editGallery/:id", async (req, res) => {
     console.error("Error updating gallery:", error);
     res.status(500).json({ message: "An error occurred while updating the gallery" });
   }
-});
-
-app.listen(5000, () => {
-  console.log("Server is running on port 5000");
-
 });
 
 const upload = multer({ storage: storage });
