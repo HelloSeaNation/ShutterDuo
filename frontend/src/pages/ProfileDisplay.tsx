@@ -5,8 +5,6 @@ import axios from 'axios'
 import { CalendarIcon, StarIcon} from '@chakra-ui/icons'
 
 
-
-
 interface User { //props for profile setup and editing
   firstName: string;
   surname: string;
@@ -25,18 +23,9 @@ interface User { //props for profile setup and editing
   // tiktok?: string;
 }
 
-
-
-
 const ProfilePage = () => {
 
-
-
-
   const [user, setUser] = useState<User | null>(null);
-
-
-
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -56,25 +45,17 @@ const ProfilePage = () => {
      fetchUserData();
   }, []);
 
-
-
-
   return(
       <>
           <TopBar />
 
-
            {/* Basic information and profile photo */}
           <Box padding={35}>
-
-
               <Text marginBottom={2} fontWeight="bold">
                    {user ? `${user.firstName} ${user.surname}` : 'Users'}
               </Text>
 
-
               <Box color="#949494">
-
 
               <Text>
               <CalendarIcon marginRight={2} boxSize={4}/>
@@ -87,51 +68,34 @@ const ProfilePage = () => {
                   {user ? `${user.job}` : 'Users'}
               </Text>
 
-
           </Box>
-
-
-
 
           {/* About me section */}
           <Box marginTop={50} >
+            <Text marginBottom={3} fontWeight="bold"> About Me </Text>
 
-
-
-
-          <Text marginBottom={3} fontWeight="bold"> About Me </Text>
-
-
-
-
-              <Box borderRadius={10}
-                  borderColor="#949494"
-                  borderWidth={1}        
-                  borderStyle="solid"
-                  padding={3}
-                  width={400}
-                  height={200}>
-                  {user ? `${user.bio}` : 'Users'}
-              </Box>
+                <Box borderRadius={10}
+                    borderColor="#D9D9D9"
+                    borderWidth={1}        
+                    borderStyle="solid"
+                    padding={3}
+                    width={400}
+                    height={170}>
+                    {user ? `${user.bio}` : 'Users'}
+                </Box>
           </Box>
         
           {/* Contact Info */}
           <Box marginTop={50}>
-          <Text marginBottom={3} fontWeight="bold"> Contact Informtion </Text>
+            <Text marginBottom={3} fontWeight="bold"> Contact Info </Text>
 
+            <Text>
+                Phone: {user ? `${user.phone}` : 'Users'}
+            </Text>
 
-
-
-          <Text>
-              Phone: {user ? `${user.phone}` : 'Users'}
-          </Text>
-
-
-
-
-          <Text>
-              Email: {user ? `${user.email}` : 'Users'}
-          </Text>
+            <Text>
+                Email: {user ? `${user.email}` : 'Users'}
+            </Text>
           </Box>
           </Box>
         

@@ -12,45 +12,35 @@ MenuDivider,
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from 'axios'
 
-
-
-
 interface User { //user props
 firstName: string;
 surname: string;
+profilePicture: string;
 }
 
-
-
-
 const TopBar = () => {
-const location = useLocation();
 
+  const location = useLocation();
+  const [user, setUser] = useState<User | null>(null);
 
-
-
-const [user, setUser] = useState<User | null>(null);
-
-
-
-
-useEffect(() => {
-  const fetchUserData = async () => {
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      const parsedUser = JSON.parse(storedUser);
-      if (parsedUser && parsedUser.email) {
-        try {
-          const response = await axios.get(`http://localhost:5000/user/${parsedUser.email}`);
-          setUser(response.data);
-        } catch (error) {
-          console.error("Error fetching user data:", error);
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const storedUser = localStorage.getItem('user');
+      if (storedUser) {
+        const parsedUser = JSON.parse(storedUser);
+        if (parsedUser && parsedUser.email) {
+          try {
+            const response = await axios.get(`http://localhost:5000/user/${parsedUser.email}`);
+            setUser(response.data);
+          } catch (error) {
+            console.error("Error fetching user data:", error);
+          }
         }
       }
-    }
-  };
-   fetchUserData();
-}, []);
+    };
+    fetchUserData();
+  }, []);
+
 return (
   <Box>
     <Box bgColor={"#F5F3F3"} h={"60px"}>
@@ -84,13 +74,10 @@ return (
               />
             </Box>
 
-
-
-
             <Menu>
               <MenuButton>
                 <Image
-                  src="../photography.png"
+                  src={user?.profilePicture ? `http://localhost:5000/${user.profilePicture}` : "../photography.png"}
                   alt="dropdown"
                   w={"40px"}
                   h={"40px"}
