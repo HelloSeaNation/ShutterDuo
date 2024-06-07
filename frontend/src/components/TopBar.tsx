@@ -88,7 +88,6 @@ return (
                 />
               </MenuButton>
               <MenuList marginRight={"40px"} borderRadius={"0"}>
-                {/* Need to change to profile image and Full Name */}
                 <MenuItem as={Link} to="/profile_setting">
                   <Flex direction={"row"} align={"center"}>
                     <Image

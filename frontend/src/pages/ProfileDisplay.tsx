@@ -1,9 +1,10 @@
 import React, {useState, useEffect} from 'react'
-import {Flex, Text, Box} from '@chakra-ui/react'
+import {Flex, Text, Box, MenuDivider, MenuItem, Menu, MenuList, MenuButton} from '@chakra-ui/react'
 import TopBar from "../components/TopBar";
 import axios from 'axios'
-import { CalendarIcon, StarIcon} from '@chakra-ui/icons'
-
+import { CalendarIcon, StarIcon, ChevronDownIcon} from '@chakra-ui/icons'
+import { Link } from 'react-router-dom';
+import SocialMedia from '../components/SocialMediaLinks';
 
 interface User { //props for profile setup and editing
   firstName: string;
@@ -14,14 +15,37 @@ interface User { //props for profile setup and editing
   location?: string;
   job?: string;
   phone?: string;
-  // facebook?: string;
-  // insta?: string;
-  // pinterest?: string;
-  // twitter?: string;
-  // youtube?: string;
-  // linkedin?: string;
-  // tiktok?: string;
+  facebook?: string;
+  insta?: string;
+  pinterest?: string;
+  twitter?: string;
+  youtube?: string;
+  linkedin?: string;
+  tiktok?: string;
 }
+
+//social media links
+const socialMediaPlatforms = [
+  "facebook",
+  "insta",
+  "pinterest",
+  "twitter",
+  "youtube",
+  "linkedin",
+  "tiktok",
+] as const;
+
+type SocialMediaPlatform = (typeof socialMediaPlatforms)[number];
+
+const socialMediaIcons: Record<SocialMediaPlatform, string> = {
+  facebook: '../facebook.png',
+  insta: '../instagram.png',
+  pinterest: '../pinterest.png',
+  twitter: '../twitter.png',
+  youtube: './youtube.png',
+  linkedin: '/linkedin.png',
+  tiktok: '../tiktok.png'
+};
 
 const ProfilePage = () => {
 
@@ -50,24 +74,39 @@ const ProfilePage = () => {
           <TopBar />
 
            {/* Basic information and profile photo */}
-          <Box padding={35}>
+          <Box padding={35} >
+            <Box display="flex" width="500px">
+            <Box>
               <Text marginBottom={2} fontWeight="bold">
                    {user ? `${user.firstName} ${user.surname}` : 'Users'}
               </Text>
 
-              <Box color="#949494">
+              <Box>
+                  <Text color="#949494">
+                  <CalendarIcon marginRight={2} boxSize={4}/>
+                      {user ? `${user.location}` : 'Users'}
+                  </Text>
 
-              <Text>
-              <CalendarIcon marginRight={2} boxSize={4}/>
-                  {user ? `${user.location}` : 'Users'}
-              </Text>
 
+                  <Text  color="#949494">
+                  <StarIcon marginRight={2} boxSize={4} />
+                      {user ? `${user.job}` : 'Users'}
+                  </Text>
 
-              <Text>
-              <StarIcon marginRight={2} boxSize={4} />
-                  {user ? `${user.job}` : 'Users'}
-              </Text>
-
+              </Box>
+              </Box>
+              <Box marginRight={200}>
+              <Menu>
+                <MenuButton>
+                      <ChevronDownIcon boxSize={5}/>
+                  </MenuButton>
+                <MenuList>
+                <Link to="/report">
+                    <MenuItem>Report User</MenuItem>
+                </Link>
+                </MenuList>
+                </Menu>
+              </Box>
           </Box>
 
           {/* About me section */}
@@ -97,13 +136,26 @@ const ProfilePage = () => {
                 Email: {user ? `${user.email}` : 'Users'}
             </Text>
           </Box>
+
+          {/* Social media links */}
+          <Box marginTop={20}>
+          <Flex>
+            {user && socialMediaPlatforms.map((platform) => (
+              user[platform] && (
+                <SocialMedia
+                  key={platform}
+                  iconSrc={socialMediaIcons[platform]}
+                  iconAlt={`${platform} icon`}
+                  url={user[platform] as string}
+                />
+              )
+            ))}
+          </Flex>
+          </Box>
           </Box>
         
       </>
   )
 }
-
-
-
 
 export default ProfilePage;

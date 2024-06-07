@@ -171,8 +171,6 @@ app.delete('/deleteGallery/:id', async (req, res) => {
   }
 });
 
-
-//upload profile picture
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     const uploadPath = path.join(__dirname, 'uploads');
