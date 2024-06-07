@@ -79,3 +79,26 @@ export interface Gallery {
       throw error;
     }
   };
+
+  export const uploadImage = async (galleryTitle: string, files: File[]): Promise<void> => {
+    try {
+      const formData = new FormData();
+      files.forEach(file => {
+        formData.append("images", file);
+      });
+      formData.append("galleryTitle", galleryTitle);
+  
+      const response = await axios.post(`${BASE_URL}/uploadImages`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+  
+      if (response.status !== 200) {
+        throw new Error("Failed to upload images");
+      }
+    } catch (error) {
+      console.error("Error uploading images:", error);
+      throw error;
+    }
+  };
