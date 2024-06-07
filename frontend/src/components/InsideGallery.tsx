@@ -16,6 +16,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
+import { uploadImage } from "./api";  // Import the function
 
 interface Gallery {
   title: string;
@@ -40,17 +41,19 @@ const InsideGallery: React.FC<InsideGalleryProps> = ({ gallery }) => {
     const files = event.target.files;
     if (files && files.length > 0) {
       setSelectedFiles(Array.from(files));
-      console.log("Selected files:", selectedFiles);
     }
   };
 
-  const handleUpload = () => {
+  const handleUpload = async () => {
     setUploading(true);
-    // Simulating upload process
-    setTimeout(() => {
+    try {
+      await uploadImage(gallery.title, selectedFiles);
       setUploading(false);
       setUploadSuccess(true);
-    }, 2000); // 2 seconds for demonstration, replace this with actual upload process
+    } catch (error) {
+      console.error("Error uploading files:", error);
+      setUploading(false);
+    }
   };
 
   return (
@@ -84,7 +87,7 @@ const InsideGallery: React.FC<InsideGalleryProps> = ({ gallery }) => {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Select an image to upload</ModalHeader>
+          <ModalHeader>Select images to upload</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Input

@@ -3,7 +3,9 @@ const collection = require("./mongo");
 const multer = require("multer");
 const path = require("path");
 const cors = require("cors");
-const Gallery = require("./models/gallery"); //Gallery model
+const Gallery = require("./models/gallery"); 
+const { Image } = require("./mongo"); 
+
 const app = express();
 const galleries = [];
 
@@ -227,7 +229,30 @@ app.post('/uploadProfilePicture', upload.single('profilePicture'), async (req, r
   }
 });
 
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.post('/uploadImages', upload.array('images', 12), async (req, res) => {
+  const { galleryTitle } = req.body;
+
+  if (!req.files || req.files.length === 0) {
+    return res.status(400).json({ message: 'No files were uploaded.' });
+  }
+
+  try {
+    const imageDocs = req.files.map(file => ({
+      filename: file.filename,
+      path: file.path,
+      galleryTitle,
+    }));
+
+    await Image.insertMany(imageDocs);
+
+    res.status(200).json({ message: 'Images uploaded and saved to database successfully.' });
+  } catch (error) {
+    console.error('Error uploading images:', error);
+    res.status(500).json({ message: 'An error occurred while uploading images.' });
+  }
+});
+
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.listen(5000, () => {
   console.log("Server is running on port 5000");
