@@ -10,6 +10,7 @@ import NotificationPage from "./pages/NotificationPage";
 import GalleryPage from "./pages/GalleryPage";
 import GallerySettings from "./pages/GallerySettings"
 import ProfilePage from "./pages/ProfileDisplay"
+import Report from "./pages/ReportPage"
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           <Route path="/gallery_page" element={<GalleryPage />} />
           <Route path="/gallery/:id" element={<GallerySettings />} />
           <Route path="/user_profile" element={<ProfilePage />} />
+          <Route path="/report" element={<Report />} />
         </Routes>
       </Router>
     </>
