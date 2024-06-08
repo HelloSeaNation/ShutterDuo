@@ -270,7 +270,7 @@ app.post('/send-email', async (req, res) => {
 
   const msg = {
     to: 'shutterduoteam@gmail.com',
-    from: 'nonameorkeshia@gmail.com', // Replace with your verified email address
+    from: 'nonameorkeshia@gmail.com',
     subject: `Message from ${name}`,
     text: `You have received a new message from ${name} \n\n(${email}):\n\n${message}`,
   };

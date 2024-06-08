@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Flex, Box, Text, Card, CardBody, Image } from "@chakra-ui/react";
 import { fetchGalleriesData, Gallery } from "./api";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMessage, faGears, faUser } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom'
 
 interface DashboardContentProps {
   fetchGalleries: () => Promise<void>;
@@ -94,8 +97,64 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
           ))}
         </Box>
       )}
-      {renderBox("SHORTCUT", null)}
-    </Flex>
+      {renderBox("SHORTCUTS", 
+        <Box overflowY="auto">
+          <Link to="/profile_setting">
+        <Card>
+          <CardBody
+            mb={4}
+            border={"1px solid #D4D4D4"}
+            w={"95%"}
+            boxShadow={"md"}
+            borderRadius={"10"}
+            bgColor={"#F8F8F8"}
+          >
+            <Flex direction="row" alignItems="center">
+              <FontAwesomeIcon icon={faUser} color="#6B6B6B" size="2x" />
+              <Text ml={3}>Edit Profile</Text>
+            </Flex>
+          </CardBody>
+        </Card>
+        </Link>
+
+        <Link to="/account_setting">
+        <Card>
+          <CardBody
+            mb={4}
+            border={"1px solid #D4D4D4"}
+            w={"95%"}
+            boxShadow={"md"}
+            borderRadius={"10"}
+            bgColor={"#F8F8F8"}
+          >
+            <Flex direction="row" alignItems="center">
+              <FontAwesomeIcon icon={faGears} color="#6B6B6B" size="2x" />
+              <Text ml={3}>Account Settings</Text>
+            </Flex>
+          </CardBody>
+        </Card>
+        </Link>
+
+        <Link to="/report">
+        <Card>
+          <CardBody
+            mb={4}
+            border={"1px solid #D4D4D4"}
+            w={"95%"}
+            boxShadow={"md"}
+            borderRadius={"10"}
+            bgColor={"#F8F8F8"}
+          >
+            <Flex direction="row" alignItems="center">
+              <FontAwesomeIcon icon={faMessage} color="#6B6B6B" size="2x" />
+              <Text ml={3}>Contact Us</Text>
+            </Flex>
+          </CardBody>
+        </Card>
+        </Link>
+      </Box>
+    )}
+  </Flex>
   );
 };
 
