@@ -32,7 +32,7 @@ const Report: React.FC = () => {
     <Box>
         <TopBar />
         <Box maxW="md" mx="auto" mt={5}>
-        <Text color="#4267CF">Submit a report</Text>
+        <Text color="#4267CF" fontSize="30px" fontWeight="bold" textAlign="center">Submit a report</Text>
         <form onSubmit={handleSubmit}>
             <FormControl id="name" mb={4}>
             <FormLabel>Name</FormLabel>
@@ -44,11 +44,13 @@ const Report: React.FC = () => {
             </FormControl>
             <FormControl id="message" mb={4}>
             <FormLabel>Write your report here</FormLabel>
-            <Textarea name="message" value={formData.message} onChange={handleChange} />
+            <Textarea name="message" value={formData.message} onChange={handleChange} h="250px"/>
             </FormControl>
-            <Button type="submit" color="#4267CF" onClick={handleSubmit}>
-            Submit
+            <Box display="flex" justifyContent="center" onClick={handleSubmit}>
+            <Button type="submit" color="white" backgroundColor="#4267CF">
+              Submit
             </Button>
+          </Box>
         </form>
         </Box>
     </Box>
