@@ -1,10 +1,14 @@
 const express = require("express");
-const collection = require("./mongo");
+const { collection, Image } = require("./mongo");;
 const multer = require("multer");
 const path = require("path");
 const cors = require("cors");
 const Gallery = require("./models/gallery"); 
-const { Image } = require("./mongo"); 
+const nodemailer = require('nodemailer');
+const sendGridMail = require('@sendgrid/mail');
+const bodyParser = require('body-parser');
+
+sendGridMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 const app = express();
 const galleries = [];
@@ -12,13 +16,20 @@ const galleries = [];
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
+app.use(bodyParser.json());
+
+const Users = collection;
 
 app.get("/", (req, res) => {
   res.send("API is running");
 });
 
+console.log(collection);
+console.log("SendGrid API Key:", process.env.SENDGRID_API_KEY);
+
 app.post("/checkEmail", async (req, res) => {
   const { email } = req.body;
+  console.log(`Email to check: ${email}`);
 
   try {
     const check = await collection.findOne({ email: email });
@@ -207,50 +218,72 @@ app.put("/editGallery/:id", async (req, res) => {
 
 const upload = multer({ storage: storage });
 
-app.post('/uploadProfilePicture', upload.single('profilePicture'), async (req, res) => {
-  const { email } = req.body;
+// app.post('/uploadProfilePicture', upload.single('profilePicture'), async (req, res) => {
+//   const { email } = req.body;
+
+//   try {
+//     const user = await collection.findOne({ email });
+
+//     if (!user) {
+//       return res.status(404).json({ message: 'User not found' });
+//     }
+
+//     user.profilePicture = req.file.path;
+//     await user.save();
+
+//     res.json({ message: 'Profile picture uploaded successfully', user });
+//   } catch (error) {
+//     console.error('Error uploading profile picture:', error);
+//     res.status(500).json({ message: 'An error occurred while uploading the profile picture' });
+//   }
+// });
+
+// app.post('/uploadImages', upload.array('images', 12), async (req, res) => {
+//   const { galleryTitle } = req.body;
+
+//   if (!req.files || req.files.length === 0) {
+//     return res.status(400).json({ message: 'No files were uploaded.' });
+//   }
+
+//   try {
+//     const imageDocs = req.files.map(file => ({
+//       filename: file.filename,
+//       path: file.path,
+//       galleryTitle,
+//     }));
+
+//     await Image.insertMany(imageDocs);
+
+//     res.status(200).json({ message: 'Images uploaded and saved to database successfully.' });
+//   } catch (error) {
+//     console.error('Error uploading images:', error);
+//     res.status(500).json({ message: 'An error occurred while uploading images.' });
+//   }
+// });
+
+// app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+
+//send report email
+app.post('/send-email', async (req, res) => {
+  const { name, email, message } = req.body;
+
+  const msg = {
+    to: 'shutterduoteam@gmail.com',
+    from: 'nonameorkeshia@gmail.com', // Replace with your verified email address
+    subject: `Message from ${name}`,
+    text: `You have received a new message from ${name} \n\n(${email}):\n\n${message}`,
+  };
 
   try {
-    const user = await collection.findOne({ email });
-
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-
-    user.profilePicture = req.file.path;
-    await user.save();
-
-    res.json({ message: 'Profile picture uploaded successfully', user });
+    await sendGridMail.send(msg);
+    res.status(200).send('Email sent successfully');
   } catch (error) {
-    console.error('Error uploading profile picture:', error);
-    res.status(500).json({ message: 'An error occurred while uploading the profile picture' });
+    console.error("Error response from SendGrid:", error.response.body);
+    res.status(500).send('Error sending email');
   }
 });
 
-app.post('/uploadImages', upload.array('images', 12), async (req, res) => {
-  const { galleryTitle } = req.body;
-
-  if (!req.files || req.files.length === 0) {
-    return res.status(400).json({ message: 'No files were uploaded.' });
-  }
-
-  try {
-    const imageDocs = req.files.map(file => ({
-      filename: file.filename,
-      path: file.path,
-      galleryTitle,
-    }));
-
-    await Image.insertMany(imageDocs);
-
-    res.status(200).json({ message: 'Images uploaded and saved to database successfully.' });
-  } catch (error) {
-    console.error('Error uploading images:', error);
-    res.status(500).json({ message: 'An error occurred while uploading images.' });
-  }
-});
-
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.listen(5000, () => {
   console.log("Server is running on port 5000");
