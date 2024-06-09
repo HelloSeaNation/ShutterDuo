@@ -238,30 +238,30 @@ const upload = multer({ storage: storage });
 //   }
 // });
 
-// app.post('/uploadImages', upload.array('images', 12), async (req, res) => {
-//   const { galleryTitle } = req.body;
+app.post('/uploadImages', upload.array('images', 12), async (req, res) => {
+  const { galleryTitle } = req.body;
 
-//   if (!req.files || req.files.length === 0) {
-//     return res.status(400).json({ message: 'No files were uploaded.' });
-//   }
+  if (!req.files || req.files.length === 0) {
+    return res.status(400).json({ message: 'No files were uploaded.' });
+  }
 
-//   try {
-//     const imageDocs = req.files.map(file => ({
-//       filename: file.filename,
-//       path: file.path,
-//       galleryTitle,
-//     }));
+  try {
+    const imageDocs = req.files.map(file => ({
+      filename: file.filename,
+      path: file.path,
+      galleryTitle,
+    }));
 
-//     await Image.insertMany(imageDocs);
+    await Image.insertMany(imageDocs);
 
-//     res.status(200).json({ message: 'Images uploaded and saved to database successfully.' });
-//   } catch (error) {
-//     console.error('Error uploading images:', error);
-//     res.status(500).json({ message: 'An error occurred while uploading images.' });
-//   }
-// });
+    res.status(200).json({ message: 'Images uploaded and saved to database successfully.' });
+  } catch (error) {
+    console.error('Error uploading images:', error);
+    res.status(500).json({ message: 'An error occurred while uploading images.' });
+  }
+});
 
-// app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 
 //send report email
