@@ -70,18 +70,9 @@ const newSchema = new mongoose.Schema({
 const collection = mongoose.model("Users", newSchema);
 
 const ImageSchema = new mongoose.Schema({
-  filename: {
-    type: String,
-    required: true,
-  },
-  path: {
-    type: String,
-    required: true,
-  },
-  galleryTitle: {
-    type: String,
-    required: true,
-  },
+  filename: String,
+  imageURL: String,
+  galleryTitle: String,
   uploadedAt: {
     type: Date,
     default: Date.now,

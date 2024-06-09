@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import {
   Box,
   Flex,
@@ -14,9 +14,10 @@ import {
   ModalBody,
   ModalCloseButton,
   useDisclosure,
+  Image
 } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
-import { uploadImage } from "./api";  // Import the function
+import { uploadImage, fetchImagesByGalleryTitle } from "./api"; // Import the function
 
 interface Gallery {
   title: string;
@@ -32,6 +33,20 @@ const InsideGallery: React.FC<InsideGalleryProps> = ({ gallery }) => {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [uploading, setUploading] = useState<boolean>(false);
   const [uploadSuccess, setUploadSuccess] = useState<boolean>(false);
+  const [images, setImages] = useState<any[]>([]);
+
+  useEffect(() => {
+    const loadImages = async () => {
+      try {
+        const imageMetadata = await fetchImagesByGalleryTitle(gallery.title);
+        setImages(imageMetadata);
+      } catch (error) {
+        console.error("Error loading images:", error);
+      }
+    };
+
+    loadImages();
+  }, [gallery.title]);
 
   const handleAddPhotoClick = () => {
     onOpen();
@@ -50,6 +65,11 @@ const InsideGallery: React.FC<InsideGalleryProps> = ({ gallery }) => {
       await uploadImage(gallery.title, selectedFiles);
       setUploading(false);
       setUploadSuccess(true);
+      onClose();
+
+      // Reload images after upload
+      const imageMetadata = await fetchImagesByGalleryTitle(gallery.title);
+      setImages(imageMetadata);
     } catch (error) {
       console.error("Error uploading files:", error);
       setUploading(false);
@@ -118,22 +138,18 @@ const InsideGallery: React.FC<InsideGalleryProps> = ({ gallery }) => {
         </ModalContent>
       </Modal>
 
-      {uploadSuccess && (
-        <>
-          <Divider w={"90%"} m={"auto"} mt={4} />
-          <Flex flexWrap="wrap" justifyContent="center" mt={4}>
-            {selectedFiles.map((file, index) => (
-              <Box key={index} m={2}>
-                <img
-                  src={URL.createObjectURL(file)}
-                  alt={`Uploaded ${file.name}`}
-                  style={{ maxWidth: "200px", maxHeight: "200px" }}
-                />
-              </Box>
-            ))}
-          </Flex>
-        </>
-      )}
+      <Divider w={"90%"} m={"auto"} mt={4} />
+      <Flex flexWrap="wrap" justifyContent="center" mt={4}>
+        {images.map((image) => (
+          <Box key={image._id} m={2}>
+            <img
+              src={image.imageURL}
+              alt={image.filename}
+              style={{ width: "200px", height: "auto" }}
+            />
+          </Box>
+        ))}
+      </Flex>
     </Box>
   );
 };
