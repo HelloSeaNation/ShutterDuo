@@ -54,23 +54,23 @@ const SearchResults = () => {
           <Text as="span" color="#4267CF"> {searchTerm}</Text>
         </Text>
       </Box>
-      <Box display="flex" flexDirection="column" alignItems="center" mt="20px">
-        {loading ? (
-          <Text>Loading...</Text>
-        ) : error ? (
-          <Text color="red.500">{error}</Text>
-        ) : (
-          <SimpleGrid columns={[1, null, 3]} spacing="40px" mt="20px">
-            {results.map((user) => (
-              <Box key={user._id} borderWidth="1px" borderRadius="lg" overflow="hidden" p="6">
-                <Text fontWeight="bold">{user.firstName} {user.surname}</Text>
-                <Text>{user.location}</Text>
-                <Text>{user.job}</Text>
-              </Box>
-            ))}
-          </SimpleGrid>
-        )}
-      </Box>
+      <Box display="flex" flexDirection="column" alignItems="center" minHeight="100vh" marginTop="30px">
+            {loading ? (
+                <Text>Loading...</Text>
+            ) : error ? (
+                <Text color="red.500">{error}</Text>
+            ) : (
+                <SimpleGrid columns={[1, null]} spacing="40px" width="80%" maxW="1200px" mx="auto">
+                {results.map((user) => (
+                    <Box key={user._id} borderWidth="1px" borderRadius="lg" overflow="hidden" p="4">
+                    <Text fontWeight="bold">{user.firstName} {user.surname}</Text>
+                    <Text color="#9E9E9E">{user.location}</Text>
+                    <Text color="#9E9E9E">{user.job}</Text>
+                    </Box>
+                ))}
+                </SimpleGrid>
+            )}
+        </Box>
     </>
   );
 };
