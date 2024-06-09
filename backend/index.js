@@ -263,7 +263,41 @@ app.post('/uploadImages', upload.array('images', 12), async (req, res) => {
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
+// Fetch images by gallery title
+app.get('/images/:galleryTitle', async (req, res) => {
+  const { galleryTitle } = req.params;
 
+  try {
+    const images = await Image.find({ galleryTitle });
+
+    if (images.length === 0) {
+      return res.status(404).json({ message: 'No images found for this gallery' });
+    }
+
+    res.json(images);
+  } catch (error) {
+    console.error('Error fetching images:', error);
+    res.status(500).json({ message: 'An error occurred while fetching images' });
+  }
+});
+
+// Fetch and serve an image by filename
+app.get('/image/:filename', async (req, res) => {
+  const { filename } = req.params;
+
+  try {
+    const image = await Image.findOne({ filename });
+
+    if (!image) {
+      return res.status(404).json({ message: 'Image not found' });
+    }
+
+    res.sendFile(path.resolve(image.path));
+  } catch (error) {
+    console.error('Error fetching image:', error);
+    res.status(500).json({ message: 'An error occurred while fetching the image' });
+  }
+}); 
 //send report email
 app.post('/send-email', async (req, res) => {
   const { name, email, message } = req.body;

@@ -5,6 +5,14 @@ export interface Gallery {
     title: string;
     description: string;
   }
+
+  export interface Image {
+    _id: string;
+    filename: string;
+    path: string;
+    galleryTitle: string;
+  }
+  const BASE_URL = "http://localhost:5000";
   
   export const fetchGalleriesData = async (): Promise<Gallery[]> => {
     try {
@@ -68,8 +76,6 @@ export interface Gallery {
       throw error;
     }
   };
-  const BASE_URL = "http://localhost:5000";
-
 
   export const updateGalleryTitle = async (id: string, title: string): Promise<void> => {
     try {
@@ -99,6 +105,33 @@ export interface Gallery {
       }
     } catch (error) {
       console.error("Error uploading images:", error);
+      throw error;
+    }
+  };
+
+  export const fetchImagesByGalleryTitle = async (galleryTitle: string): Promise<Image[]> => {
+    try {
+      const response = await fetch(`${BASE_URL}/images/${galleryTitle}`);
+      if (!response.ok) {
+        throw new Error("Failed to fetch images");
+      }
+      const data: Image[] = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Error fetching images:", error);
+      throw error;
+    }
+  };
+  
+  // Fetch a specific image by filename
+  export const fetchImageByFilename = async (filename: string): Promise<Blob> => {
+    try {
+      const response = await axios.get(`${BASE_URL}/image/${filename}`, {
+        responseType: 'blob',
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching image:", error);
       throw error;
     }
   };
