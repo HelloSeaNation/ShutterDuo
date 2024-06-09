@@ -14,6 +14,7 @@ import {
   ModalBody,
   ModalCloseButton,
   useDisclosure,
+  Image
 } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 import { uploadImage, fetchImagesByGalleryTitle } from "./api"; // Import the function
@@ -142,7 +143,7 @@ const InsideGallery: React.FC<InsideGalleryProps> = ({ gallery }) => {
         {images.map((image) => (
           <Box key={image._id} m={2}>
             <img
-              src={`http://localhost:5000/uploads/${image.filename}`}
+              src={image.imageURL}
               alt={image.filename}
               style={{ width: "200px", height: "auto" }}
             />

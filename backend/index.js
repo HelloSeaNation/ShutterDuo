@@ -248,7 +248,7 @@ app.post('/uploadImages', upload.array('images', 12), async (req, res) => {
   try {
     const imageDocs = req.files.map(file => ({
       filename: file.filename,
-      path: file.path,
+      imageURL: `${req.protocol}://${req.get('host')}/uploads/${file.filename}`,
       galleryTitle,
     }));
 
