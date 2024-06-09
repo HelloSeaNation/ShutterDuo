@@ -318,6 +318,12 @@ app.post('/send-email', async (req, res) => {
   }
 });
 
+//search photographer
+
+// Use the search router
+const searchRouter = require('./router');
+app.use('/api', searchRouter);
+
 
 app.listen(5000, () => {
   console.log("Server is running on port 5000");

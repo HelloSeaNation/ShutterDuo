@@ -11,6 +11,7 @@ import GalleryPage from "./pages/GalleryPage";
 import GallerySettings from "./pages/GallerySettings"
 import ProfilePage from "./pages/ProfileDisplay"
 import Report from "./pages/ReportPage"
+import SearchResults from "./pages/SearchResults"
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path="/account_setting" element={<AccountSetting />} />
           <Route path="/highlight_setting" element={<HighlightSetting />} />
           <Route path="/search_photographer" element={<SearchBar />} />
+          <Route path="/search" element={<SearchResults />} />
           <Route path="/notification_page" element={<NotificationPage />} />
           <Route path="/gallery_page" element={<GalleryPage />} />
           <Route path="/gallery/:id" element={<GallerySettings />} />
