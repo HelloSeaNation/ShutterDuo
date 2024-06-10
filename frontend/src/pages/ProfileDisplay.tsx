@@ -75,47 +75,43 @@ const ProfilePage = () => {
           <TopBar />
 
            {/* Basic information and profile photo */}
-          <Box padding={35} >
+           <Box padding={35}>
+        <Flex align="center">
           {user && user.profilePicture && (
-              <img
-                src={user.profilePicture}
-                alt="Profile"
-                style={{ width: '150px', height: '150px', borderRadius: '50%' }}
-              />
-            )}
-            <Box display="flex" width="500px">
+            <img
+              src={user && user.profilePicture ? user.profilePicture : "../defaultProfileImage.jpg"}
+              alt="Profile"
+              style={{ width: '150px', height: '150px', borderRadius: '50%', marginRight: '20px' }}
+            />
+          )}
+          <Box>
+            <Text marginBottom={2} fontWeight="bold">
+              {user ? `${user.firstName} ${user.surname}` : 'User'}
+            </Text>
             <Box>
-              <Text marginBottom={2} fontWeight="bold">
-                   {user ? `${user.firstName} ${user.surname}` : 'Users'}
+              <Text color="#949494">
+                <CalendarIcon marginRight={2} boxSize={4} />
+                {user ? `${user.location}` : 'Location'}
               </Text>
-
-              <Box>
-                  <Text color="#949494">
-                  <CalendarIcon marginRight={2} boxSize={4}/>
-                      {user ? `${user.location}` : 'Users'}
-                  </Text>
-
-
-                  <Text  color="#949494">
-                  <StarIcon marginRight={2} boxSize={4} />
-                      {user ? `${user.job}` : 'Users'}
-                  </Text>
-
-              </Box>
-              </Box>
-              <Box marginRight={200}>
-              <Menu>
-                <MenuButton>
-                      <ChevronDownIcon boxSize={5}/>
-                  </MenuButton>
-                <MenuList>
-                <Link to="/report">
-                    <MenuItem>Report User</MenuItem>
-                </Link>
-                </MenuList>
-                </Menu>
-              </Box>
+              <Text color="#949494">
+                <StarIcon marginRight={2} boxSize={4} />
+                {user ? `${user.job}` : 'Job'}
+              </Text>
+            </Box>
           </Box>
+          <Box marginLeft="150px">
+            <Menu>
+              <MenuButton>
+                <ChevronDownIcon boxSize={5} />
+              </MenuButton>
+              <MenuList>
+                <Link to="/report">
+                  <MenuItem>Report User</MenuItem>
+                </Link>
+              </MenuList>
+            </Menu>
+          </Box>
+        </Flex>
 
           {/* About me section */}
           <Box marginTop={50} >
