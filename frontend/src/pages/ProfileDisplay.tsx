@@ -71,7 +71,7 @@ const ProfilePage = () => {
   }, []);
 
   return(
-      <>
+<>
           <TopBar />
 
            {/* Basic information and profile photo */}
@@ -114,7 +114,7 @@ const ProfilePage = () => {
         </Flex>
 
           {/* About me section */}
-          <Box marginTop={50} >
+          <Box marginTop={50}>
             <Text marginBottom={3} fontWeight="bold"> About Me </Text>
 
                 <Box borderRadius={10}
@@ -156,6 +156,12 @@ const ProfilePage = () => {
             ))}
           </Flex>
           </Box>
+          </Box>
+
+          {/* Highlights section */}
+          <Box position="absolute" top="100px" right="525px" color="grey">
+            <Text fontSize="2xl" fontWeight="bold">Highlights</Text>
+            {/* Add your highlights content here */}
           </Box>
         
       </>
