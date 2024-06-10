@@ -40,7 +40,7 @@ const SearchResults = () => {
         setLoading(false);
       }
     };
-  
+
     if (searchTerm) {
       fetchResults();
     }
@@ -63,6 +63,8 @@ const SearchResults = () => {
           <Text>Loading...</Text>
         ) : error ? (
           <Text color="red.500">{error}</Text>
+        ) : results.length === 0 ? (
+          <Text fontSize="xl" color="gray.500">Sorry, no profiles match this search</Text>
         ) : (
           <SimpleGrid columns={[1, null]} spacing="40px" width="80%" maxW="1200px" mx="auto">
             {results.map((user) => (
