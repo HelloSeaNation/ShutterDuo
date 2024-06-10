@@ -22,6 +22,7 @@ interface User { //props for profile setup and editing
   youtube?: string;
   linkedin?: string;
   tiktok?: string;
+  profilePicture?: string;
 }
 
 //social media links
@@ -70,47 +71,50 @@ const ProfilePage = () => {
   }, []);
 
   return(
-      <>
+<>
           <TopBar />
 
            {/* Basic information and profile photo */}
-          <Box padding={35} >
-            <Box display="flex" width="500px">
+           <Box padding={35}>
+        <Flex align="center">
+          {user && user.profilePicture && (
+            <img
+              src={user && user.profilePicture ? user.profilePicture : "../defaultProfileImage.jpg"}
+              alt="Profile"
+              style={{ width: '150px', height: '150px', borderRadius: '50%', marginRight: '20px' }}
+            />
+          )}
+          <Box>
+            <Text marginBottom={2} fontWeight="bold">
+              {user ? `${user.firstName} ${user.surname}` : 'User'}
+            </Text>
             <Box>
-              <Text marginBottom={2} fontWeight="bold">
-                   {user ? `${user.firstName} ${user.surname}` : 'Users'}
+              <Text color="#949494">
+                <CalendarIcon marginRight={2} boxSize={4} />
+                {user ? `${user.location}` : 'Location'}
               </Text>
-
-              <Box>
-                  <Text color="#949494">
-                  <CalendarIcon marginRight={2} boxSize={4}/>
-                      {user ? `${user.location}` : 'Users'}
-                  </Text>
-
-
-                  <Text  color="#949494">
-                  <StarIcon marginRight={2} boxSize={4} />
-                      {user ? `${user.job}` : 'Users'}
-                  </Text>
-
-              </Box>
-              </Box>
-              <Box marginRight={200}>
-              <Menu>
-                <MenuButton>
-                      <ChevronDownIcon boxSize={5}/>
-                  </MenuButton>
-                <MenuList>
-                <Link to="/report">
-                    <MenuItem>Report User</MenuItem>
-                </Link>
-                </MenuList>
-                </Menu>
-              </Box>
+              <Text color="#949494">
+                <StarIcon marginRight={2} boxSize={4} />
+                {user ? `${user.job}` : 'Job'}
+              </Text>
+            </Box>
           </Box>
+          <Box marginLeft="150px">
+            <Menu>
+              <MenuButton>
+                <ChevronDownIcon boxSize={5} />
+              </MenuButton>
+              <MenuList>
+                <Link to="/report">
+                  <MenuItem>Report User</MenuItem>
+                </Link>
+              </MenuList>
+            </Menu>
+          </Box>
+        </Flex>
 
           {/* About me section */}
-          <Box marginTop={50} >
+          <Box marginTop={50}>
             <Text marginBottom={3} fontWeight="bold"> About Me </Text>
 
                 <Box borderRadius={10}
@@ -152,6 +156,12 @@ const ProfilePage = () => {
             ))}
           </Flex>
           </Box>
+          </Box>
+
+          {/* Highlights section */}
+          <Box position="absolute" top="100px" right="525px" color="grey">
+            <Text fontSize="2xl" fontWeight="bold">Highlights</Text>
+            {/* Add your highlights content here */}
           </Box>
         
       </>

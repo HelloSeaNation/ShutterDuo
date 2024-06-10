@@ -15,7 +15,7 @@ import axios from 'axios'
 interface User { //user props
 firstName: string;
 surname: string;
-profilePicture: string;
+profilePicture?: string;
 }
 
 const TopBar = () => {
@@ -77,7 +77,7 @@ return (
             <Menu>
               <MenuButton>
                 <Image
-                   src="../defaultProfileImage.jpg"
+                  src={user && user.profilePicture ? user.profilePicture : "../defaultProfileImage.jpg"}
                   alt="dropdown"
                   w={"40px"}
                   h={"40px"}
@@ -91,7 +91,7 @@ return (
                 <MenuItem as={Link} to="/profile_setting">
                   <Flex direction={"row"} align={"center"}>
                     <Image
-                      src="../defaultProfileImage.jpg"
+                      src={user && user.profilePicture ? user.profilePicture : "../defaultProfileImage.jpg"}
                       alt="dropdown"
                       w={"35px"}
                       h={"35px"}
@@ -117,8 +117,5 @@ return (
   </Box>
 );
 };
-
-
-
 
 export default TopBar;

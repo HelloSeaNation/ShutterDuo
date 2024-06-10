@@ -16,6 +16,7 @@ const SocialMedia: React.FC<SocialMediaProps> = ({ iconSrc, iconAlt, url }) => {
                     src={iconSrc}
                     alt={iconAlt}
                     boxSize="60px"
+                    ml="10px"
                 />
             </Box>
         ) : null
