@@ -22,6 +22,7 @@ interface User { //props for profile setup and editing
   youtube?: string;
   linkedin?: string;
   tiktok?: string;
+  profilePicture?: string;
 }
 
 //social media links
@@ -75,6 +76,13 @@ const ProfilePage = () => {
 
            {/* Basic information and profile photo */}
           <Box padding={35} >
+          {user && user.profilePicture && (
+              <img
+                src={user.profilePicture}
+                alt="Profile"
+                style={{ width: '150px', height: '150px', borderRadius: '50%' }}
+              />
+            )}
             <Box display="flex" width="500px">
             <Box>
               <Text marginBottom={2} fontWeight="bold">

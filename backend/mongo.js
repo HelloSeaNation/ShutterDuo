@@ -65,6 +65,9 @@ const newSchema = new mongoose.Schema({
   tiktok: {
     type: String,
   },
+  profilePicture: {
+    type: String,
+  },
 });
 
 const collection = mongoose.model("Users", newSchema);

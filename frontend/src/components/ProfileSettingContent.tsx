@@ -44,10 +44,8 @@ interface User { //props for profile setup and editing
 
 const ProfileSettingContent = () => {
 
-
- const [user, setUser] = useState<User | null>(null);
- // const [profilePicture, setProfilePicture] = useState<File | null>(null);
-
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [user, setUser] = useState<User | null>(null);
 
  useEffect(() => {
    const fetchUserData = async () => {
@@ -68,29 +66,45 @@ const ProfileSettingContent = () => {
  }, []);
 
 
- // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
- //   if (e.target.files) {
- //     setProfilePicture(e.target.files[0]);
- //   }
- // };
-
-
  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
    const { name, value } = e.target;
    setUser(prevState => prevState ? { ...prevState, [name]: value } : null);
  };
 
 
- const handleSaveProfile = async () => {
-   if (user) {
-     try {
-       await axios.put(`http://localhost:5000/user/${user.email}`, user);
-       alert("Profile updated successfully");
-     } catch (error) {
-       console.error("Error updating profile:", error);
-       alert("An error occurred while updating the profile");
-     }
-   }
+   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setSelectedFile(e.target.files[0]);
+    }
+  };
+
+  const handleSaveProfile = async () => {
+    if (user) {
+      try {
+        // If a file is selected, upload it first
+        if (selectedFile) {
+          const formData = new FormData();
+          formData.append('profilePicture', selectedFile);
+          formData.append('email', user.email); // Pass the user's email for identification
+
+          const uploadResponse = await axios.post('http://localhost:5000/uploadProfilePicture', formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          });
+
+          // Update user's profile picture URL
+          user.profilePicture = uploadResponse.data.user.profilePicture;
+        }
+
+        await axios.put(`http://localhost:5000/user/${user.email}`, user);
+        alert("Profile updated successfully");
+      } catch (error) {
+        console.error("Error updating profile:", error);
+        alert("An error occurred while updating the profile");
+      }
+    }
+
  };
 
 
@@ -98,7 +112,7 @@ const ProfileSettingContent = () => {
    <Flex w={"60%"} margin={"auto"} h={"100vh"} direction={"column"}>
      <FormControl>
      <FormLabel style={TextStyle}>Profile Image</FormLabel>
-       <Input type="file" //onChange={handleFileChange}
+       <Input type="file" onChange={handleFileChange}
        />
 
 
