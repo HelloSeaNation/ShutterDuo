@@ -218,26 +218,6 @@ app.put("/editGallery/:id", async (req, res) => {
 
 const upload = multer({ storage: storage });
 
-// app.post('/uploadProfilePicture', upload.single('profilePicture'), async (req, res) => {
-//   const { email } = req.body;
-
-//   try {
-//     const user = await collection.findOne({ email });
-
-//     if (!user) {
-//       return res.status(404).json({ message: 'User not found' });
-//     }
-
-//     user.profilePicture = req.file.path;
-//     await user.save();
-
-//     res.json({ message: 'Profile picture uploaded successfully', user });
-//   } catch (error) {
-//     console.error('Error uploading profile picture:', error);
-//     res.status(500).json({ message: 'An error occurred while uploading the profile picture' });
-//   }
-// });
-
 app.post('/uploadImages', upload.array('images', 12), async (req, res) => {
   const { galleryTitle } = req.body;
 
@@ -318,12 +298,50 @@ app.post('/send-email', async (req, res) => {
   }
 });
 
-//search photographer
-
-// Use the search router
+//search photographer using search router
 const searchRouter = require('./router');
 app.use('/api', searchRouter);
 
+
+//upload profile picture
+app.post('/uploadProfilePicture', upload.single('profilePicture'), async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const user = await collection.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Create the URL for the uploaded file
+    const profilePictureUrl = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
+    
+    user.profilePicture = profilePictureUrl;
+    await user.save();
+
+    res.json({ message: 'Profile picture uploaded successfully', user });
+  } catch (error) {
+    console.error('Error uploading profile picture:', error);
+    res.status(500).json({ message: 'An error occurred while uploading the profile picture' });
+  }
+});
+
+// Endpoint to serve profile pictures
+app.get('/profilePicture/:filename', (req, res) => {
+  const { filename } = req.params;
+  const filePath = path.join(__dirname, 'uploads', filename);
+
+  res.sendFile(filePath, (err) => {
+    if (err) {
+      console.error('Error serving profile picture:', err);
+      res.status(404).json({ message: 'Profile picture not found' });
+    }
+  });
+});
+
+// Serve static files from the uploads directory
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.listen(5000, () => {
   console.log("Server is running on port 5000");
