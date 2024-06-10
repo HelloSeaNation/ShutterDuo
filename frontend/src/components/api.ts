@@ -135,3 +135,15 @@ export interface Gallery {
       throw error;
     }
   };
+
+  export const deleteImage = async (imageId: string): Promise<void> => {
+    try {
+      const response = await axios.delete(`${BASE_URL}/deleteImage/${imageId}`);
+      if (response.status !== 200) {
+        throw new Error("Failed to delete image");
+      }
+    } catch (error) {
+      console.error("Error deleting image:", error);
+      throw error;
+    }
+  };

@@ -17,7 +17,7 @@ import {
   Image
 } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
-import { uploadImage, fetchImagesByGalleryTitle } from "./api"; // Import the function
+import { uploadImage, fetchImagesByGalleryTitle, deleteImage } from "./api"; // Import the function
 
 interface Gallery {
   title: string;
@@ -73,6 +73,17 @@ const InsideGallery: React.FC<InsideGalleryProps> = ({ gallery }) => {
     } catch (error) {
       console.error("Error uploading files:", error);
       setUploading(false);
+    }
+  };
+
+  const handleDeleteImage = async (imageId: string) => {
+    try {
+      await deleteImage(imageId);
+
+      // Remove the deleted image from the state
+      setImages(images.filter(image => image._id !== imageId));
+    } catch (error) {
+      console.error("Error deleting image:", error);
     }
   };
 
@@ -142,11 +153,21 @@ const InsideGallery: React.FC<InsideGalleryProps> = ({ gallery }) => {
       <Flex flexWrap="wrap" justifyContent="center" mt={4}>
         {images.map((image) => (
           <Box key={image._id} m={2}>
-            <img
+            <Image
               src={image.imageURL}
               alt={image.filename}
               style={{ width: "200px", height: "auto" }}
             />
+             <Button
+              position="absolute"
+              top="0"
+              right="0"
+              colorScheme="red"
+              size="xs"
+              onClick={() => handleDeleteImage(image._id)}
+            >
+              Delete
+            </Button>
           </Box>
         ))}
       </Flex>
