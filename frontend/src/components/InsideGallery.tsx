@@ -91,9 +91,6 @@ const InsideGallery: React.FC<InsideGalleryProps> = ({ gallery }) => {
       console.log("Selected Image IDs for deletion:", selectedImageIds);
       await deleteImages(selectedImageIds);
       // Reload images after deletion
-      const imageMetadata = await fetchImagesByGalleryTitle(gallery.title);
-      setImages(imageMetadata);
-      setSelectedImageIds([]); // Clear selected images
       window.location.reload();
     } catch (error) {
       console.error("Error deleting images:", error);
