@@ -278,6 +278,23 @@ app.get('/image/:filename', async (req, res) => {
     res.status(500).json({ message: 'An error occurred while fetching the image' });
   }
 }); 
+
+// Delete image
+app.delete('/deleteImages', async (req, res) => {
+  const { ids } = req.body;
+
+  try {
+    const results = await Image.deleteMany({ _id: { $in: ids } });
+    if (results.deletedCount > 0) {
+      res.status(200).json({ message: "Images deleted successfully" });
+    } else {
+      res.status(404).json({ message: "No images found to delete" });
+    }
+  } catch (error) {
+    console.error("Error deleting images:", error);
+    res.status(500).json({ message: "An error occurred while deleting images" });
+  }
+});
 //send report email
 app.post('/send-email', async (req, res) => {
   const { name, email, message } = req.body;
