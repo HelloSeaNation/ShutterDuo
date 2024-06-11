@@ -136,6 +136,16 @@ export interface Gallery {
     }
   };
 
+  export const fetchImagesByGalleryID = async (galleryID: string) => {
+    try {
+      const response = await axios.get(`${BASE_URL}/imagesByGallery/${galleryID}`);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching images by gallery ID:", error);
+      throw error;
+    }
+  };
+
   export const deleteImages = async (imageIds: string[]): Promise<void> => {
     try {
       const response = await axios.delete(`${BASE_URL}/deleteImages`, {

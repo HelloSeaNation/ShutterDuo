@@ -18,9 +18,10 @@ import {
   Checkbox,
 } from "@chakra-ui/react";
 import { AddIcon, DeleteIcon } from "@chakra-ui/icons";
-import { uploadImage, fetchImagesByGalleryTitle, deleteImages } from "./api"; // Import the function
+import { uploadImage, fetchImagesByGalleryID, deleteImages } from "./api"; // Import the function
 
 interface Gallery {
+  _id: string;
   title: string;
 }
 
@@ -40,7 +41,7 @@ const InsideGallery: React.FC<InsideGalleryProps> = ({ gallery }) => {
   useEffect(() => {
     const loadImages = async () => {
       try {
-        const imageMetadata = await fetchImagesByGalleryTitle(gallery.title);
+        const imageMetadata = await fetchImagesByGalleryID(gallery._id); // Use gallery._id
         setImages(imageMetadata);
       } catch (error) {
         console.error("Error loading images:", error);
@@ -48,7 +49,7 @@ const InsideGallery: React.FC<InsideGalleryProps> = ({ gallery }) => {
     };
 
     loadImages();
-  }, [gallery.title]);
+  }, [gallery._id]);
 
   const handleAddPhotoClick = () => {
     onOpen();
@@ -70,7 +71,7 @@ const InsideGallery: React.FC<InsideGalleryProps> = ({ gallery }) => {
       onClose();
 
       // Reload images after upload
-      const imageMetadata = await fetchImagesByGalleryTitle(gallery.title);
+      const imageMetadata = await fetchImagesByGalleryID(gallery._id);
       setImages(imageMetadata);
     } catch (error) {
       console.error("Error uploading files:", error);

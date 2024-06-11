@@ -226,10 +226,23 @@ app.post('/uploadImages', upload.array('images', 12), async (req, res) => {
   }
 
   try {
+    // Find the gallery by title
+    let gallery = await Gallery.findOne({ title: galleryTitle });
+
+    // If gallery doesn't exist, you might want to create it or handle it differently
+    if (!gallery) {
+      // Create a new gallery if it doesn't exist
+      gallery = new Gallery({ title: galleryTitle });
+      await gallery.save();
+    }
+
+    const galleryID = gallery._id;
+
     const imageDocs = req.files.map(file => ({
       filename: file.filename,
       imageURL: `${req.protocol}://${req.get('host')}/uploads/${file.filename}`,
       galleryTitle,
+      galleryID,
     }));
 
     await Image.insertMany(imageDocs);
@@ -243,12 +256,30 @@ app.post('/uploadImages', upload.array('images', 12), async (req, res) => {
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// Fetch images by gallery title
-app.get('/images/:galleryTitle', async (req, res) => {
-  const { galleryTitle } = req.params;
+// // Fetch images by gallery title
+// app.get('/images/:galleryTitle', async (req, res) => {
+//   const { galleryTitle } = req.params;
+
+//   try {
+//     const images = await Image.find({ galleryTitle });
+
+//     if (images.length === 0) {
+//       return res.status(404).json({ message: 'No images found for this gallery' });
+//     }
+
+//     res.json(images);
+//   } catch (error) {
+//     console.error('Error fetching images:', error);
+//     res.status(500).json({ message: 'An error occurred while fetching images' });
+//   }
+// });
+
+// Fetch images by galleryID
+app.get('/imagesByGallery/:galleryID', async (req, res) => {
+  const { galleryID } = req.params;
 
   try {
-    const images = await Image.find({ galleryTitle });
+    const images = await Image.find({ galleryID });
 
     if (images.length === 0) {
       return res.status(404).json({ message: 'No images found for this gallery' });
@@ -260,24 +291,6 @@ app.get('/images/:galleryTitle', async (req, res) => {
     res.status(500).json({ message: 'An error occurred while fetching images' });
   }
 });
-
-// Fetch and serve an image by filename
-app.get('/image/:filename', async (req, res) => {
-  const { filename } = req.params;
-
-  try {
-    const image = await Image.findOne({ filename });
-
-    if (!image) {
-      return res.status(404).json({ message: 'Image not found' });
-    }
-
-    res.sendFile(path.resolve(image.path));
-  } catch (error) {
-    console.error('Error fetching image:', error);
-    res.status(500).json({ message: 'An error occurred while fetching the image' });
-  }
-}); 
 
 // Delete image
 app.delete('/deleteImages', async (req, res) => {
