@@ -14,10 +14,11 @@ import {
   ModalBody,
   ModalCloseButton,
   useDisclosure,
-  Image
+  Image as ChakraImage,
+  Checkbox,
 } from "@chakra-ui/react";
-import { AddIcon } from "@chakra-ui/icons";
-import { uploadImage, fetchImagesByGalleryTitle, deleteImage } from "./api"; // Import the function
+import { AddIcon, DeleteIcon } from "@chakra-ui/icons";
+import { uploadImage, fetchImagesByGalleryTitle, deleteImages } from "./api"; // Import the function
 
 interface Gallery {
   title: string;
@@ -34,6 +35,7 @@ const InsideGallery: React.FC<InsideGalleryProps> = ({ gallery }) => {
   const [uploading, setUploading] = useState<boolean>(false);
   const [uploadSuccess, setUploadSuccess] = useState<boolean>(false);
   const [images, setImages] = useState<any[]>([]);
+  const [selectedImageIds, setSelectedImageIds] = useState<string[]>([]);
 
   useEffect(() => {
     const loadImages = async () => {
@@ -76,14 +78,25 @@ const InsideGallery: React.FC<InsideGalleryProps> = ({ gallery }) => {
     }
   };
 
-  const handleDeleteImage = async (imageId: string) => {
-    try {
-      await deleteImage(imageId);
+  const handleImageSelect = (imageId: string) => {
+    setSelectedImageIds((prevSelected) =>
+      prevSelected.includes(imageId)
+        ? prevSelected.filter((id) => id !== imageId)
+        : [...prevSelected, imageId]
+    );
+  };
 
-      // Remove the deleted image from the state
-      setImages(images.filter(image => image._id !== imageId));
+  const handleDeleteSelected = async () => {
+    try {
+      console.log("Selected Image IDs for deletion:", selectedImageIds);
+      await deleteImages(selectedImageIds);
+      // Reload images after deletion
+      const imageMetadata = await fetchImagesByGalleryTitle(gallery.title);
+      setImages(imageMetadata);
+      setSelectedImageIds([]); // Clear selected images
+      window.location.reload();
     } catch (error) {
-      console.error("Error deleting image:", error);
+      console.error("Error deleting images:", error);
     }
   };
 
@@ -99,18 +112,34 @@ const InsideGallery: React.FC<InsideGalleryProps> = ({ gallery }) => {
         <Text fontSize={"35px"} color={"#626262"}>
           {gallery.title}'s gallery
         </Text>
-        <Button
-          bgColor={"#4267CF"}
-          h={"50px"}
-          w={"200px"}
-          justifyContent={"space-around"}
-          onClick={handleAddPhotoClick}
-        >
-          <AddIcon color={"white"} />
-          <Text fontSize={"18px"} color={"white"}>
-            Add Photo
-          </Text>
-        </Button>
+        <Flex>
+          <Button
+            bgColor={"#4267CF"}
+            h={"50px"}
+            w={"200px"}
+            justifyContent={"space-around"}
+            onClick={handleAddPhotoClick}
+          >
+            <AddIcon color={"white"} />
+            <Text fontSize={"18px"} color={"white"}>
+              Add Photo
+            </Text>
+          </Button>
+          <Button
+            bgColor={"#E53E3E"}
+            h={"50px"}
+            w={"200px"}
+            justifyContent={"space-around"}
+            ml={4}
+            onClick={handleDeleteSelected}
+            disabled={selectedImageIds.length === 0}
+          >
+            <DeleteIcon color={"white"} />
+            <Text fontSize={"18px"} color={"white"}>
+              Delete Selected
+            </Text>
+          </Button>
+        </Flex>
       </Flex>
       <Divider w={"90%"} m={"auto"} />
 
@@ -152,22 +181,29 @@ const InsideGallery: React.FC<InsideGalleryProps> = ({ gallery }) => {
       <Divider w={"90%"} m={"auto"} mt={4} />
       <Flex flexWrap="wrap" justifyContent="center" mt={4}>
         {images.map((image) => (
-          <Box key={image._id} m={2}>
-            <Image
+          <Box key={image._id} m={2} position="relative">
+            <ChakraImage
               src={image.imageURL}
               alt={image.filename}
-              style={{ width: "200px", height: "auto" }}
+              boxSize="200px"
+              objectFit="cover"
+              border={
+                selectedImageIds.includes(image._id)
+                  ? "4px solid #4267CF"
+                  : "none"
+              }
+              onClick={() => handleImageSelect(image._id)}
+              cursor="pointer"
             />
-             <Button
-              position="absolute"
-              top="0"
-              right="0"
-              colorScheme="red"
-              size="xs"
-              onClick={() => handleDeleteImage(image._id)}
-            >
-              Delete
-            </Button>
+            {selectedImageIds.includes(image._id) && (
+              <Checkbox
+                isChecked={true}
+                position="absolute"
+                top={2}
+                left={2}
+                colorScheme="blue"
+              />
+            )}
           </Box>
         ))}
       </Flex>
