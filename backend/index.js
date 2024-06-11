@@ -256,24 +256,6 @@ app.post('/uploadImages', upload.array('images', 12), async (req, res) => {
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// // Fetch images by gallery title
-// app.get('/images/:galleryTitle', async (req, res) => {
-//   const { galleryTitle } = req.params;
-
-//   try {
-//     const images = await Image.find({ galleryTitle });
-
-//     if (images.length === 0) {
-//       return res.status(404).json({ message: 'No images found for this gallery' });
-//     }
-
-//     res.json(images);
-//   } catch (error) {
-//     console.error('Error fetching images:', error);
-//     res.status(500).json({ message: 'An error occurred while fetching images' });
-//   }
-// });
-
 // Fetch images by galleryID
 app.get('/imagesByGallery/:galleryID', async (req, res) => {
   const { galleryID } = req.params;
