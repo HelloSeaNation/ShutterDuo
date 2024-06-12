@@ -4,9 +4,18 @@ import {
   Box,
   Flex,
   Text,
-  Image,
+  Image as ChakraImage,
   Divider,
   Spinner,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
+  Button,
 } from "@chakra-ui/react";
 import { fetchGalleryById, fetchImagesByGalleryID } from "../components/api";
 
@@ -22,6 +31,8 @@ const AlbumPage: React.FC = () => {
   const [gallery, setGallery] = useState<Gallery | null>(null);
   const [images, setImages] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   useEffect(() => {
     const loadGallery = async () => {
@@ -31,7 +42,7 @@ const AlbumPage: React.FC = () => {
           const imageMetadata = await fetchImagesByGalleryID(id);
           setGallery({
             ...galleryData,
-            coverImage: galleryData.coverImage || ""
+            coverImage: galleryData.coverImage || "",
           });
           setImages(imageMetadata);
         }
@@ -44,6 +55,16 @@ const AlbumPage: React.FC = () => {
 
     loadGallery();
   }, [id]);
+
+  const handleImageClick = (imageURL: string) => {
+    setSelectedImage(imageURL);
+    onOpen();
+  };
+
+  const handleCloseFullSizeImage = () => {
+    setSelectedImage(null);
+    onClose();
+  };
 
   if (loading) {
     return (
@@ -62,25 +83,36 @@ const AlbumPage: React.FC = () => {
   }
 
   return (
-    <Box w="80%" m="auto" padding="20px">
+    <Box w="100%" m="auto">
       <Flex direction="column" alignItems="center">
-        <Text fontSize="3xl" fontWeight="bold" mb="4">
-          {gallery.title}
-        </Text>
-        {gallery.coverImage && (
-          <Image
+        <Box position="relative">
+          <ChakraImage
             src={gallery.coverImage}
             alt="Gallery Cover"
-            height="300px"
+            height="100vh"
             width="100%"
             objectFit="cover"
             borderRadius="md"
             mb="4"
           />
-        )}
-        <Text fontSize="md" color="gray.600" mb="8">
-          {gallery.description}
-        </Text>
+          <Box
+            position="absolute"
+            display={"flex"}
+            flexDirection="column"
+            alignItems="center"
+            bottom={4}
+            bg="rgba(0, 0, 0, 0.6)"
+            p={4}
+            w={"100%"}
+          >
+            <Text fontSize="3xl" fontWeight="bold" color="white" mb="2">
+              {gallery.title}
+            </Text>
+            <Text fontSize="md" color="white">
+              {gallery.description}
+            </Text>
+          </Box>
+        </Box>
         <Divider w="100%" mb="8" />
         <Flex wrap="wrap" justifyContent="center">
           {images.map((image) => (
@@ -88,7 +120,6 @@ const AlbumPage: React.FC = () => {
               key={image._id}
               m={2}
               height="250px"
-              width="250px"
               position="relative"
               display="flex"
               alignItems="center"
@@ -96,10 +127,13 @@ const AlbumPage: React.FC = () => {
               border="1px solid #E2E8F0"
               borderRadius="md"
               overflow="hidden"
+              onClick={() => handleImageClick(image.imageURL)}
+              cursor="pointer"
             >
-              <Image
+              <ChakraImage
                 src={image.imageURL}
                 alt={image.filename}
+                boxSize={"auto"}
                 objectFit="cover"
                 height="100%"
                 width="100%"
@@ -108,6 +142,23 @@ const AlbumPage: React.FC = () => {
           ))}
         </Flex>
       </Flex>
+      {selectedImage && (
+        <Box
+          position="fixed"
+          top={0}
+          left={0}
+          right={0}
+          bottom={0}
+          background="rgba(0, 0, 0, 0.8)"
+          zIndex={999}
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          onClick={handleCloseFullSizeImage}
+        >
+          <ChakraImage src={selectedImage} maxH="80vh" maxW="80vw" />
+        </Box>
+      )}
     </Box>
   );
 };
