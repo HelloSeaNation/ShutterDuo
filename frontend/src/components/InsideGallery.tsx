@@ -19,6 +19,8 @@ import {
 } from "@chakra-ui/react";
 import { AddIcon, DeleteIcon } from "@chakra-ui/icons";
 import { uploadImage, fetchImagesByGalleryID, deleteImages } from "./api"; // Import the function
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUpRightAndDownLeftFromCenter } from "@fortawesome/free-solid-svg-icons";
 
 interface Gallery {
   _id: string;
@@ -31,6 +33,7 @@ interface InsideGalleryProps {
 
 const InsideGallery: React.FC<InsideGalleryProps> = ({ gallery }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [fullSizeImage, setFullSizeImage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [uploading, setUploading] = useState<boolean>(false);
@@ -96,6 +99,14 @@ const InsideGallery: React.FC<InsideGalleryProps> = ({ gallery }) => {
     } catch (error) {
       console.error("Error deleting images:", error);
     }
+  };
+
+  const handleViewFullSize = (imageURL: string) => {
+    setFullSizeImage(imageURL);
+  };
+
+  const handleCloseFullSizeImage = () => {
+    setFullSizeImage(null);
   };
 
   return (
@@ -175,6 +186,23 @@ const InsideGallery: React.FC<InsideGalleryProps> = ({ gallery }) => {
           </ModalFooter>
         </ModalContent>
       </Modal>
+      {fullSizeImage && (
+        <Box
+          position="fixed"
+          top={0}
+          left={0}
+          right={0}
+          bottom={0}
+          background="rgba(0, 0, 0, 0.8)"
+          zIndex={999}
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          onClick={handleCloseFullSizeImage}
+        >
+          <ChakraImage src={fullSizeImage} maxH="80vh" maxW="80vw" />
+        </Box>
+      )}
       <Flex
         flexWrap="wrap"
         justifyContent="flex-start"
@@ -209,8 +237,17 @@ const InsideGallery: React.FC<InsideGalleryProps> = ({ gallery }) => {
               objectFit="cover"
               maxWidth="100%"
               maxHeight="100%"
-             
             />
+            <Button
+              onClick={() => handleViewFullSize(image.imageURL)}
+              position="absolute"
+              top={2}
+              right={2}
+              bgColor={"transparent"}
+              size="sm"
+            >
+              <FontAwesomeIcon icon={faUpRightAndDownLeftFromCenter} />
+            </Button>
             {selectedImageIds.includes(image._id) && (
               <Checkbox
                 isChecked={true}
