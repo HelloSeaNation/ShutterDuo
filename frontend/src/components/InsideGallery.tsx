@@ -110,7 +110,15 @@ const InsideGallery: React.FC<InsideGalleryProps> = ({ gallery }) => {
   };
 
   return (
-    <Box w={"80%"} h={"100vh"} bgColor={"#FFFFFF"}>
+    <Box
+      w={"75%"}
+      h={"100vh"}
+      bgColor={"#FFFFFF"}
+      position={"absolute"}
+      left={"23rem"}
+      top={"5rem"}
+      zIndex={0}
+    >
       <Flex
         w={"90%"}
         margin={"auto"}
@@ -151,7 +159,13 @@ const InsideGallery: React.FC<InsideGalleryProps> = ({ gallery }) => {
         </Flex>
       </Flex>
       <Divider w={"90%"} m={"auto"} />
-      <Flex w={"88%"} margin={"auto"} paddingTop={"20px"} paddingBottom={"20px"} justifyContent={"flex-start"}>
+      <Flex
+        w={"88%"}
+        margin={"auto"}
+        paddingTop={"20px"}
+        paddingBottom={"20px"}
+        justifyContent={"flex-start"}
+      >
         <Text fontSize={"15px"} color={"#626262"}>
           {images.length} Photos
         </Text>

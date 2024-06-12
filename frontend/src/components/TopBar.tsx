@@ -48,8 +48,8 @@ const handleLogout = () => {
 };
 
 return (
-  <Box>
-    <Box bgColor={"#F5F3F3"} h={"60px"}>
+  <Box position={"fixed"} display={"flex"}width={"100%"} zIndex={"99"} top={0}>
+    <Box bgColor={"#F5F3F3"} h={"60px"} width={"100%"}>
       <Flex
         direction={"row"}
         justifyContent={"space-between"}
