@@ -51,6 +51,10 @@ export interface Gallery {
 
   export const deleteGallery = async (galleryId: string): Promise<boolean> => {
     try {
+      // Delete images associated with the gallery
+      await deleteImagesByGalleryId(galleryId);
+
+      // Delete the gallery
       const response = await fetch(`http://localhost:5000/deleteGallery/${galleryId}`, {
         method: "DELETE",
       });
@@ -58,6 +62,22 @@ export interface Gallery {
     } catch (error) {
       console.error("Error deleting gallery:", error);
       return false;
+    }
+  };
+
+  export const deleteImagesByGalleryId = async (galleryId: string): Promise<void> => {
+    try {
+      // Fetch images by gallery ID
+      const images = await fetchImagesByGalleryID(galleryId);
+
+      // Extract image IDs
+      const imageIds = images.map((image: { _id: any; }) => image._id);
+
+      // Delete the images
+      await deleteImages(imageIds);
+    } catch (error) {
+      console.error("Error deleting images by gallery ID:", error);
+      throw error;
     }
   };
   
@@ -132,6 +152,16 @@ export interface Gallery {
       return response.data;
     } catch (error) {
       console.error("Error fetching image:", error);
+      throw error;
+    }
+  };
+
+  export const fetchImagesByGalleryID = async (galleryID: string) => {
+    try {
+      const response = await axios.get(`${BASE_URL}/imagesByGallery/${galleryID}`);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching images by gallery ID:", error);
       throw error;
     }
   };

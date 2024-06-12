@@ -83,6 +83,10 @@ const ImageSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  galleryID: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Gallery'
+  }
 });
 
 const Image = mongoose.model('Image', ImageSchema);

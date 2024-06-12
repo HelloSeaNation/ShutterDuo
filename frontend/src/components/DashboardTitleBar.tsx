@@ -88,7 +88,7 @@ const DashboardTitleBar: React.FC = () => {
           >
             <AddIcon color={"white"} />
             <Text fontSize={"18px"} color={"white"}>
-              Upload Gallery
+              Create Gallery
             </Text>
           </Button>
         </Box>

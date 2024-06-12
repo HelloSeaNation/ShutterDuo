@@ -1,12 +1,12 @@
 const express = require("express");
-const { collection, Image } = require("./mongo");;
+const { collection, Image } = require("./mongo");
 const multer = require("multer");
 const path = require("path");
 const cors = require("cors");
-const Gallery = require("./models/gallery"); 
-const nodemailer = require('nodemailer');
-const sendGridMail = require('@sendgrid/mail');
-const bodyParser = require('body-parser');
+const Gallery = require("./models/gallery");
+const nodemailer = require("nodemailer");
+const sendGridMail = require("@sendgrid/mail");
+const bodyParser = require("body-parser");
 
 sendGridMail.setApiKey(process.env.SENDGRID_API_KEY);
 
@@ -43,7 +43,7 @@ app.post("/checkEmail", async (req, res) => {
   }
 });
 
- //register
+//register
 app.post("/register", async (req, res) => {
   const { firstName, surname, email, password } = req.body;
   console.log(`Received data: ${firstName}, ${surname}, ${email}`);
@@ -108,7 +108,9 @@ app.put("/user/:email", async (req, res) => {
   const updateData = req.body;
 
   try {
-    const user = await collection.findOneAndUpdate({ email }, updateData, { new: true });
+    const user = await collection.findOneAndUpdate({ email }, updateData, {
+      new: true,
+    });
     if (user) {
       res.json(user);
     } else {
@@ -144,7 +146,9 @@ app.get("/galleries", async (req, res) => {
     res.json(galleries);
   } catch (e) {
     console.error("An error occurred while fetching the galleries:", e);
-    res.status(500).json({ message: "An error occurred while fetching the galleries" });
+    res
+      .status(500)
+      .json({ message: "An error occurred while fetching the galleries" });
   }
 });
 
@@ -161,37 +165,47 @@ app.get("/gallery/:id", async (req, res) => {
     }
   } catch (e) {
     console.error("An error occurred while fetching the gallery:", e);
-    res.status(500).json({ message: "An error occurred while fetching the gallery" });
+    res
+      .status(500)
+      .json({ message: "An error occurred while fetching the gallery" });
   }
 });
 
 // Delete gallery endpoint
-app.delete('/deleteGallery/:id', async (req, res) => {
+app.delete("/deleteGallery/:id", async (req, res) => {
   const { id } = req.params;
 
   try {
-    const gallery = await Gallery.findByIdAndDelete(id);
-    if (gallery) {
-      res.status(200).json({ message: "Gallery deleted successfully" });
-    } else {
-      res.status(404).json({ message: "Gallery not found" });
+    const gallery = await Gallery.findById(id);
+
+    if (!gallery) {
+      return res.status(404).json({ message: "Gallery not found" });
     }
+    const deletedImages = await Image.deleteMany({ gallery: id });
+    await Gallery.findByIdAndDelete(id);
+
+    res
+      .status(200)
+      .json({ message: "Gallery and associated images deleted successfully" });
   } catch (error) {
     console.error("Error deleting gallery:", error);
-    res.status(500).json({ message: "An error occurred while deleting the gallery" });
+    res
+      .status(500)
+      .json({ message: "An error occurred while deleting the gallery" });
   }
 });
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const uploadPath = path.join(__dirname, 'uploads');
+    const uploadPath = path.join(__dirname, "uploads");
     cb(null, uploadPath); // Set the destination folder
   },
   filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
     const ext = path.extname(file.originalname);
     cb(null, uniqueSuffix + ext); // Set the file name
-  }})
+  },
+});
 
 // Edit gallery endpoint
 app.put("/editGallery/:id", async (req, res) => {
@@ -212,75 +226,76 @@ app.put("/editGallery/:id", async (req, res) => {
     }
   } catch (error) {
     console.error("Error updating gallery:", error);
-    res.status(500).json({ message: "An error occurred while updating the gallery" });
+    res
+      .status(500)
+      .json({ message: "An error occurred while updating the gallery" });
   }
 });
 
 const upload = multer({ storage: storage });
 
-app.post('/uploadImages', upload.array('images', 12), async (req, res) => {
+app.post("/uploadImages", upload.array("images", 12), async (req, res) => {
   const { galleryTitle } = req.body;
 
   if (!req.files || req.files.length === 0) {
-    return res.status(400).json({ message: 'No files were uploaded.' });
+    return res.status(400).json({ message: "No files were uploaded." });
   }
 
   try {
-    const imageDocs = req.files.map(file => ({
+    let gallery = await Gallery.findOne({ title: galleryTitle });
+    if (!gallery) {
+      gallery = new Gallery({ title: galleryTitle });
+      await gallery.save();
+    }
+
+    const galleryID = gallery._id;
+
+    const imageDocs = req.files.map((file) => ({
       filename: file.filename,
-      imageURL: `${req.protocol}://${req.get('host')}/uploads/${file.filename}`,
+      imageURL: `${req.protocol}://${req.get("host")}/uploads/${file.filename}`,
       galleryTitle,
+      galleryID,
     }));
 
     await Image.insertMany(imageDocs);
 
-    res.status(200).json({ message: 'Images uploaded and saved to database successfully.' });
+    res
+      .status(200)
+      .json({ message: "Images uploaded and saved to database successfully." });
   } catch (error) {
-    console.error('Error uploading images:', error);
-    res.status(500).json({ message: 'An error occurred while uploading images.' });
+    console.error("Error uploading images:", error);
+    res
+      .status(500)
+      .json({ message: "An error occurred while uploading images." });
   }
 });
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// Fetch images by gallery title
-app.get('/images/:galleryTitle', async (req, res) => {
-  const { galleryTitle } = req.params;
+// Fetch images by galleryID
+app.get("/imagesByGallery/:galleryID", async (req, res) => {
+  const { galleryID } = req.params;
 
   try {
-    const images = await Image.find({ galleryTitle });
+    const images = await Image.find({ galleryID });
 
     if (images.length === 0) {
-      return res.status(404).json({ message: 'No images found for this gallery' });
+      return res
+        .status(404)
+        .json({ message: "No images found for this gallery" });
     }
 
     res.json(images);
   } catch (error) {
-    console.error('Error fetching images:', error);
-    res.status(500).json({ message: 'An error occurred while fetching images' });
+    console.error("Error fetching images:", error);
+    res
+      .status(500)
+      .json({ message: "An error occurred while fetching images" });
   }
 });
 
-// Fetch and serve an image by filename
-app.get('/image/:filename', async (req, res) => {
-  const { filename } = req.params;
-
-  try {
-    const image = await Image.findOne({ filename });
-
-    if (!image) {
-      return res.status(404).json({ message: 'Image not found' });
-    }
-
-    res.sendFile(path.resolve(image.path));
-  } catch (error) {
-    console.error('Error fetching image:', error);
-    res.status(500).json({ message: 'An error occurred while fetching the image' });
-  }
-}); 
-
 // Delete image
-app.delete('/deleteImages', async (req, res) => {
+app.delete("/deleteImages", async (req, res) => {
   const { ids } = req.body;
 
   try {
@@ -292,67 +307,76 @@ app.delete('/deleteImages', async (req, res) => {
     }
   } catch (error) {
     console.error("Error deleting images:", error);
-    res.status(500).json({ message: "An error occurred while deleting images" });
+    res
+      .status(500)
+      .json({ message: "An error occurred while deleting images" });
   }
 });
 //send report email
-app.post('/send-email', async (req, res) => {
+app.post("/send-email", async (req, res) => {
   const { name, email, message } = req.body;
 
   const msg = {
-    to: 'shutterduoteam@gmail.com',
-    from: 'nonameorkeshia@gmail.com',
+    to: "shutterduoteam@gmail.com",
+    from: "nonameorkeshia@gmail.com",
     subject: `Message from ${name}`,
     text: `You have received a new message from ${name} \n\n(${email}):\n\n${message}`,
   };
 
   try {
     await sendGridMail.send(msg);
-    res.status(200).send('Email sent successfully');
+    res.status(200).send("Email sent successfully");
   } catch (error) {
     console.error("Error response from SendGrid:", error.response.body);
-    res.status(500).send('Error sending email');
+    res.status(500).send("Error sending email");
   }
 });
 
 //search photographer using search router
-const searchRouter = require('./router');
-app.use('/api', searchRouter);
-
+const searchRouter = require("./router");
+app.use("/api", searchRouter);
 
 //upload profile picture
-app.post('/uploadProfilePicture', upload.single('profilePicture'), async (req, res) => {
-  const { email } = req.body;
+app.post(
+  "/uploadProfilePicture",
+  upload.single("profilePicture"),
+  async (req, res) => {
+    const { email } = req.body;
 
-  try {
-    const user = await collection.findOne({ email });
+    try {
+      const user = await collection.findOne({ email });
 
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+
+      // Create the URL for the uploaded file
+      const profilePictureUrl = `${req.protocol}://${req.get("host")}/uploads/${
+        req.file.filename
+      }`;
+
+      user.profilePicture = profilePictureUrl;
+      await user.save();
+
+      res.json({ message: "Profile picture uploaded successfully", user });
+    } catch (error) {
+      console.error("Error uploading profile picture:", error);
+      res.status(500).json({
+        message: "An error occurred while uploading the profile picture",
+      });
     }
-
-    // Create the URL for the uploaded file
-    const profilePictureUrl = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
-    
-    user.profilePicture = profilePictureUrl;
-    await user.save();
-
-    res.json({ message: 'Profile picture uploaded successfully', user });
-  } catch (error) {
-    console.error('Error uploading profile picture:', error);
-    res.status(500).json({ message: 'An error occurred while uploading the profile picture' });
   }
-});
+);
 
 // Endpoint to serve profile pictures
-app.get('/profilePicture/:filename', (req, res) => {
+app.get("/profilePicture/:filename", (req, res) => {
   const { filename } = req.params;
-  const filePath = path.join(__dirname, 'uploads', filename);
+  const filePath = path.join(__dirname, "uploads", filename);
 
   res.sendFile(filePath, (err) => {
     if (err) {
-      console.error('Error serving profile picture:', err);
-      res.status(404).json({ message: 'Profile picture not found' });
+      console.error("Error serving profile picture:", err);
+      res.status(404).json({ message: "Profile picture not found" });
     }
   });
 });
