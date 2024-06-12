@@ -20,6 +20,7 @@ profilePicture?: string;
 
 const TopBar = () => {
 const location = useLocation();
+const navigate = useNavigate();
 
 const [user, setUser] = useState<User | null>(null);
 
@@ -40,6 +41,11 @@ useEffect(() => {
   };
   fetchUserData();
 }, []);
+
+const handleLogout = () => {
+  localStorage.removeItem("user"); // Clear user data from localStorage
+  navigate("/"); // Redirect to the login page
+};
 
 return (
   <Box>
@@ -107,7 +113,7 @@ return (
                 <MenuItem as={Link} to="/account_setting">
                   Account
                 </MenuItem>
-                <MenuItem>Logout</MenuItem>
+                <MenuItem onClick={handleLogout}>Logout</MenuItem>
               </MenuList>
             </Menu>
           </Flex>
