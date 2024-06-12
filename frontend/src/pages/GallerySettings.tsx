@@ -97,7 +97,7 @@ const GallerySettings: React.FC = () => {
     <Box>
       <TopBar />
       <Flex direction="row" margin="20px">
-        <Flex direction="column" position={"fixed"}>
+        <Flex direction="column" position={"fixed"} top={"5rem"}>
           {isEditingTitle ? (
             <Flex direction="row" w="20rem" alignItems="baseline">
               <Input

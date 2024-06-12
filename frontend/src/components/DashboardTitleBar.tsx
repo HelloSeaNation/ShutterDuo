@@ -1,15 +1,9 @@
 import React, { useState, useEffect } from "react";
-import {
-  Box,
-  Flex,
-  Text,
-  Button,
-  Divider,
-} from "@chakra-ui/react";
+import { Box, Flex, Text, Button, Divider } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 import DashboardContent from "./DashboardContent";
 import CreateGalleryModal from "./CreateGalleryModal";
-import axios from 'axios'
+import axios from "axios";
 
 interface User {
   firstName: string;
@@ -25,7 +19,7 @@ const DashboardTitleBar: React.FC = () => {
   const handleClose = () => setIsOpen(false);
 
   const fetchGalleries = async () => {
-    setFetchFlag(prev => !prev);
+    setFetchFlag((prev) => !prev);
   };
 
   const handleSubmit = async (title: string, description: string) => {
@@ -49,12 +43,14 @@ const DashboardTitleBar: React.FC = () => {
 
   useEffect(() => {
     const fetchUserData = async () => {
-      const storedUser = localStorage.getItem('user');
+      const storedUser = localStorage.getItem("user");
       if (storedUser) {
         const parsedUser = JSON.parse(storedUser);
         if (parsedUser && parsedUser.email) {
           try {
-            const response = await axios.get(`http://localhost:5000/user/${parsedUser.email}`);
+            const response = await axios.get(
+              `http://localhost:5000/user/${parsedUser.email}`
+            );
             setUser(response.data);
           } catch (error) {
             console.error("Error fetching user data:", error);
@@ -67,7 +63,14 @@ const DashboardTitleBar: React.FC = () => {
   }, []);
 
   return (
-    <Box w={"90%"} h={"100vh"} bgColor={"#FFFFFF"}>
+    <Box
+      w={"80%"}
+      h={"100vh"}
+      bgColor={"#FFFFFF"}
+      left={"20rem"}
+      top={"3rem"}
+      position={"fixed"}
+    >
       <Flex
         w={"90%"}
         margin={"auto"}
@@ -76,7 +79,7 @@ const DashboardTitleBar: React.FC = () => {
         marginBottom={"20px"}
       >
         <Text fontSize={"35px"} color={"#626262"}>
-          {user ? `${user.firstName}'s Dashboard` : 'Users'}
+          {user ? `${user.firstName}'s Dashboard` : "Users"}
         </Text>
         <Box>
           <Button
@@ -96,7 +99,11 @@ const DashboardTitleBar: React.FC = () => {
       <Divider w={"92%"} m={"auto"} />
       <DashboardContent fetchGalleries={fetchGalleries} />
 
-      <CreateGalleryModal isOpen={isOpen} onClose={handleClose} onSubmit={handleSubmit} />
+      <CreateGalleryModal
+        isOpen={isOpen}
+        onClose={handleClose}
+        onSubmit={handleSubmit}
+      />
     </Box>
   );
 };
