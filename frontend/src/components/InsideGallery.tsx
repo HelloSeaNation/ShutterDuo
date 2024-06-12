@@ -130,7 +130,7 @@ const InsideGallery: React.FC<InsideGalleryProps> = ({ gallery }) => {
             justifyContent={"space-around"}
             ml={4}
             onClick={handleDeleteSelected}
-            disabled={selectedImageIds.length === 0}
+            style={{ display: selectedImageIds.length === 0 ? "none" : "flex" }}
           >
             <DeleteIcon color={"white"} />
             <Text fontSize={"18px"} color={"white"}>
