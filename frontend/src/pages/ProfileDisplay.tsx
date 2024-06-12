@@ -4,7 +4,7 @@ import TopBar from "../components/TopBar";
 import axios from 'axios';
 import { CalendarIcon, StarIcon, ChevronDownIcon } from '@chakra-ui/icons';
 import SocialMedia from '../components/SocialMediaLinks';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 
 interface User {
   firstName: string;
@@ -104,13 +104,16 @@ const ProfilePage = () => {
             </Box>
           </Box>
           <Box marginLeft="150px">
+
             <Menu>
               <MenuButton>
                 <ChevronDownIcon boxSize={5} />
               </MenuButton>
+              <Link to="/report">
               <MenuList>
                 <MenuItem>Report User</MenuItem>
               </MenuList>
+              </Link>
             </Menu>
           </Box>
         </Flex>
