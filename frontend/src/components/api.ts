@@ -1,6 +1,7 @@
 import axios from "axios";
 
 export interface Gallery {
+    coverImage: string | undefined;
     _id: string;
     title: string;
     description: string;
@@ -179,3 +180,25 @@ export interface Gallery {
       throw error;
     }
   };
+
+  export const updateGalleryCoverImage = async (id: string, file: File): Promise<string> => {
+    try {
+        const formData = new FormData();
+        formData.append("coverImage", file);
+
+        const response = await axios.put(`${BASE_URL}/gallery/${id}/coverImage`, formData, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        });
+
+        if (response.status !== 200) {
+            throw new Error("Failed to update gallery cover image");
+        }
+
+        return response.data.coverImageUrl; // Assuming the server returns the new cover image URL
+    } catch (error) {
+        console.error("Error updating gallery cover image:", error);
+        throw error;
+    }
+};

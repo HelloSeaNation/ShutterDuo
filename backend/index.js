@@ -381,6 +381,45 @@ app.get("/profilePicture/:filename", (req, res) => {
   });
 });
 
+// New route for updating gallery cover image
+app.put(
+  "/gallery/:id/coverImage",
+  upload.single("coverImage"),
+  async (req, res) => {
+    const { id } = req.params;
+
+    try {
+      const gallery = await Gallery.findById(id);
+
+      if (!gallery) {
+        return res.status(404).json({ message: "Gallery not found" });
+      }
+
+      if (!req.file) {
+        return res.status(400).json({ message: "No file uploaded" });
+      }
+
+      // Create the URL for the uploaded file
+      const coverImageUrl = `${req.protocol}://${req.get("host")}/uploads/${
+        req.file.filename
+      }`;
+
+      gallery.coverImage = coverImageUrl;
+      await gallery.save();
+
+      res.json({
+        message: "Gallery cover image updated successfully",
+        gallery,
+      });
+    } catch (error) {
+      console.error("Error updating gallery cover image:", error);
+      res.status(500).json({
+        message: "An error occurred while updating the gallery cover image",
+      });
+    }
+  }
+);
+
 // Serve static files from the uploads directory
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
