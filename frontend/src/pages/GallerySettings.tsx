@@ -9,19 +9,21 @@ import {
   Stack,
   Icon,
   Input,
+  Image,
 } from "@chakra-ui/react";
-import { fetchGalleryById, updateGalleryTitle } from "../components/api"; // Import updateGalleryTitle function
+import { fetchGalleryById, updateGalleryTitle, updateGalleryCoverImage } from "../components/api"; // Import updateGalleryCoverImage function
 import { Gallery } from "../components/api";
 import TopBar from "../components/TopBar";
 import InsideGallery from "../components/InsideGallery";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPen } from "@fortawesome/free-solid-svg-icons";
+import { faPen, faCamera } from "@fortawesome/free-solid-svg-icons";
 
 const GallerySettings: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [gallery, setGallery] = useState<Gallery | null>(null);
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [editedTitle, setEditedTitle] = useState("");
+  const [isUploadingCover, setIsUploadingCover] = useState(false);
 
   useEffect(() => {
     const loadGallery = async () => {
@@ -52,26 +54,44 @@ const GallerySettings: React.FC = () => {
     setEditedTitle(gallery.title);
   };
 
-const handleSaveTitle = async () => {
+  const handleSaveTitle = async () => {
     try {
-        await updateGalleryTitle(id!, editedTitle); 
-        setIsEditingTitle(false);
-        setGallery((prevGallery) => ({
-            ...prevGallery!,
-            title: editedTitle,
-        }));
+      await updateGalleryTitle(id!, editedTitle);
+      setIsEditingTitle(false);
+      setGallery((prevGallery) => ({
+        ...prevGallery!,
+        title: editedTitle,
+      }));
     } catch (error) {
-        console.error("Error saving title:", error);
+      console.error("Error saving title:", error);
     }
-};
+  };
+
+  const handleCoverImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file && id) {
+      try {
+        setIsUploadingCover(true);
+        const newCoverImageUrl = await updateGalleryCoverImage(id, file);
+        setGallery((prevGallery) => ({
+          ...prevGallery!,
+          coverImage: newCoverImageUrl,
+        }));
+      } catch (error) {
+        console.error("Error updating cover image:", error);
+      } finally {
+        setIsUploadingCover(false);
+      }
+    }
+  };
 
   return (
     <Box>
       <TopBar />
-      <Flex direction={"row"} margin="20px">
-        <Flex direction={"column"}>
+      <Flex direction="row" margin="20px">
+        <Flex direction="column">
           {isEditingTitle ? (
-            <Flex direction={"row"} w={"20rem"} alignItems={"baseline"}>
+            <Flex direction="row" w="20rem" alignItems="baseline">
               <Input
                 value={editedTitle}
                 onChange={(e) => setEditedTitle(e.target.value)}
@@ -81,13 +101,8 @@ const handleSaveTitle = async () => {
               </Button>
             </Flex>
           ) : (
-            <Flex
-              direction={"row"}
-              w={"20rem"}
-              justifyContent={"flex-start"}
-              alignItems={"baseline"}
-            >
-              <Flex direction={"column"} marginRight={"20px"}>
+            <Flex direction="row" w="20rem" justifyContent="flex-start" alignItems="baseline">
+              <Flex direction="column" marginRight="20px">
                 <Text fontSize="30px" fontWeight="bold">
                   {gallery.title}
                 </Text>
@@ -95,20 +110,48 @@ const handleSaveTitle = async () => {
                   {gallery.description}
                 </Text>
               </Flex>
-              <FontAwesomeIcon
-                icon={faPen}
-                color="#4267CF"
-                onClick={handleEditTitle}
-              />
+              <FontAwesomeIcon icon={faPen} color="#4267CF" onClick={handleEditTitle} />
             </Flex>
           )}
-          <Button colorScheme="blue" mt={4}>
+          <Flex direction="column" alignItems="center">
+          {gallery.coverImage ? (
+            <Image
+              src={gallery.coverImage}
+              alt="Gallery Cover"
+              boxSize="200px"
+              objectFit="cover"
+              borderRadius="md"
+            />
+          ) : (
+            <Box
+              boxSize="200px"
+              border="2px dashed gray"
+              borderRadius="md"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+            >
+              <FontAwesomeIcon icon={faCamera} color="gray" size="2x" />
+            </Box>
+          )}
+          <Button as="label" colorScheme="blue" mt={4} isLoading={isUploadingCover}>
+            Change Cover Image
+            <Input
+              type="file"
+              accept="image/*"
+              hidden
+              onChange={handleCoverImageChange}
+            />
+          </Button>
+        </Flex>
+            <Button colorScheme="blue" mt={4}>
             Edit Gallery
           </Button>
         </Flex>
         <Stack height="100vh" p={4}>
           <Divider orientation="vertical" />
         </Stack>
+        
         <InsideGallery gallery={gallery} />
       </Flex>
     </Box>

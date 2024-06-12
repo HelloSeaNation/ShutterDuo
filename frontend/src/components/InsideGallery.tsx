@@ -19,6 +19,8 @@ import {
 } from "@chakra-ui/react";
 import { AddIcon, DeleteIcon } from "@chakra-ui/icons";
 import { uploadImage, fetchImagesByGalleryID, deleteImages } from "./api"; // Import the function
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUpRightAndDownLeftFromCenter } from "@fortawesome/free-solid-svg-icons";
 
 interface Gallery {
   _id: string;
@@ -31,6 +33,7 @@ interface InsideGalleryProps {
 
 const InsideGallery: React.FC<InsideGalleryProps> = ({ gallery }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [fullSizeImage, setFullSizeImage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [uploading, setUploading] = useState<boolean>(false);
@@ -98,6 +101,14 @@ const InsideGallery: React.FC<InsideGalleryProps> = ({ gallery }) => {
     }
   };
 
+  const handleViewFullSize = (imageURL: string) => {
+    setFullSizeImage(imageURL);
+  };
+
+  const handleCloseFullSizeImage = () => {
+    setFullSizeImage(null);
+  };
+
   return (
     <Box w={"80%"} h={"100vh"} bgColor={"#FFFFFF"}>
       <Flex
@@ -130,7 +141,7 @@ const InsideGallery: React.FC<InsideGalleryProps> = ({ gallery }) => {
             justifyContent={"space-around"}
             ml={4}
             onClick={handleDeleteSelected}
-            disabled={selectedImageIds.length === 0}
+            style={{ display: selectedImageIds.length === 0 ? "none" : "flex" }}
           >
             <DeleteIcon color={"white"} />
             <Text fontSize={"18px"} color={"white"}>
@@ -140,7 +151,11 @@ const InsideGallery: React.FC<InsideGalleryProps> = ({ gallery }) => {
         </Flex>
       </Flex>
       <Divider w={"90%"} m={"auto"} />
-
+      <Flex w={"88%"} margin={"auto"} paddingTop={"20px"} paddingBottom={"20px"} justifyContent={"flex-start"}>
+        <Text fontSize={"15px"} color={"#626262"}>
+          {images.length} Photos
+        </Text>
+      </Flex>
       {/* Modal for file selection */}
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
@@ -175,24 +190,68 @@ const InsideGallery: React.FC<InsideGalleryProps> = ({ gallery }) => {
           </ModalFooter>
         </ModalContent>
       </Modal>
-
-      <Divider w={"90%"} m={"auto"} mt={4} />
-      <Flex flexWrap="wrap" justifyContent="center" mt={4}>
+      {fullSizeImage && (
+        <Box
+          position="fixed"
+          top={0}
+          left={0}
+          right={0}
+          bottom={0}
+          background="rgba(0, 0, 0, 0.8)"
+          zIndex={999}
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          onClick={handleCloseFullSizeImage}
+        >
+          <ChakraImage src={fullSizeImage} maxH="80vh" maxW="80vw" />
+        </Box>
+      )}
+      <Flex
+        flexWrap="wrap"
+        justifyContent="flex-start"
+        mt={4}
+        width={"90%"}
+        margin={"auto"}
+      >
         {images.map((image) => (
-          <Box key={image._id} m={2} position="relative">
+          <Box
+            key={image._id}
+            m={4}
+            position="relative"
+            height={"250px"}
+            width={"200px"}
+            outline={"2px solid #E2E8F0"}
+            display={"flex"}
+            alignItems={"center"}
+            justifyContent={"center"}
+            padding={"10px"}
+            border={
+              selectedImageIds.includes(image._id)
+                ? "2px solid #4267CF"
+                : "none"
+            }
+            onClick={() => handleImageSelect(image._id)}
+            cursor="pointer"
+          >
             <ChakraImage
               src={image.imageURL}
               alt={image.filename}
-              boxSize="200px"
+              boxSize="auto"
               objectFit="cover"
-              border={
-                selectedImageIds.includes(image._id)
-                  ? "4px solid #4267CF"
-                  : "none"
-              }
-              onClick={() => handleImageSelect(image._id)}
-              cursor="pointer"
+              maxWidth="100%"
+              maxHeight="100%"
             />
+            <Button
+              onClick={() => handleViewFullSize(image.imageURL)}
+              position="absolute"
+              top={2}
+              right={2}
+              bgColor={"transparent"}
+              size="sm"
+            >
+              <FontAwesomeIcon icon={faUpRightAndDownLeftFromCenter} />
+            </Button>
             {selectedImageIds.includes(image._id) && (
               <Checkbox
                 isChecked={true}
