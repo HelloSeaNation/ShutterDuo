@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Text, SimpleGrid, Flex } from '@chakra-ui/react';
+import { Box, Text, SimpleGrid, Flex, Button } from '@chakra-ui/react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import TopBar from "../components/TopBar";
 import { useLocation } from 'react-router-dom';
@@ -68,22 +69,34 @@ const SearchResults = () => {
         ) : (
           <SimpleGrid columns={[1, null]} spacing="40px" width="80%" maxW="1200px" mx="auto">
             {results.map((user) => (
-              <Box key={user._id} borderWidth="1px" borderRadius="lg" overflow="hidden" p="4">
-                <Flex align="center">
-                  <img
-                    src={user && user.profilePicture ? user.profilePicture : "../defaultProfileImage.jpg"}
-                    alt={`${user.firstName} ${user.surname}`}
-                    style={{ width: '100px', height: '100px', borderRadius: '50%', marginRight: '20px' }}
-                  />
-                  <Box>
-                    <Text fontWeight="bold">
-                      {user.firstName} {user.surname}
-                    </Text>
-                    <Text color="#9E9E9E">{user.location}</Text>
-                    <Text color="#9E9E9E">{user.job}</Text>
-                  </Box>
-                </Flex>
-              </Box>
+              <Link to={`/profile/${user._id}`} state={{ user }} key={user._id}>
+                <Box borderWidth="1px" borderRadius="lg" overflow="hidden" p="4" position="relative" display="flex" alignItems="center">
+                  <Flex align="center" flex="1">
+                    <img
+                      src={user && user.profilePicture ? user.profilePicture : "../defaultProfileImage.jpg"}
+                      alt={`${user.firstName} ${user.surname}`}
+                      style={{ width: '100px', height: '100px', borderRadius: '50%', marginRight: '20px' }}
+                    />
+                    <Box>
+                      <Text fontWeight="bold">
+                        {user.firstName} {user.surname}
+                      </Text>
+                      <Text color="#9E9E9E">{user.location}</Text>
+                      <Text color="#9E9E9E">{user.job}</Text>
+                    </Box>
+                  </Flex>
+                  <Button
+                    bg="green.500"
+                    color="white"
+                    width="60px"
+                    height="40px"
+                    alignSelf="center"
+                    marginRight="20px"
+                  >
+                    View
+                  </Button>
+                </Box>
+              </Link>
             ))}
           </SimpleGrid>
         )}

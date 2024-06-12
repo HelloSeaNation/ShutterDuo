@@ -1,12 +1,12 @@
-import React, {useState, useEffect} from 'react'
-import {Flex, Text, Box, MenuDivider, MenuItem, Menu, MenuList, MenuButton} from '@chakra-ui/react'
+import React, { useState, useEffect } from 'react';
+import { Flex, Text, Box, MenuDivider, MenuItem, Menu, MenuList, MenuButton } from '@chakra-ui/react';
 import TopBar from "../components/TopBar";
-import axios from 'axios'
-import { CalendarIcon, StarIcon, ChevronDownIcon} from '@chakra-ui/icons'
-import { Link } from 'react-router-dom';
+import axios from 'axios';
+import { CalendarIcon, StarIcon, ChevronDownIcon } from '@chakra-ui/icons';
 import SocialMedia from '../components/SocialMediaLinks';
+import { useLocation } from 'react-router-dom';
 
-interface User { //props for profile setup and editing
+interface User {
   firstName: string;
   surname: string;
   email: string;
@@ -25,7 +25,6 @@ interface User { //props for profile setup and editing
   profilePicture?: string;
 }
 
-//social media links
 const socialMediaPlatforms = [
   "facebook",
   "insta",
@@ -49,33 +48,38 @@ const socialMediaIcons: Record<SocialMediaPlatform, string> = {
 };
 
 const ProfilePage = () => {
-
+  const location = useLocation();
   const [user, setUser] = useState<User | null>(null);
+  const { user: userData } = location.state || {};
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      const storedUser = localStorage.getItem('user');
-      if (storedUser) {
-        const parsedUser = JSON.parse(storedUser);
-        if (parsedUser && parsedUser.email) {
-          try {
-            const response = await axios.get(`http://localhost:5000/user/${parsedUser.email}`);
-            setUser(response.data);
-          } catch (error) {
-            console.error("Error fetching user data:", error);
+    if (userData) {
+      setUser(userData);
+    } else {
+      const fetchUserData = async () => {
+        const storedUser = localStorage.getItem('user');
+        if (storedUser) {
+          const parsedUser = JSON.parse(storedUser);
+          if (parsedUser && parsedUser.email) {
+            try {
+              const response = await axios.get(`http://localhost:5000/user/${parsedUser.email}`);
+              setUser(response.data);
+            } catch (error) {
+              console.error("Error fetching user data:", error);
+            }
           }
         }
-      }
-    };
-     fetchUserData();
-  }, []);
+      };
+      fetchUserData();
+    }
+  }, [userData]);
 
-  return(
-<>
-          <TopBar />
+  return (
+    <>
+      <TopBar />
 
-           {/* Basic information and profile photo */}
-           <Box padding={35}>
+      {/* Basic information and profile photo */}
+      <Box padding={35}>
         <Flex align="center">
           {user && user.profilePicture && (
             <img
@@ -105,44 +109,42 @@ const ProfilePage = () => {
                 <ChevronDownIcon boxSize={5} />
               </MenuButton>
               <MenuList>
-                <Link to="/report">
-                  <MenuItem>Report User</MenuItem>
-                </Link>
+                <MenuItem>Report User</MenuItem>
               </MenuList>
             </Menu>
           </Box>
         </Flex>
 
-          {/* About me section */}
-          <Box marginTop={50}>
-            <Text marginBottom={3} fontWeight="bold"> About Me </Text>
+        {/* About me section */}
+        <Box marginTop={50}>
+          <Text marginBottom={3} fontWeight="bold"> About Me </Text>
 
-                <Box borderRadius={10}
-                    borderColor="#D9D9D9"
-                    borderWidth={1}        
-                    borderStyle="solid"
-                    padding={3}
-                    width={400}
-                    height={170}>
-                    {user ? `${user.bio}` : 'Users'}
-                </Box>
+          <Box borderRadius={10}
+            borderColor="#D9D9D9"
+            borderWidth={1}
+            borderStyle="solid"
+            padding={3}
+            width={400}
+            height={170}>
+            {user ? `${user.bio}` : 'Users'}
           </Box>
-        
-          {/* Contact Info */}
-          <Box marginTop={50}>
-            <Text marginBottom={3} fontWeight="bold"> Contact Info </Text>
+        </Box>
 
-            <Text>
-                Phone: {user ? `${user.phone}` : 'Users'}
-            </Text>
+        {/* Contact Info */}
+        <Box marginTop={50}>
+          <Text marginBottom={3} fontWeight="bold"> Contact Info </Text>
 
-            <Text>
-                Email: {user ? `${user.email}` : 'Users'}
-            </Text>
-          </Box>
+          <Text>
+            Phone: {user ? `${user.phone}` : 'Users'}
+          </Text>
 
-          {/* Social media links */}
-          <Box marginTop={20}>
+          <Text>
+            Email: {user ? `${user.email}` : 'Users'}
+          </Text>
+        </Box>
+
+        {/* Social media links */}
+        <Box marginTop={20}>
           <Flex>
             {user && socialMediaPlatforms.map((platform) => (
               user[platform] && (
@@ -155,17 +157,16 @@ const ProfilePage = () => {
               )
             ))}
           </Flex>
-          </Box>
-          </Box>
+        </Box>
+      </Box>
 
-          {/* Highlights section */}
-          <Box position="absolute" top="100px" right="525px" color="grey">
-            <Text fontSize="2xl" fontWeight="bold">Highlights</Text>
-            {/* Add your highlights content here */}
-          </Box>
-        
-      </>
-  )
+      {/* Highlights section */}
+      <Box position="absolute" top="100px" right="525px" color="grey">
+        <Text fontSize="2xl" fontWeight="bold">Highlights</Text>
+        {/* Add your highlights content here */}
+      </Box>
+    </>
+  );
 }
 
 export default ProfilePage;
