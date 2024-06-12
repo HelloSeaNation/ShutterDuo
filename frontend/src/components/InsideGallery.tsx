@@ -175,23 +175,41 @@ const InsideGallery: React.FC<InsideGalleryProps> = ({ gallery }) => {
           </ModalFooter>
         </ModalContent>
       </Modal>
-
-      <Divider w={"90%"} m={"auto"} mt={4} />
-      <Flex flexWrap="wrap" justifyContent="center" mt={4}>
+      <Flex
+        flexWrap="wrap"
+        justifyContent="flex-start"
+        mt={4}
+        width={"90%"}
+        margin={"auto"}
+      >
         {images.map((image) => (
-          <Box key={image._id} m={2} position="relative">
+          <Box
+            key={image._id}
+            m={4}
+            position="relative"
+            height={"250px"}
+            width={"200px"}
+            outline={"2px solid #E2E8F0"}
+            display={"flex"}
+            alignItems={"center"}
+            justifyContent={"center"}
+            padding={"10px"}
+            border={
+              selectedImageIds.includes(image._id)
+                ? "2px solid #4267CF"
+                : "none"
+            }
+            onClick={() => handleImageSelect(image._id)}
+            cursor="pointer"
+          >
             <ChakraImage
               src={image.imageURL}
               alt={image.filename}
-              boxSize="200px"
+              boxSize="auto"
               objectFit="cover"
-              border={
-                selectedImageIds.includes(image._id)
-                  ? "4px solid #4267CF"
-                  : "none"
-              }
-              onClick={() => handleImageSelect(image._id)}
-              cursor="pointer"
+              maxWidth="100%"
+              maxHeight="100%"
+             
             />
             {selectedImageIds.includes(image._id) && (
               <Checkbox
