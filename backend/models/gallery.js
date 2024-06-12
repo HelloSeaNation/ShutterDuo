@@ -13,6 +13,9 @@ const gallerySchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  coverImage: {
+    type: String
+  },
 });
 
 const Gallery = mongoose.model('Gallery', gallerySchema);
