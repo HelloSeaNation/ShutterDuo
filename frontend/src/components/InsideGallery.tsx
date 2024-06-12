@@ -151,7 +151,11 @@ const InsideGallery: React.FC<InsideGalleryProps> = ({ gallery }) => {
         </Flex>
       </Flex>
       <Divider w={"90%"} m={"auto"} />
-
+      <Flex w={"88%"} margin={"auto"} paddingTop={"20px"} paddingBottom={"20px"} justifyContent={"flex-start"}>
+        <Text fontSize={"15px"} color={"#626262"}>
+          {images.length} Photos
+        </Text>
+      </Flex>
       {/* Modal for file selection */}
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
