@@ -176,12 +176,17 @@ app.delete("/deleteGallery/:id", async (req, res) => {
   const { id } = req.params;
 
   try {
-    const gallery = await Gallery.findByIdAndDelete(id);
-    if (gallery) {
-      res.status(200).json({ message: "Gallery deleted successfully" });
-    } else {
-      res.status(404).json({ message: "Gallery not found" });
+    const gallery = await Gallery.findById(id);
+
+    if (!gallery) {
+      return res.status(404).json({ message: "Gallery not found" });
     }
+    const deletedImages = await Image.deleteMany({ gallery: id });
+    await Gallery.findByIdAndDelete(id);
+
+    res
+      .status(200)
+      .json({ message: "Gallery and associated images deleted successfully" });
   } catch (error) {
     console.error("Error deleting gallery:", error);
     res
@@ -356,11 +361,9 @@ app.post(
       res.json({ message: "Profile picture uploaded successfully", user });
     } catch (error) {
       console.error("Error uploading profile picture:", error);
-      res
-        .status(500)
-        .json({
-          message: "An error occurred while uploading the profile picture",
-        });
+      res.status(500).json({
+        message: "An error occurred while uploading the profile picture",
+      });
     }
   }
 );
