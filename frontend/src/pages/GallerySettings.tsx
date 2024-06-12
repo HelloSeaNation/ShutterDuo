@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate  } from "react-router-dom";
 import {
   Box,
   Text,
@@ -24,6 +24,7 @@ import { faPen, faCamera } from "@fortawesome/free-solid-svg-icons";
 
 const GallerySettings: React.FC = () => {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const [gallery, setGallery] = useState<Gallery | null>(null);
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [editedTitle, setEditedTitle] = useState("");
@@ -171,9 +172,15 @@ const GallerySettings: React.FC = () => {
         <Stack height="100vh" p={4}>
           <Divider orientation="vertical" />
         </Stack>
-
         <InsideGallery gallery={gallery} />
       </Flex>
+      <Button
+        colorScheme="blue"
+        mt={4}
+        onClick={() => navigate(`/album/${id}`)}
+      >
+        View Album
+      </Button>
     </Box>
   );
 };

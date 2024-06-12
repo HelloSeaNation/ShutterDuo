@@ -12,6 +12,7 @@ import GallerySettings from "./pages/GallerySettings"
 import ProfilePage from "./pages/ProfileDisplay"
 import Report from "./pages/ReportPage"
 import SearchResults from "./pages/SearchResults"
+import AlbumPage from "./pages/AlbumPage"
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
           <Route path="/user_profile" element={<ProfilePage />} />
           <Route path="/profile/:userId" element={<ProfilePage />} />
           <Route path="/report" element={<Report />} />
+          <Route path="/album/:id" element={<AlbumPage />} />
         </Routes>
       </Router>
     </>
