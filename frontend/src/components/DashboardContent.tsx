@@ -75,7 +75,7 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
               >
                 <Flex direction={"row"} alignItems={"center"}>
                   <Image
-                    src={getRandomImageUrl()}
+                    src={gallery.coverImage || getRandomImageUrl()}
                     alt="Placeholder"
                     style={{
                       width: "60px",

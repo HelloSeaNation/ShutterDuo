@@ -95,7 +95,7 @@ const GalleryContent: React.FC = () => {
               <CardBody mb={10}>
                 <Flex direction={"column"} alignItems={"flex-start"} justifyContent={"space-evenly"}>
                   <Image
-                    src={getRandomImageUrl()}
+                    src={gallery.coverImage || getRandomImageUrl()}
                     alt="Placeholder"
                     style={{
                       width: "20rem",
@@ -116,6 +116,7 @@ const GalleryContent: React.FC = () => {
                           variant="ghost"
                         />
                         <MenuList>
+                          <MenuItem onClick={() => navigate(`/album/${gallery._id}`)}>View album</MenuItem>
                           <MenuItem onClick={() => openDialog(gallery)}>Delete</MenuItem>
                         </MenuList>
                       </Menu>
