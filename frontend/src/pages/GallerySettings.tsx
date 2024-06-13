@@ -5,11 +5,14 @@ import {
   Text,
   Button,
   Flex,
-  Divider,
-  Stack,
-  Icon,
   Input,
   Image,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalCloseButton,
 } from "@chakra-ui/react";
 import {
   fetchGalleryById,
@@ -20,7 +23,7 @@ import { Gallery } from "../components/api";
 import TopBar from "../components/TopBar";
 import InsideGallery from "../components/InsideGallery";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPen, faCamera } from "@fortawesome/free-solid-svg-icons";
+import { faPen, faCamera, faShare } from "@fortawesome/free-solid-svg-icons";
 
 const GallerySettings: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -29,6 +32,10 @@ const GallerySettings: React.FC = () => {
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [editedTitle, setEditedTitle] = useState("");
   const [isUploadingCover, setIsUploadingCover] = useState(false);
+  const [isOverlayOpen, setIsOverlayOpen] = useState(false);
+  const [albumLink, setAlbumLink] = useState("");
+  const [isCopied, setIsCopied] = useState(false);
+  const [pin, setPin] = useState("");
 
   useEffect(() => {
     const loadGallery = async () => {
@@ -93,6 +100,27 @@ const GallerySettings: React.FC = () => {
     }
   };
 
+  const handleShareAlbum = () => {
+    const link = `${window.location.origin}/album/${id}`;
+    setAlbumLink(link);
+    setIsOverlayOpen(true);
+  };
+
+  const closeOverlay = () => {
+    setIsOverlayOpen(false);
+    setIsCopied(false);
+  };
+
+  const copyToClipboard = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      console.log("Text copied to clipboard:", text);
+      setIsCopied(true);
+    } catch (error) {
+      console.error("Error copying to clipboard:", error);
+    }
+  };
+
   return (
     <Box>
       <TopBar />
@@ -130,7 +158,11 @@ const GallerySettings: React.FC = () => {
               />
             </Flex>
           )}
-          <Flex justifyContent={"space-between"} h={"80vh"} flexDirection={"column"}>
+          <Flex
+            justifyContent={"space-between"}
+            h={"80vh"}
+            flexDirection={"column"}
+          >
             <Flex direction="column" alignItems="center">
               {gallery.coverImage ? (
                 <Image
@@ -176,13 +208,62 @@ const GallerySettings: React.FC = () => {
             >
               View Album
             </Button>
+            <Button colorScheme="teal" mt={2} onClick={handleShareAlbum}>
+              <FontAwesomeIcon icon={faShare} style={{ marginRight: "8px" }} />
+              Share Album
+            </Button>
           </Flex>
         </Flex>
-        
       </Flex>
       <InsideGallery gallery={gallery} />
+      {/* Overlay Modal */}
+      <Modal
+        isOpen={isOverlayOpen}
+        onClose={closeOverlay}
+        size={"4xl"}
+        isCentered
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader
+            bgColor={"#EFEFEF"}
+            paddingBottom={"40px"}
+            paddingTop={"40px"}
+            paddingLeft={"57px"}
+          >
+            Direct Link
+          </ModalHeader>
+          <ModalCloseButton />
+          <ModalBody
+            marginLeft={"40px"}
+            marginRight={"40px"}
+            paddingBottom={"5rem"}
+          >
+            <Text fontWeight={"bold"} marginTop={"20px"}>
+              URL
+            </Text>
+            <Flex
+              outline={"2px solid #EFEFEF"}
+              padding={"10px"}
+              justifyContent={"space-between"}
+              alignItems={"center"}
+              marginTop={"10px"}
+            >
+              <Text flex={"1"}>{albumLink}</Text>
+              <Button
+                onClick={() => copyToClipboard(albumLink)}
+                colorScheme="blue"
+                disabled={isCopied}
+                borderRadius={"0"}
+                marginLeft={"15px"}
+              >
+                {isCopied ? "Copied" : "Copy"}
+              </Button>
+            </Flex>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
     </Box>
-    
   );
 };
 
