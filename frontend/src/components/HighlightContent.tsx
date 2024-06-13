@@ -110,7 +110,7 @@ const AccountContent = () => {
       </Box>
 
       <Flex justifyContent={"flex-end"} marginTop={"5rem"} paddingBottom={"5rem"}>
-        <Button
+        {/* <Button
           w={"165px"}
           h={"50px"}
           bgColor={"transparent"}
@@ -118,7 +118,9 @@ const AccountContent = () => {
           marginRight={"10px"}
         >
           Cancel
-        </Button>
+        </Button> 
+        
+        commented until I can get to work*/}
         <Button
           bgColor={"#4267cf"}
           color={"white"}
