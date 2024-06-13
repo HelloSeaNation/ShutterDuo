@@ -95,7 +95,7 @@ const GalleryContent: React.FC = () => {
               <CardBody mb={10}>
                 <Flex direction={"column"} alignItems={"flex-start"} justifyContent={"space-evenly"}>
                   <Image
-                    src={getRandomImageUrl()}
+                    src={gallery.coverImage || getRandomImageUrl()}
                     alt="Placeholder"
                     style={{
                       width: "20rem",
