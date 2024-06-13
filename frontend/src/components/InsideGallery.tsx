@@ -18,7 +18,7 @@ import {
   Checkbox,
 } from "@chakra-ui/react";
 import { AddIcon, DeleteIcon } from "@chakra-ui/icons";
-import { uploadImage, fetchImagesByGalleryID, deleteImages } from "./api"; // Import the function
+import { uploadImage, fetchImagesByGalleryID, deleteImages } from "./api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUpRightAndDownLeftFromCenter } from "@fortawesome/free-solid-svg-icons";
 
@@ -44,7 +44,7 @@ const InsideGallery: React.FC<InsideGalleryProps> = ({ gallery }) => {
   useEffect(() => {
     const loadImages = async () => {
       try {
-        const imageMetadata = await fetchImagesByGalleryID(gallery._id); // Use gallery._id
+        const imageMetadata = await fetchImagesByGalleryID(gallery._id);
         setImages(imageMetadata);
       } catch (error) {
         console.error("Error loading images:", error);
@@ -110,7 +110,16 @@ const InsideGallery: React.FC<InsideGalleryProps> = ({ gallery }) => {
   };
 
   return (
-    <Box w={"80%"} h={"100vh"} bgColor={"#FFFFFF"}>
+    <Box
+      w={"75%"}
+      h={"100vh"}
+      bgColor={"#FFFFFF"}
+      position={"fixed"}
+      left={"23rem"}
+      top={"4rem"}
+      zIndex={0}
+      overflowY="auto" 
+    >
       <Flex
         w={"90%"}
         margin={"auto"}
@@ -151,7 +160,13 @@ const InsideGallery: React.FC<InsideGalleryProps> = ({ gallery }) => {
         </Flex>
       </Flex>
       <Divider w={"90%"} m={"auto"} />
-      <Flex w={"88%"} margin={"auto"} paddingTop={"20px"} paddingBottom={"20px"} justifyContent={"flex-start"}>
+      <Flex
+        w={"88%"}
+        margin={"auto"}
+        paddingTop={"20px"}
+        paddingBottom={"20px"}
+        justifyContent={"flex-start"}
+      >
         <Text fontSize={"15px"} color={"#626262"}>
           {images.length} Photos
         </Text>
@@ -213,6 +228,10 @@ const InsideGallery: React.FC<InsideGalleryProps> = ({ gallery }) => {
         mt={4}
         width={"90%"}
         margin={"auto"}
+        position={"absolute"}
+        left={"5rem"}
+        h={"100%"}
+        paddingBottom={"5rem"}
       >
         {images.map((image) => (
           <Box

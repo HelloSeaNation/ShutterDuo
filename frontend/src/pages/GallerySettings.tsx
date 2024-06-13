@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import {
   Box,
   Text,
@@ -11,7 +11,11 @@ import {
   Input,
   Image,
 } from "@chakra-ui/react";
-import { fetchGalleryById, updateGalleryTitle, updateGalleryCoverImage } from "../components/api"; // Import updateGalleryCoverImage function
+import {
+  fetchGalleryById,
+  updateGalleryTitle,
+  updateGalleryCoverImage,
+} from "../components/api"; // Import updateGalleryCoverImage function
 import { Gallery } from "../components/api";
 import TopBar from "../components/TopBar";
 import InsideGallery from "../components/InsideGallery";
@@ -20,6 +24,7 @@ import { faPen, faCamera } from "@fortawesome/free-solid-svg-icons";
 
 const GallerySettings: React.FC = () => {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const [gallery, setGallery] = useState<Gallery | null>(null);
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [editedTitle, setEditedTitle] = useState("");
@@ -67,7 +72,9 @@ const GallerySettings: React.FC = () => {
     }
   };
 
-  const handleCoverImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCoverImageChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = event.target.files?.[0];
     if (file && id) {
       try {
@@ -77,6 +84,7 @@ const GallerySettings: React.FC = () => {
           ...prevGallery!,
           coverImage: newCoverImageUrl,
         }));
+        window.location.reload();
       } catch (error) {
         console.error("Error updating cover image:", error);
       } finally {
@@ -89,7 +97,7 @@ const GallerySettings: React.FC = () => {
     <Box>
       <TopBar />
       <Flex direction="row" margin="20px">
-        <Flex direction="column">
+        <Flex direction="column" position={"fixed"} top={"5rem"}>
           {isEditingTitle ? (
             <Flex direction="row" w="20rem" alignItems="baseline">
               <Input
@@ -101,60 +109,80 @@ const GallerySettings: React.FC = () => {
               </Button>
             </Flex>
           ) : (
-            <Flex direction="row" w="20rem" justifyContent="flex-start" alignItems="baseline">
+            <Flex
+              direction="row"
+              w="20rem"
+              justifyContent="flex-start"
+              alignItems="baseline"
+            >
               <Flex direction="column" marginRight="20px">
                 <Text fontSize="30px" fontWeight="bold">
                   {gallery.title}
                 </Text>
-                <Text fontSize="20px" color="gray.500">
+                <Text fontSize="20px" color="gray.500" marginBottom={"20px"}>
                   {gallery.description}
                 </Text>
               </Flex>
-              <FontAwesomeIcon icon={faPen} color="#4267CF" onClick={handleEditTitle} />
+              <FontAwesomeIcon
+                icon={faPen}
+                color="#4267CF"
+                onClick={handleEditTitle}
+              />
             </Flex>
           )}
-          <Flex direction="column" alignItems="center">
-          {gallery.coverImage ? (
-            <Image
-              src={gallery.coverImage}
-              alt="Gallery Cover"
-              boxSize="200px"
-              objectFit="cover"
-              borderRadius="md"
-            />
-          ) : (
-            <Box
-              boxSize="200px"
-              border="2px dashed gray"
-              borderRadius="md"
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
+          <Flex justifyContent={"space-between"} h={"80vh"} flexDirection={"column"}>
+            <Flex direction="column" alignItems="center">
+              {gallery.coverImage ? (
+                <Image
+                  src={gallery.coverImage}
+                  alt="Gallery Cover"
+                  height={"180px"}
+                  width={"300px"}
+                  objectFit="cover"
+                  borderRadius="md"
+                />
+              ) : (
+                <Box
+                  height={"180px"}
+                  width={"300px"}
+                  border="2px dashed gray"
+                  borderRadius="md"
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                >
+                  <FontAwesomeIcon icon={faCamera} color="gray" size="2x" />
+                </Box>
+              )}
+              <Button
+                as="label"
+                colorScheme="blue"
+                mt={4}
+                isLoading={isUploadingCover}
+              >
+                Change Cover Image
+                <Input
+                  type="file"
+                  accept="image/*"
+                  hidden
+                  onChange={handleCoverImageChange}
+                />
+              </Button>
+            </Flex>
+            <Button
+              colorScheme="blue"
+              mt={4}
+              onClick={() => navigate(`/album/${id}`)}
             >
-              <FontAwesomeIcon icon={faCamera} color="gray" size="2x" />
-            </Box>
-          )}
-          <Button as="label" colorScheme="blue" mt={4} isLoading={isUploadingCover}>
-            Change Cover Image
-            <Input
-              type="file"
-              accept="image/*"
-              hidden
-              onChange={handleCoverImageChange}
-            />
-          </Button>
+              View Album
+            </Button>
+          </Flex>
         </Flex>
-            <Button colorScheme="blue" mt={4}>
-            Edit Gallery
-          </Button>
-        </Flex>
-        <Stack height="100vh" p={4}>
-          <Divider orientation="vertical" />
-        </Stack>
         
-        <InsideGallery gallery={gallery} />
       </Flex>
+      <InsideGallery gallery={gallery} />
     </Box>
+    
   );
 };
 

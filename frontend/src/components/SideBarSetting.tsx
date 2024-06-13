@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 const SideBar = () => {
   return (
     <Box>
-      <Box bgColor={"#FAFAFA"} h={"100vh"}>
+      <Box bgColor={"#FAFAFA"} h={"100vh"} top={"3rem"} position={"fixed"}>
         <Flex direction={"column"} w={"20rem"}>
           <Box marginTop={"30px"}>
             <Button
