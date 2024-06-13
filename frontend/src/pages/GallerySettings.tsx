@@ -23,7 +23,7 @@ import { Gallery } from "../components/api";
 import TopBar from "../components/TopBar";
 import InsideGallery from "../components/InsideGallery";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPen, faCamera, faShare } from "@fortawesome/free-solid-svg-icons";
+import { faPen, faCamera, faShare, faEye } from "@fortawesome/free-solid-svg-icons";
 
 const GallerySettings: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -132,7 +132,7 @@ const GallerySettings: React.FC = () => {
                 value={editedTitle}
                 onChange={(e) => setEditedTitle(e.target.value)}
               />
-              <Button onClick={handleSaveTitle} colorScheme="blue" ml={2}>
+              <Button onClick={handleSaveTitle} colorScheme="blue" ml={2} marginBottom={"10px"}>
                 Save
               </Button>
             </Flex>
@@ -201,17 +201,26 @@ const GallerySettings: React.FC = () => {
                 />
               </Button>
             </Flex>
-            <Button
-              colorScheme="blue"
-              mt={4}
-              onClick={() => navigate(`/album/${id}`)}
-            >
-              View Album
-            </Button>
-            <Button colorScheme="teal" mt={2} onClick={handleShareAlbum}>
-              <FontAwesomeIcon icon={faShare} style={{ marginRight: "8px" }} />
-              Share Album
-            </Button>
+            <Flex alignItems={"flex-end"} justifyContent={"space-evenly"}>
+              <Button
+                colorScheme="gray"
+                mt={4}
+                onClick={() => navigate(`/album/${id}`)}
+              >
+                <FontAwesomeIcon
+                  icon={faEye}
+                  style={{ marginRight: "8px" }}
+                />
+                View
+              </Button>
+              <Button colorScheme="blue" mt={2} onClick={handleShareAlbum}>
+                <FontAwesomeIcon
+                  icon={faShare}
+                  style={{ marginRight: "8px" }}
+                />
+                Share
+              </Button>
+            </Flex>
           </Flex>
         </Flex>
       </Flex>
@@ -224,7 +233,7 @@ const GallerySettings: React.FC = () => {
         isCentered
       >
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent borderRadius={"none"}>
           <ModalHeader
             bgColor={"#EFEFEF"}
             paddingBottom={"40px"}
