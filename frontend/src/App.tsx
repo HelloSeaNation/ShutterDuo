@@ -3,7 +3,7 @@ import LandingPage from "./pages/LandingPage";
 import ProfileSetting from "./pages/ProfileSetting";
 import Dashboard from "./pages/Dashboard";
 import SearchBar from "./pages/SearchBar";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as HashRouter, Routes, Route } from "react-router-dom";
 import AccountSetting from "./pages/AccountSetting";
 import HighlightSetting from "./pages/HighlightSetting";
 import NotificationPage from "./pages/NotificationPage";
@@ -17,7 +17,7 @@ import AlbumPage from "./pages/AlbumPage"
 function App() {
   return (
     <>
-      <Router>
+      <HashRouter basename="/">
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/dashboard" element={<Dashboard />} />
@@ -34,7 +34,7 @@ function App() {
           <Route path="/report" element={<Report />} />
           <Route path="/album/:id" element={<AlbumPage />} />
         </Routes>
-      </Router>
+      </HashRouter>
     </>
   );
 }
