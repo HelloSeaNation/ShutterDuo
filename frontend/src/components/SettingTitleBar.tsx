@@ -4,7 +4,14 @@ import ProfileSettingContent from "./ProfileSettingContent";
 
 const SettingTitleBar = () => {
   return (
-    <Box w={"90%"} h={"100vh"} bgColor={"#FFFFFF"}>
+    <Box
+      w={"80%"}
+      h={"100vh"}
+      bgColor={"#FFFFFF"}
+      left={"20rem"}
+      top={"5rem"}
+      position={"absolute"}
+    >
       <Flex
         w={"70%"}
         margin={"auto"}

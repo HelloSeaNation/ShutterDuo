@@ -4,7 +4,7 @@ import { Box, Flex, Button} from "@chakra-ui/react";
 const SideBarDashboard = () => { 
     return (
         <Box>
-        <Box bgColor={"#FAFAFA"} h={"100vh"}>
+        <Box bgColor={"#FAFAFA"} h={"100vh"} top={"3rem"} position={"fixed"}>
             <Flex direction={"column"} w={"20rem"}>
             <Box marginTop={"30px"}>
                 <Button
