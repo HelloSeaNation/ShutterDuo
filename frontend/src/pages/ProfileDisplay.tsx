@@ -1,10 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import { Flex, Text, Box, MenuDivider, MenuItem, Menu, MenuList, MenuButton } from '@chakra-ui/react';
+import React, { useState, useEffect } from "react";
+import {
+  Flex,
+  Text,
+  Box,
+  Image,
+  MenuItem,
+  Menu,
+  MenuList,
+  MenuButton,
+} from "@chakra-ui/react";
 import TopBar from "../components/TopBar";
-import axios from 'axios';
-import { CalendarIcon, StarIcon, ChevronDownIcon } from '@chakra-ui/icons';
-import SocialMedia from '../components/SocialMediaLinks';
-import { useLocation, Link } from 'react-router-dom';
+import axios from "axios";
+import { CalendarIcon, StarIcon, ChevronDownIcon } from "@chakra-ui/icons";
+import SocialMedia from "../components/SocialMediaLinks";
+import { useLocation, Link } from "react-router-dom";
 
 interface User {
   firstName: string;
@@ -38,13 +47,13 @@ const socialMediaPlatforms = [
 type SocialMediaPlatform = (typeof socialMediaPlatforms)[number];
 
 const socialMediaIcons: Record<SocialMediaPlatform, string> = {
-  facebook: '../facebook.png',
-  insta: '../instagram.png',
-  pinterest: '../pinterest.png',
-  twitter: '../twitter.png',
-  youtube: './youtube.png',
-  linkedin: '/linkedin.png',
-  tiktok: '../tiktok.png'
+  facebook: "../facebook.png",
+  insta: "../instagram.png",
+  pinterest: "../pinterest.png",
+  twitter: "../twitter.png",
+  youtube: "./youtube.png",
+  linkedin: "/linkedin.png",
+  tiktok: "../tiktok.png",
 };
 
 const ProfilePage = () => {
@@ -57,12 +66,14 @@ const ProfilePage = () => {
       setUser(userData);
     } else {
       const fetchUserData = async () => {
-        const storedUser = localStorage.getItem('user');
+        const storedUser = localStorage.getItem("user");
         if (storedUser) {
           const parsedUser = JSON.parse(storedUser);
           if (parsedUser && parsedUser.email) {
             try {
-              const response = await axios.get(`http://localhost:5000/user/${parsedUser.email}`);
+              const response = await axios.get(
+                `http://localhost:5000/user/${parsedUser.email}`
+              );
               setUser(response.data);
             } catch (error) {
               console.error("Error fetching user data:", error);
@@ -79,40 +90,48 @@ const ProfilePage = () => {
       <TopBar />
 
       {/* Basic information and profile photo */}
-      <Box padding={35}>
+      <Box padding={35} left={"20rem"} top={"5rem"} position={"absolute"}>
         <Flex align="center">
           {user && user.profilePicture && (
-            <img
-              src={user && user.profilePicture ? user.profilePicture : "../defaultProfileImage.jpg"}
+            <Image
+              src={
+                user && user.profilePicture
+                  ? user.profilePicture
+                  : "../defaultProfileImage.jpg"
+              }
               alt="Profile"
-              style={{ width: '150px', height: '150px', borderRadius: '50%', marginRight: '20px' }}
+              style={{
+                width: "150px",
+                height: "150px",
+                borderRadius: "50%",
+                marginRight: "20px",
+              }}
             />
           )}
           <Box>
             <Text marginBottom={2} fontWeight="bold">
-              {user ? `${user.firstName} ${user.surname}` : 'User'}
+              {user ? `${user.firstName} ${user.surname}` : "User"}
             </Text>
             <Box>
               <Text color="#949494">
                 <CalendarIcon marginRight={2} boxSize={4} />
-                {user ? `${user.location}` : 'Location'}
+                {user ? `${user.location}` : "Location"}
               </Text>
               <Text color="#949494">
                 <StarIcon marginRight={2} boxSize={4} />
-                {user ? `${user.job}` : 'Job'}
+                {user ? `${user.job}` : "Job"}
               </Text>
             </Box>
           </Box>
           <Box marginLeft="150px">
-
             <Menu>
               <MenuButton>
                 <ChevronDownIcon boxSize={5} />
               </MenuButton>
               <Link to="/report">
-              <MenuList>
-                <MenuItem>Report User</MenuItem>
-              </MenuList>
+                <MenuList>
+                  <MenuItem>Report User</MenuItem>
+                </MenuList>
               </Link>
             </Menu>
           </Box>
@@ -120,56 +139,64 @@ const ProfilePage = () => {
 
         {/* About me section */}
         <Box marginTop={50}>
-          <Text marginBottom={3} fontWeight="bold"> About Me </Text>
+          <Text marginBottom={3} fontWeight="bold">
+            {" "}
+            About Me{" "}
+          </Text>
 
-          <Box borderRadius={10}
+          <Box
+            borderRadius={10}
             borderColor="#D9D9D9"
             borderWidth={1}
             borderStyle="solid"
             padding={3}
             width={400}
-            height={170}>
-            {user ? `${user.bio}` : 'Users'}
+            height={170}
+          >
+            {user ? `${user.bio}` : "Users"}
           </Box>
         </Box>
 
         {/* Contact Info */}
         <Box marginTop={50}>
-          <Text marginBottom={3} fontWeight="bold"> Contact Info </Text>
-
-          <Text>
-            Phone: {user ? `${user.phone}` : 'Users'}
+          <Text marginBottom={3} fontWeight="bold">
+            {" "}
+            Contact Info{" "}
           </Text>
 
-          <Text>
-            Email: {user ? `${user.email}` : 'Users'}
-          </Text>
+          <Text>Phone: {user ? `${user.phone}` : "Users"}</Text>
+
+          <Text>Email: {user ? `${user.email}` : "Users"}</Text>
         </Box>
 
         {/* Social media links */}
         <Box marginTop={20}>
           <Flex>
-            {user && socialMediaPlatforms.map((platform) => (
-              user[platform] && (
-                <SocialMedia
-                  key={platform}
-                  iconSrc={socialMediaIcons[platform]}
-                  iconAlt={`${platform} icon`}
-                  url={user[platform] as string}
-                />
-              )
-            ))}
+            {user &&
+              socialMediaPlatforms.map(
+                (platform) =>
+                  user[platform] && (
+                    <SocialMedia
+                      key={platform}
+                      iconSrc={socialMediaIcons[platform]}
+                      iconAlt={`${platform} icon`}
+                      url={user[platform] as string}
+                    />
+                  )
+              )}
           </Flex>
         </Box>
       </Box>
 
       {/* Highlights section */}
       <Box position="absolute" top="100px" right="525px" color="grey">
-        <Text fontSize="2xl" fontWeight="bold">Highlights</Text>
+        <Text fontSize="2xl" fontWeight="bold">
+          Highlights
+        </Text>
         {/* Add your highlights content here */}
       </Box>
     </>
   );
-}
+};
 
 export default ProfilePage;

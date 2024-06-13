@@ -4,7 +4,14 @@ import AccountContent from "./AccountContent";
 
 const AccountTitleBar = () => {
   return (
-    <Box w={"90%"} h={"100vh"} bgColor={"#FFFFFF"}>
+    <Box
+      w={"80%"}
+      h={"100vh"}
+      bgColor={"#FFFFFF"}
+      top={"5rem"}
+      position={"fixed"}
+      left={"20rem"}
+    >
       <Flex
         w={"70%"}
         margin={"auto"}

@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Box, Flex, Text, Divider, Button } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 import CreateGalleryModal from "./CreateGalleryModal";
-import axios from 'axios';
-import { createGallery } from './api';
+import axios from "axios";
+import { createGallery } from "./api";
 import GalleryContent from "./GalleryContent";
 
 interface User {
@@ -18,8 +18,7 @@ const GalleryTitleBar: React.FC = () => {
   const handleOpen = () => setIsOpen(true);
   const handleClose = () => setIsOpen(false);
 
-  const fetchGalleries = async () => {
-  };
+  const fetchGalleries = async () => {};
 
   const handleSubmit = async (title: string, description: string) => {
     try {
@@ -55,7 +54,14 @@ const GalleryTitleBar: React.FC = () => {
   }, []);
 
   return (
-    <Box w={"90%"} h={"100vh"} bgColor={"#FFFFFF"}>
+    <Box
+      w={"80%"}
+      h={"100vh"}
+      bgColor={"#FFFFFF"}
+      left={"20rem"}
+      top={"3rem"}
+      position={"absolute"}
+    >
       <Flex
         w={"90%"}
         margin={"auto"}

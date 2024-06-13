@@ -5,7 +5,15 @@ import { AddIcon } from "@chakra-ui/icons";
 
 const NotificationTitleBar = () => {
   return (
-    <Box w={"70%"} h={"100vh"} margin={"auto"} bgColor={"#FFFFFF"}>
+    <Box
+      w={"70%"}
+      h={"100vh"}
+      margin={"auto"}
+      bgColor={"#FFFFFF"}
+      left={"20rem"}
+      top={"5rem"}
+      position={"absolute"}
+    >
       <Flex
         w={"70%"}
         margin={"auto"}
@@ -19,7 +27,6 @@ const NotificationTitleBar = () => {
       </Flex>
       <Divider w={"70%"} m={"auto"} />
       <NotificationContent />
-      
     </Box>
   );
 };
