@@ -116,6 +116,7 @@ const GalleryContent: React.FC = () => {
                           variant="ghost"
                         />
                         <MenuList>
+                          <MenuItem onClick={() => navigate(`/album/${gallery._id}`)}>View album</MenuItem>
                           <MenuItem onClick={() => openDialog(gallery)}>Delete</MenuItem>
                         </MenuList>
                       </Menu>
