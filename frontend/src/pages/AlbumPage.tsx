@@ -77,7 +77,7 @@ const AlbumPage: React.FC = () => {
   if (!gallery) {
     return (
       <Flex justifyContent="center" alignItems="center" height="100vh">
-        <Text fontSize="xl">Gallery not found.</Text>
+        <Text fontSize="xl">No Image in this gallery, please contact your photographer</Text>
       </Flex>
     );
   }
