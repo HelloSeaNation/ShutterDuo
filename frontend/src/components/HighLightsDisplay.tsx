@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import { Box, Grid, GridItem, Text } from "@chakra-ui/react"
+import { Box, Grid, GridItem, Text, Stack } from "@chakra-ui/react"
 import axios from 'axios'
 
 interface User {
@@ -45,18 +45,19 @@ const HighLightDisplay = () => {
     
     return(
 
-        <Box>
+        <Stack spacing={4} align="center">
             <Text fontSize="2xl" fontWeight="bold">
-                Highlights
+            Highlights
             </Text>
+            
             <Grid templateColumns="repeat(2, 1fr)" gap={4}>
-                {highlights.map((highlight, index) => (
-                    <GridItem key={index} w="350px" h="220px" bg="gray.200" borderRadius="md" overflow="hidden">
-                        <Box as="img" src={highlight} alt={`highlight-${index}`} w="100%" h="100%" objectFit="cover" />
-                    </GridItem>
-                ))}
+            {highlights.map((highlight, index) => (
+                <GridItem key={index} w="350px" h="220px" bg="gray.200" borderRadius="md" overflow="hidden">
+                <Box as="img" src={highlight} alt={`highlight-${index}`} w="100%" h="100%" objectFit="cover" />
+                </GridItem>
+            ))}
             </Grid>
-        </Box>
+      </Stack>
     )
 }
 
