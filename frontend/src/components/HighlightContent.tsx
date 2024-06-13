@@ -98,7 +98,7 @@ const AccountContent = () => {
       <Text color={"#8D8D8D"} fontSize={"18px"} marginTop={"1rem"}>
         You can add up to 6 images as your profile highlight.
       </Text>
-      <Box marginTop={10}>
+      <Box marginTop={5}>
         <FormControl>
           {selectedFiles.map((_, index) => (
             <div key={index}>
