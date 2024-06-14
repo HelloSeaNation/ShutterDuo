@@ -61,6 +61,7 @@ const ProfilePage = () => {
   const location = useLocation();
   const [user, setUser] = useState<User | null>(null);
   const { user: userData } = location.state || {};
+  
 
   useEffect(() => {
     if (userData) {
@@ -194,7 +195,7 @@ const ProfilePage = () => {
         {/* Highlights section */}
         <Box flex="0 0 300px" color="grey" marginRight="200px">
 
-          <HighLightDisplay />
+          <HighLightDisplay user={user}/>
         </Box>
       </Flex>
     </>
