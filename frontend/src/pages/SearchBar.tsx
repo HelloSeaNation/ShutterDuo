@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Box, Text, Input, InputGroup, InputLeftElement } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
-import TopBar from '../components/TopBar';
+import SearchTopBar from '../components/searchTopBar';
 import { Search2Icon } from '@chakra-ui/icons';
 
 // Defining props interface for the rotating placeholder component
@@ -64,7 +64,7 @@ const SearchBar = () => {
 
   return (
     <Box>
-      <TopBar />
+      <SearchTopBar />
 
       <Box style={{
         display: 'flex',
