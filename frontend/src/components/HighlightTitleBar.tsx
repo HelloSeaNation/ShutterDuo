@@ -23,7 +23,7 @@ const HighlightTitleBar = () => {
         <Text fontSize={"35px"} color={"#626262"}>
           Highlight
         </Text>
-        <Button
+        {/* <Button
           bgColor={"#4267CF"}
           h={"50px"}
           w={"200px"}
@@ -33,7 +33,8 @@ const HighlightTitleBar = () => {
           <Text fontSize={"18px"} color={"white"}>
             Add Highlight
           </Text>
-        </Button>
+        </Button> 
+        commented until I can get to work*/}
       </Flex>
       <Divider w={"70%"} m={"auto"} />
       <HighlightContent />

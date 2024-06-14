@@ -423,6 +423,48 @@ app.put(
 // Serve static files from the uploads directory
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
+//upload highlights
+app.post("/uploadHighlights", upload.array("highlights", 6), async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const user = await collection.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    req.files.forEach((file, index) => {
+      if (file) {
+        const highlightUrl = `${req.protocol}://${req.get("host")}/uploads/${file.filename}`;
+        user[`highLight${index}`] = highlightUrl;
+      }
+    });
+
+    await user.save();
+    res.json({ message: "Highlights uploaded successfully", user });
+  } catch (error) {
+    console.error("Error uploading highlights:", error);
+    res.status(500).json({
+      message: "An error occurred while uploading the highlights",
+    });
+  }
+});
+
+// Endpoint to serve highlights
+app.get("/highlights/:filename", (req, res) => {
+  const { filename } = req.params;
+  const filePath = path.join(__dirname, "uploads", filename);
+
+  res.sendFile(filePath, (err) => {
+    if (err) {
+      console.error("Error uploading highlight:", err);
+      res.status(404).json({ message: "File not found" });
+    }
+  });
+});
+
+
 app.listen(5000, () => {
   console.log("Server is running on port 5000");
 });
