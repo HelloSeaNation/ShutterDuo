@@ -118,8 +118,8 @@ const AlbumPage: React.FC = () => {
           {images.map((image) => (
             <Box
               key={image._id}
-              m={2}
-              height="250px"
+              m={5}
+              height="450px"
               position="relative"
               display="flex"
               alignItems="center"
