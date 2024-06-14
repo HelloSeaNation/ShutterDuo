@@ -68,9 +68,24 @@ const newSchema = new mongoose.Schema({
   profilePicture: {
     type: String,
   },
-  highLights: {
+  highLight0: {
     type: String
-  }
+  },
+  highLight1: {
+    type: String
+  },
+  highLight2: {
+    type: String
+  },
+  highLight3: {
+    type: String
+  },
+  highLight4: {
+    type: String
+  },
+  highLight5: {
+    type: String
+  },
 });
 
 const collection = mongoose.model("Users", newSchema);

@@ -72,25 +72,27 @@ const Login = () => {
               />
             </Flex>
           </FormControl>
-          <ChakraLink
-            href="#"
-            fontSize={"20px"}
-            marginBottom={"20px"}
-            color={"white"}
-          >
-            Forgot your Password?
-          </ChakraLink>
-          <Button
-            w={"18vh"}
-            h={"5.5vh"}
-            fontSize={"20px"}
-            backgroundColor={"#008F20"}
-            color={"White"}
-            _hover={{ bg: "#d6d6d6", color: "black" }}
-            type="submit"
-          >
-            Login
-          </Button>
+          <Flex direction="column">
+            <ChakraLink
+              href="#"
+              fontSize="20px"
+              marginBottom="20px"
+              color="white"
+            >
+              Forgot your Password?
+            </ChakraLink>
+            <Button
+              w="18vh"
+              h="5.5vh"
+              fontSize="20px"
+              backgroundColor="#008F20"
+              color="white"
+              _hover={{ bg: "#d6d6d6", color: "black" }}
+              type="submit"
+            >
+              Login
+            </Button>
+          </Flex>
         </form>
       </Flex>
     </Box>
