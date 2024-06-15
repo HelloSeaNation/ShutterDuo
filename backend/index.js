@@ -25,7 +25,6 @@ app.get("/", (req, res) => {
 });
 
 console.log(collection);
-console.log("SendGrid API Key:", process.env.SENDGRID_API_KEY);
 
 app.post("/checkEmail", async (req, res) => {
   const { email } = req.body;
