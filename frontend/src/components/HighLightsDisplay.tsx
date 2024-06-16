@@ -12,53 +12,35 @@ interface User {
     highLight5?: string;
 }
 
-const HighLightDisplay = () => {
+const HighLightDisplay: React.FC<{ user: User | null }> = ({ user }) => {
+  if (!user) {
+    return <Text>No user data available</Text>; // or any other handling for null user
+  }
 
-    const [user, setUser] = useState<User | null>(null);
+  const highlights = [
+    user.highLight0,
+    user.highLight1,
+    user.highLight2,
+    user.highLight3,
+    user.highLight4,
+    user.highLight5,
+  ].filter(Boolean); // Remove any undefined highlights
 
-    useEffect(() => {
-      const fetchUserData = async () => {
-        const storedUser = localStorage.getItem('user');
-        if (storedUser) {
-          const parsedUser = JSON.parse(storedUser);
-          if (parsedUser && parsedUser.email) {
-            try {
-              const response = await axios.get(`http://localhost:5000/user/${parsedUser.email}`);
-              setUser(response.data);
-            } catch (error) {
-              console.error("Error fetching user data:", error);
-            }
-          }
-        }
-      };
-      fetchUserData();
-    }, []);
+  return (
+    <Stack spacing={4} align="center">
+      <Text fontSize="2xl" fontWeight="bold">
+        Highlights
+      </Text>
 
-    const highlights = [
-        user?.highLight0,
-        user?.highLight1,
-        user?.highLight2,
-        user?.highLight3,
-        user?.highLight4,
-        user?.highLight5,
-    ].filter(Boolean); //remove any undefined highlights
-    
-    return(
+      <Grid templateColumns="repeat(2, 1fr)" gap={4}>
+        {highlights.map((highlight, index) => (
+          <GridItem key={index} w="350px" h="220px" bg="gray.200" borderRadius="md" overflow="hidden">
+            <Box as="img" src={highlight} alt={`highlight-${index}`} w="100%" h="100%" objectFit="cover" />
+          </GridItem>
+        ))}
+      </Grid>
+    </Stack>
+  );
+};
 
-        <Stack spacing={4} align="center">
-            <Text fontSize="2xl" fontWeight="bold">
-            Highlights
-            </Text>
-            
-            <Grid templateColumns="repeat(2, 1fr)" gap={4}>
-            {highlights.map((highlight, index) => (
-                <GridItem key={index} w="350px" h="220px" bg="gray.200" borderRadius="md" overflow="hidden">
-                <Box as="img" src={highlight} alt={`highlight-${index}`} w="100%" h="100%" objectFit="cover" />
-                </GridItem>
-            ))}
-            </Grid>
-      </Stack>
-    )
-}
-
-export default HighLightDisplay
+export default HighLightDisplay;
