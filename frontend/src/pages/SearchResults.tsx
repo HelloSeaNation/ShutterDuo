@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Box, Text, SimpleGrid, Flex, Button } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import TopBar from "../components/TopBar";
 import { useLocation } from 'react-router-dom';
+import SearchTopBar from '../components/searchTopBar';
 
 interface User {
   _id: string;
@@ -49,7 +49,7 @@ const SearchResults = () => {
 
   return (
     <>
-      <TopBar />
+      <SearchTopBar />
       <Box mt="20px" ml="20px">
         <Text fontSize="2xl" fontWeight="bold">
           Showing search results for:
@@ -59,6 +59,11 @@ const SearchResults = () => {
           </Text>
         </Text>
       </Box>
+      <Link to="/search_photographer">
+        <Text mt="5px" ml="20px"  color="#9E9E9E">
+          Return to search
+        </Text>
+      </Link>
       <Box display="flex" flexDirection="column" alignItems="center" minHeight="100vh" marginTop="30px">
         {loading ? (
           <Text>Loading...</Text>
