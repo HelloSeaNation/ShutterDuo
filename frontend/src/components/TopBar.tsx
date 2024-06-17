@@ -44,6 +44,7 @@ useEffect(() => {
 
 const handleLogout = () => {
   localStorage.removeItem("user"); // Clear user data from localStorage
+  localStorage.removeItem("userId"); // Clear token from localStorage
   navigate("/"); // Redirect to the login page
 };
 

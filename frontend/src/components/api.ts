@@ -17,7 +17,11 @@ export interface Gallery {
   
   export const fetchGalleriesData = async (): Promise<Gallery[]> => {
     try {
-      const response = await fetch("http://localhost:5000/galleries");
+      // Good API
+      // /users/:userId/galleries OR
+      // /userGalleries/:userId
+      const userId = localStorage.getItem("userId");
+      const response = await fetch(`http://localhost:5000/galleries/${userId}`);
       if (!response.ok) {
         throw new Error("Failed to fetch galleries");
       }
@@ -29,14 +33,14 @@ export interface Gallery {
     }
   };
   
-  export const createGallery = async (title: string, description: string): Promise<{ message: string }> => {
+  export const createGallery = async (title: string, description: string, userId: string): Promise<{ message: string }> => {
     try {
       const response = await fetch("http://localhost:5000/createGallery", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ title, description }),
+        body: JSON.stringify({ title, description, userId }),
       });
   
       const result = await response.json();

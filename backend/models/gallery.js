@@ -16,6 +16,10 @@ const gallerySchema = new mongoose.Schema({
   coverImage: {
     type: String
   },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Users'
+  }
 });
 
 const Gallery = mongoose.model('Gallery', gallerySchema);

@@ -7,6 +7,7 @@ import { createGallery } from "./api";
 import GalleryContent from "./GalleryContent";
 
 interface User {
+  _id: string;
   firstName: string;
   email: string;
 }
@@ -20,9 +21,9 @@ const GalleryTitleBar: React.FC = () => {
 
   const fetchGalleries = async () => {};
 
-  const handleSubmit = async (title: string, description: string) => {
+  const handleSubmit = async (title: string, description: string, userId: string) => {
     try {
-      const result = await createGallery(title, description);
+      const result = await createGallery(title, description, userId);
       alert(result.message);
       handleClose();
       fetchGalleries();
@@ -87,6 +88,7 @@ const GalleryTitleBar: React.FC = () => {
       </Flex>
       <Divider w={"90%"} m={"auto"} />
       <CreateGalleryModal
+        userId={user !== null ? user._id : ''}
         isOpen={isOpen}
         onClose={handleClose}
         onSubmit={handleSubmit}

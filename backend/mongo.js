@@ -11,7 +11,7 @@ mongoose.connect(mongoURI, {
   console.error("Connection failed", error);
 });
 
-const newSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
   firstName: {
     type: String,
     required: true
@@ -85,10 +85,10 @@ const newSchema = new mongoose.Schema({
   },
   highLight5: {
     type: String
-  },
+  }
 });
 
-const collection = mongoose.model("Users", newSchema);
+const collection = mongoose.model("Users", userSchema);
 
 const ImageSchema = new mongoose.Schema({
   filename: String,

@@ -28,6 +28,7 @@ const Login = () => {
       if (response.data.message === "Login Successful") {
         const user = response.data.user;
         localStorage.setItem('user', JSON.stringify(user));
+        localStorage.setItem('userId', user._id);
         navigate('/dashboard');
       } else {
         alert("Invalid Email or Password");
