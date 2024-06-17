@@ -24,8 +24,6 @@ app.get("/", (req, res) => {
   res.send("API is running");
 });
 
-console.log(collection);
-
 app.post("/checkEmail", async (req, res) => {
   const { email } = req.body;
   console.log(`Email to check: ${email}`);
@@ -121,15 +119,15 @@ app.put("/user/:email", async (req, res) => {
 });
 
 app.post("/createGallery", async (req, res) => {
-  const { title, description } = req.body;
-
-  const galleryData = {
-    title,
-    description,
-  };
+  const { title, description, userId } = req.body;
+  const gallery = new Gallery({
+    title: title,
+    description: description,
+    user: userId
+  });
 
   try {
-    await Gallery.insertMany([galleryData]);
+    await Gallery.insertMany([gallery]);
     res.json({ message: "Gallery created successfully" });
   } catch (e) {
     console.error("An error occurred while creating the gallery:", e);
@@ -139,9 +137,10 @@ app.post("/createGallery", async (req, res) => {
   }
 });
 
-app.get("/galleries", async (req, res) => {
+app.get("/galleries/:userId", async (req, res) => {
   try {
-    const galleries = await Gallery.find();
+    const { userId } = req.params;
+    const galleries = await Gallery.find({user: userId});
     res.json(galleries);
   } catch (e) {
     console.error("An error occurred while fetching the galleries:", e);

@@ -6,6 +6,7 @@ import CreateGalleryModal from "./CreateGalleryModal";
 import axios from "axios";
 
 interface User {
+  _id: string;
   firstName: string;
   email: string;
 }
@@ -22,13 +23,13 @@ const DashboardTitleBar: React.FC = () => {
     setFetchFlag((prev) => !prev);
   };
 
-  const handleSubmit = async (title: string, description: string) => {
+  const handleSubmit = async (title: string, description: string, userId: string) => {
     const response = await fetch("http://localhost:5000/createGallery", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ title, description }),
+      body: JSON.stringify({ title, description, userId }),
     });
 
     const result = await response.json();
@@ -100,6 +101,7 @@ const DashboardTitleBar: React.FC = () => {
       <DashboardContent fetchGalleries={fetchGalleries} />
 
       <CreateGalleryModal
+        userId={user !== null ? user._id : ''}
         isOpen={isOpen}
         onClose={handleClose}
         onSubmit={handleSubmit}
