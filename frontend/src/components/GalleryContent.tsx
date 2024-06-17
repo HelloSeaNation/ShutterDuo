@@ -67,8 +67,8 @@ const GalleryContent: React.FC = () => {
     }
   };
 
-  const handleCreateGallery = async (title: string, description: string) => {
-    const success = await createGallery(title, description);
+  const handleCreateGallery = async (title: string, description: string, userId: string) => {
+    const success = await createGallery(title, description, userId);
     if (success) {
       alert("Gallery created successfully");
       loadGalleries();

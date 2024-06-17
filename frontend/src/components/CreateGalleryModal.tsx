@@ -14,17 +14,18 @@ import {
 } from "@chakra-ui/react";
 
 interface CreateGalleryModalProps {
+  userId: string;
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (title: string, description: string) => Promise<void>;
+  onSubmit: (title: string, description: string, userId: string) => Promise<void>;
 }
 
-const CreateGalleryModal: React.FC<CreateGalleryModalProps> = ({ isOpen, onClose, onSubmit }) => {
+const CreateGalleryModal: React.FC<CreateGalleryModalProps> = ({ userId, isOpen, onClose, onSubmit }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
   const handleSubmit = async () => {
-    await onSubmit(title, description);
+    await onSubmit(title, description, userId);
     setTitle("");
     setDescription("");
   };
@@ -48,6 +49,10 @@ const CreateGalleryModal: React.FC<CreateGalleryModalProps> = ({ isOpen, onClose
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             type="date"
+          />
+          <Input
+            value={userId}
+            hidden={true}
           />
         </ModalBody>
         <ModalFooter>
