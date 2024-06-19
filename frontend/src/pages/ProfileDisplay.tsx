@@ -113,7 +113,7 @@ const ProfilePage = () => {
               />
             )}
             <Box>
-              <Text marginBottom={2} fontWeight="bold">
+              <Text marginBottom={2} fontWeight="bold" fontSize="23px">
                 {user ? `${user.firstName} ${user.surname}` : "User"}
               </Text>
               <Box>

@@ -1,17 +1,6 @@
-import React, { useState } from "react";
-import {
-  Flex,
-  FormControl,
-  FormLabel,
-  Input,
-  Textarea,
-  Text,
-  Button,
-  Divider,
-  Icon,
-} from "@chakra-ui/react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faToggleOff, faToggleOn } from "@fortawesome/free-solid-svg-icons";
+import React, { useState, useEffect } from "react";
+import { Flex, FormControl, FormLabel, Input, Button } from "@chakra-ui/react";
+import axios from 'axios';
 
 const TextStyle = {
   fontSize: "20px",
@@ -21,79 +10,76 @@ const TextStyle = {
 };
 
 const AccountContent = () => {
-  const [isToggledOnFirst, setIsToggledOnFirst] = useState(false);
-  const [isToggledOnSecond, setIsToggledOnSecond] = useState(false);
+  const [user, setUser] = useState({ email: '' });
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [reEnterPassword, setReEnterPassword] = useState('');
+  const [newEmail, setNewEmail] = useState('');
 
-  const handleToggleFirst = () => {
-    setIsToggledOnFirst((prevState) => !prevState);
-  };
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const storedUser = localStorage.getItem("user");
+      if (storedUser) {
+        const parsedUser = JSON.parse(storedUser);
+        if (parsedUser && parsedUser.email) {
+          try {
+            const response = await axios.get(`http://localhost:5000/user/${parsedUser.email}`);
+            setUser(response.data);
+          } catch (error) {
+            console.error("Error fetching user data:", error);
+          }
+        }
+      }
+    };
+    fetchUserData();
+  }, []);
 
-  const handleToggleSecond = () => {
-    setIsToggledOnSecond((prevState) => !prevState);
+  const handleSave = async () => {
+    if (newPassword !== reEnterPassword) {
+      alert("Passwords do not match");
+      return;
+    }
+
+    const payload = {
+      email: user.email,
+      password: currentPassword,
+      newPassword,
+      newEmail
+    };
+
+    try {
+      const response = await axios.put('http://localhost:5000/user/update-login', payload);
+
+      if (response.status === 200) {
+        alert("Profile updated successfully");
+      }
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      alert("An error occurred while updating the profile");
+    }
   };
 
   return (
     <Flex w={"60%"} margin={"auto"} h={"100vh"} direction={"column"}>
       <FormControl>
-        <FormLabel style={TextStyle}>Username</FormLabel>
-        <FormLabel style={TextStyle}>Account Email</FormLabel>
-        <Input />
-        <FormLabel style={TextStyle}>Account Password</FormLabel>
-        <Input />
-        <FormLabel style={TextStyle}>Login with</FormLabel>
-        <Input />
+        <FormLabel style={TextStyle}>Current Email</FormLabel>
+        <Input value={user.email} readOnly />
+
+        <FormLabel style={TextStyle}>New Email (optional)</FormLabel>
+        <Input type="email" value={newEmail} onChange={(e) => setNewEmail(e.target.value)} />
+
+        <FormLabel style={TextStyle}>Current Password</FormLabel>
+        <Input type="password" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} />
+
+        <FormLabel style={TextStyle}>New Password</FormLabel>
+        <Input type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
+
+        <FormLabel style={TextStyle}>Re-Enter Password</FormLabel>
+        <Input type="password" value={reEnterPassword} onChange={(e) => setReEnterPassword(e.target.value)} />
       </FormControl>
-      <FormControl>
-        <Text
-          fontSize={"18px"}
-          color={"black"}
-          fontWeight={"bold"}
-          marginTop={"50px"}
-          marginBottom={"20px"}
-        >
-          Email Notification
-        </Text>
-        <Divider marginBottom={"20px"} />
-        <Text marginBottom={"20px"} color={"#939393"}>
-          Send me an email when
-        </Text>
-        <Flex direction={"column"}>
-          <Flex direction={"row"} justifyContent={"space-between"}>
-            <Text fontSize={"20px"} color={"black"} marginBottom={"20px"}>
-              Someone download a Gallery
-            </Text>
-            <FontAwesomeIcon
-              icon={isToggledOnFirst ? faToggleOn : faToggleOff}
-              fontSize={"25px"}
-              onClick={handleToggleFirst}
-              style={{ cursor: "pointer" }}
-            />
-          </Flex>
-          <Flex direction={"row"} justifyContent={"space-between"}>
-            <Text fontSize={"20px"} color={"black"} marginBottom={"20px"}>
-              Someone open a Gallery
-            </Text>
-            <FontAwesomeIcon
-              icon={isToggledOnSecond ? faToggleOn : faToggleOff}
-              fontSize={"25px"}
-              onClick={handleToggleSecond}
-              style={{ cursor: "pointer" }}
-            />
-          </Flex>
-        </Flex>
-      </FormControl>
-      <Flex
-        justifyContent={"flex-end"}
-        marginTop={"5rem"}
-        paddingBottom={"5rem"}
-      >
-        <Button
-          w={"165px"}
-          h={"50px"}
-          bgColor={"transparent"}
-          fontSize={"18px"}
-          marginRight={"10px"}
-        >
+
+      <Flex justifyContent={"flex-end"} marginTop={"5rem"} paddingBottom={"5rem"}>
+        <Button w={"165px"} h={"50px"} bgColor={"transparent"} fontSize={"18px"} marginRight={"10px"}>
           Cancel
         </Button>
         <Button
@@ -103,6 +89,7 @@ const AccountContent = () => {
           h={"50px"}
           fontSize={"18px"}
           _hover={{ color: "#4267cf", bgColor: "#F5F3F3" }}
+          onClick={handleSave}
         >
           Save Account
         </Button>
