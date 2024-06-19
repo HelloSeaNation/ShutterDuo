@@ -7,6 +7,7 @@ const Gallery = require("./models/gallery");
 const nodemailer = require("nodemailer");
 const sendGridMail = require("@sendgrid/mail");
 const bodyParser = require("body-parser");
+const bcrypt = require('bcrypt');
 
 sendGridMail.setApiKey(process.env.SENDGRID_API_KEY);
 
@@ -43,23 +44,25 @@ app.post("/checkEmail", async (req, res) => {
 //register
 app.post("/register", async (req, res) => {
   const { firstName, surname, email, password } = req.body;
-  console.log(`Received data: ${firstName}, ${surname}, ${email}`);
-
-  const data = {
-    firstName: firstName,
-    surname: surname,
-    email: email,
-    password: password,
-  };
 
   try {
-    const user = await collection.findOne({ email: email });
+    const user = await collection.findOne({ email });
     if (user) {
-      res.json("Email already exists");
-    } else {
-      await collection.insertMany([data]);
-      res.json("Signup successful");
+      return res.json("Email already exists");
     }
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    const data = {
+      firstName,
+      surname,
+      email,
+      password: hashedPassword,
+    };
+
+    await collection.insertMany([data]);
+    res.json("Signup successful");
   } catch (e) {
     res.status(500).json("An error occurred while signing up");
   }
@@ -70,18 +73,56 @@ app.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const user = await collection.findOne({
-      email: email,
-      password: password,
-    });
-    if (user) {
-      res.json({ message: "Login Successful", user: user });
-    } else {
-      res.json("Invalid Email and Password");
+    const user = await collection.findOne({ email });
+    if (!user) {
+      return res.json("Invalid Email and Password");
     }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.json("Invalid Email and Password");
+    }
+
+    res.json({ message: "Login Successful", user });
   } catch (e) {
     console.error("An error occurred during login:", e);
-    res.status(500).json("An error occured during a login");
+    res.status(500).json("An error occurred during login");
+  }
+});
+
+//update login credentials
+app.put('/user/update-login', async (req, res) => {
+  const { email, password, newPassword, newEmail } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).json({ message: 'Email and current password are required' });
+  }
+
+  try {
+    const user = await collection.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: 'Current password is incorrect' });
+    }
+
+    if (newEmail) {
+      user.email = newEmail;
+    }
+
+    if (newPassword) {
+      const salt = await bcrypt.genSalt(10);
+      user.password = await bcrypt.hash(newPassword, salt);
+    }
+
+    await user.save();
+    res.status(200).json({ message: 'User login information updated successfully' });
+  } catch (error) {
+    console.error('Error updating user login information:', error);
+    res.status(500).json({ message: 'Server error' });
   }
 });
 
