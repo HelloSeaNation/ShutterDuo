@@ -1,5 +1,6 @@
 import React from "react";
 import { Box, Flex, Button } from "@chakra-ui/react";
+import { Link } from "react-router-dom"; // Import the Link component
 
 const SideBarGallery = () => {
   return (
@@ -31,9 +32,7 @@ const SideBarGallery = () => {
               fontSize={"20px"}
               justifyContent={"flex-start"}
               paddingLeft={"10%"}
-              onClick={() => {
-                window.location.href = "/gallery_page";
-              }}
+              as={Link} to="/gallery_page"
             >
               Gallery
             </Button>
@@ -47,8 +46,9 @@ const SideBarGallery = () => {
               fontSize={"20px"}
               justifyContent={"flex-start"}
               paddingLeft={"10%"}
-            >
-              Settings
+              as={Link} to="/profile_setting"
+              >
+              Profile Settings
             </Button>
           </Box>
         </Flex>

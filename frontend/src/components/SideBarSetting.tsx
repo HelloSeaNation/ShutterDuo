@@ -19,7 +19,7 @@ const SideBar = () => {
               as={Link}
               to="/profile_setting"
             >
-              Profile
+              Profile Setting
             </Button>
           </Box>
           <Box>
