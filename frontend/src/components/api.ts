@@ -56,19 +56,22 @@ export interface Gallery {
 
   export const deleteGallery = async (galleryId: string): Promise<boolean> => {
     try {
-      // Delete images associated with the gallery
-      await deleteImagesByGalleryId(galleryId);
+        const response = await fetch(`http://localhost:5000/deleteGallery/${galleryId}`, {
+            method: "DELETE",
+        });
 
-      // Delete the gallery
-      const response = await fetch(`http://localhost:5000/deleteGallery/${galleryId}`, {
-        method: "DELETE",
-      });
-      return response.ok;
+        if (!response.ok) {
+            const errorResponse = await response.json();
+            console.error("Error deleting gallery:", errorResponse.message);
+            return false;
+        }
+
+        return true;
     } catch (error) {
-      console.error("Error deleting gallery:", error);
-      return false;
+        console.error("Error deleting gallery:", error);
+        return false;
     }
-  };
+};
 
   export const deleteImagesByGalleryId = async (galleryId: string): Promise<void> => {
     try {

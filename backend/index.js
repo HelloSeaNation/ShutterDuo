@@ -220,17 +220,17 @@ app.delete("/deleteGallery/:id", async (req, res) => {
     if (!gallery) {
       return res.status(404).json({ message: "Gallery not found" });
     }
-    const deletedImages = await Image.deleteMany({ gallery: id });
+
+    // Delete all images associated with this gallery (if any)
+    await Image.deleteMany({ gallery: id });
+
+    // Delete the gallery itself
     await Gallery.findByIdAndDelete(id);
 
-    res
-      .status(200)
-      .json({ message: "Gallery and associated images deleted successfully" });
+    res.status(200).json({ message: "Gallery and associated images deleted successfully" });
   } catch (error) {
     console.error("Error deleting gallery:", error);
-    res
-      .status(500)
-      .json({ message: "An error occurred while deleting the gallery" });
+    res.status(500).json({ message: "An error occurred while deleting the gallery" });
   }
 });
 
