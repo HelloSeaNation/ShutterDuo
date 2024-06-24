@@ -12,6 +12,7 @@ import {
 import axios from "axios";
 
 const Report: React.FC = () => {
+    // Initialize state to hold form data (name, email, message)
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -21,6 +22,7 @@ const Report: React.FC = () => {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
+    // Update the corresponding field in the formData state
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -28,8 +30,9 @@ const Report: React.FC = () => {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault(); // Prevent default form submission behavior
     try {
+      // Send a POST request to the server with form data
       await axios.post("http://localhost:5000/send-email", formData);
       alert("Email sent successfully");
     } catch (error) {
