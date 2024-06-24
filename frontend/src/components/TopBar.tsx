@@ -70,7 +70,7 @@ return (
         <Box>
           {/* insert alert icon and profile image */}
           <Flex direction={"row"}>
-            <Box as={Link} to="/notification_page">
+            {/* <Box as={Link} to="/notification_page">
               <Image
                 src="../notification.png"
                 alt="alert"
@@ -79,7 +79,7 @@ return (
                 marginTop={"12px"}
                 marginRight={"20px"}
               />
-            </Box>
+            </Box> */}
 
             <Menu>
               <MenuButton>

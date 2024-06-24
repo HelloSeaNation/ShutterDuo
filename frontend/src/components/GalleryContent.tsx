@@ -55,17 +55,20 @@ const GalleryContent: React.FC = () => {
   };
 
   const confirmDelete = async () => {
-    if (selectedGallery) {
-      const success = await deleteGallery(selectedGallery._id);
-      if (success) {
-        alert("Gallery deleted successfully");
-        loadGalleries();
-      } else {
-        alert("Failed to delete gallery");
-      }
-      closeDialog();
+    if (selectedGallery && selectedGallery._id) { 
+        const success = await deleteGallery(selectedGallery._id);
+        if (success) {
+            alert("Gallery deleted successfully");
+            loadGalleries();
+        } else {
+            alert("Failed to delete gallery");
+        }
+        closeDialog();
+    } else {
+        alert("No gallery selected or invalid gallery.");
+        closeDialog();
     }
-  };
+};
 
   const handleCreateGallery = async (title: string, description: string, userId: string) => {
     const success = await createGallery(title, description, userId);
