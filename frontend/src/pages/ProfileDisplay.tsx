@@ -47,6 +47,7 @@ const socialMediaPlatforms = [
 
 type SocialMediaPlatform = (typeof socialMediaPlatforms)[number];
 
+// Map social media platform names to their corresponding icon paths
 const socialMediaIcons: Record<SocialMediaPlatform, string> = {
   facebook: "../facebook.png",
   insta: "../instagram.png",
@@ -58,15 +59,19 @@ const socialMediaIcons: Record<SocialMediaPlatform, string> = {
 };
 
 const ProfilePage = () => {
+  // Use the useLocation hook to get the current location
   const location = useLocation();
   const [user, setUser] = useState<User | null>(null);
+  // Extract user data from the location state
   const { user: userData } = location.state || {};
   
-
+// Use the useEffect hook to load user data when the component mounts or when userData changes
   useEffect(() => {
     if (userData) {
+      // If userData is available in the location state, use it to set the user state
       setUser(userData);
     } else {
+      // Otherwise, fetch user data from local storage or the server
       const fetchUserData = async () => {
         const storedUser = localStorage.getItem("user");
         if (storedUser) {
@@ -190,7 +195,7 @@ const ProfilePage = () => {
                 )}
             </Flex>
           </Box>
-        </Box>
+        </Box> 
 
         {/* Highlights section */}
         <Box flex="0 0 300px" color="grey" marginRight="200px">

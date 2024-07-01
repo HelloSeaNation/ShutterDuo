@@ -20,16 +20,20 @@ interface User {
 }
 
 const AccountContent = () => {
+  // State to manage the selected files, initialized with six null values
   const [selectedFiles, setSelectedFiles] = useState<(File | null)[]>([null, null, null, null, null, null]);
+  // State to manage the user data, initially set to null
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     const fetchUserData = async () => {
+      // Get user data from localStorage
       const storedUser = localStorage.getItem("user");
       if (storedUser) {
         const parsedUser = JSON.parse(storedUser);
         if (parsedUser && parsedUser.email) {
           try {
+            // Fetch user data from the server
             const response = await axios.get(
               `http://localhost:5000/user/${parsedUser.email}`
             );
@@ -46,6 +50,7 @@ const AccountContent = () => {
   const handleFileChange = (index: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = [...selectedFiles];
     if (e.target.files && e.target.files.length > 0) {
+      // Update the specific file in the state array
       files[index] = e.target.files[0];
     } else {
       files[index] = null;
@@ -57,6 +62,7 @@ const AccountContent = () => {
     if (user) {
       try {
         const formData = new FormData();
+        // Append each selected file to the form data
         selectedFiles.forEach((file, index) => {
           if (file) {
             formData.append("highlights", file);
@@ -64,6 +70,7 @@ const AccountContent = () => {
         });
         formData.append("email", user.email); // Pass the user's email for identification
 
+        // Send the form data to the server
         const uploadResponse = await axios.post(
           "http://localhost:5000/uploadHighlights",
           formData,
@@ -76,13 +83,14 @@ const AccountContent = () => {
 
         console.log("Upload response:", uploadResponse.data);
 
-        // Update user's highlight URLs
+        // Update user's highlight URLs with the response data
         const updatedUser: User = { ...user };
         for (let i = 0; i < 6; i++) {
           // Assert that the key exists on the updatedUser
           (updatedUser as any)[`highLight${i}`] = uploadResponse.data.user[`highLight${i}`];
         }
 
+        // Send the updated user data to the server
         await axios.put(`http://localhost:5000/user/${user.email}`, updatedUser);
         alert("Profile updated successfully");
         setUser(updatedUser);
@@ -110,17 +118,6 @@ const AccountContent = () => {
       </Box>
 
       <Flex justifyContent={"flex-end"} marginTop={"5rem"} paddingBottom={"5rem"}>
-        {/* <Button
-          w={"165px"}
-          h={"50px"}
-          bgColor={"transparent"}
-          fontSize={"18px"}
-          marginRight={"10px"}
-        >
-          Cancel
-        </Button> 
-        
-        commented until I can get to work*/}
         <Button
           bgColor={"#4267cf"}
           color={"white"}

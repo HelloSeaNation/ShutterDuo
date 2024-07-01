@@ -27,6 +27,7 @@ interface User {
   email: string;
   business: string;
   profilePicture: string;
+  // Optional properties for additional profile information
   bio?: string;
   location?: string;
   job?: string;
@@ -41,20 +42,23 @@ interface User {
 }
 
 const ProfileSettingContent = () => {
+  // State to manage selected profile picture file
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  // State to manage user profile data
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     const fetchUserData = async () => {
-      const storedUser = localStorage.getItem("user");
+      const storedUser = localStorage.getItem("user"); // Retrieve user data from local storage
       if (storedUser) {
-        const parsedUser = JSON.parse(storedUser);
+        const parsedUser = JSON.parse(storedUser); // Parse the stored user data
         if (parsedUser && parsedUser.email) {
           try {
+            // Fetch user data from the server using the user's email
             const response = await axios.get(
               `http://localhost:5000/user/${parsedUser.email}`
             );
-            setUser(response.data);
+            setUser(response.data); // Set the fetched user data to state
           } catch (error) {
             console.error("Error fetching user data:", error);
           }
@@ -62,14 +66,14 @@ const ProfileSettingContent = () => {
       }
     };
     fetchUserData();
-  }, []);
+  }, []); // Empty dependency array ensures this runs only once on mount
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
     setUser((prevState) =>
-      prevState ? { ...prevState, [name]: value } : null
+      prevState ? { ...prevState, [name]: value } : null // Update the user state with the new value
     );
   };
 
@@ -85,7 +89,7 @@ const ProfileSettingContent = () => {
         // If a file is selected, upload it first
         if (selectedFile) {
           const formData = new FormData();
-          formData.append("profilePicture", selectedFile);
+          formData.append("profilePicture", selectedFile); // Append the file to form data
           formData.append("email", user.email); // Pass the user's email for identification
 
           const uploadResponse = await axios.post(
@@ -98,10 +102,11 @@ const ProfileSettingContent = () => {
             }
           );
 
-          // Update user's profile picture URL
+          // Update user's profile picture URL with the response from the server
           user.profilePicture = uploadResponse.data.user.profilePicture;
         }
 
+        // Send a PUT request to update the user's profile data on the server
         await axios.put(`http://localhost:5000/user/${user.email}`, user);
         alert("Profile updated successfully");
       } catch (error) {
