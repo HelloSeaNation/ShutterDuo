@@ -15,35 +15,36 @@ interface User {
   job: string;
 }
 
+// Custom hook to extract query parameters from the URL
 const useQuery = () => {
   return new URLSearchParams(useLocation().search);
 };
 
 const SearchResults = () => {
   const query = useQuery();
-  const searchTerm = query.get('query');
-  const [results, setResults] = useState<User[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const searchTerm = query.get('query'); // Get the search term from the URL query parameters
+  const [results, setResults] = useState<User[]>([]); // State to hold the search results
+  const [loading, setLoading] = useState(true); // State to indicate if data is being loaded
+  const [error, setError] = useState<string | null>(null); // State to hold any error messages
 
   useEffect(() => {
     const fetchResults = async () => {
-      setLoading(true);
+      setLoading(true); // Set loading state to true while fetching data
       try {
         console.log(`Fetching results for: ${searchTerm}`);
         const response = await axios.get(`http://localhost:5000/api/search?query=${searchTerm}`);
         console.log('Search results:', response.data);
-        setResults(response.data);
+        setResults(response.data); // Update results state with fetched data
       } catch (error) {
         console.error('Error fetching search results', error);
         setError("Error fetching search results");
       } finally {
-        setLoading(false);
+        setLoading(false); // Set loading state to false once fetching is complete
       }
     };
 
     if (searchTerm) {
-      fetchResults();
+      fetchResults(); // Fetch results only if there is a search term
     }
   }, [searchTerm]);
 

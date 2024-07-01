@@ -10,12 +10,14 @@ const TextStyle = {
 };
 
 const AccountContent = () => {
+  // State to hold the current user data, passwords, and new email
   const [user, setUser] = useState({ email: '' });
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [reEnterPassword, setReEnterPassword] = useState('');
   const [newEmail, setNewEmail] = useState('');
 
+  // useEffect hook to fetch user data from local storage and API
   useEffect(() => {
     const fetchUserData = async () => {
       const storedUser = localStorage.getItem("user");
@@ -23,8 +25,9 @@ const AccountContent = () => {
         const parsedUser = JSON.parse(storedUser);
         if (parsedUser && parsedUser.email) {
           try {
+            // Fetch user data from API using the stored email
             const response = await axios.get(`http://localhost:5000/user/${parsedUser.email}`);
-            setUser(response.data);
+            setUser(response.data); // Update state with fetched user data
           } catch (error) {
             console.error("Error fetching user data:", error);
           }
@@ -32,12 +35,13 @@ const AccountContent = () => {
       }
     };
     fetchUserData();
-  }, []);
+  }, []); // Empty dependency array ensures this runs only once on mount
 
   const handleSave = async () => {
+    // Check if the new password and re-entered password match
     if (newPassword !== reEnterPassword) {
       alert("Passwords do not match");
-      return;
+      return; // Exit the function if passwords don't match
     }
 
     const payload = {
@@ -48,12 +52,13 @@ const AccountContent = () => {
     };
 
     try {
+      // Send a PUT request to the API to update user login details
       const response = await axios.put('http://localhost:5000/user/update-login', payload);
 
       if (response.status === 200) {
         alert("Profile updated successfully");
       }
-    } catch (error) {
+    } catch (error) {     // Send a PUT request to the API to update user login details
       console.error("Error updating profile:", error);
       alert("An error occurred while updating the profile");
     }
